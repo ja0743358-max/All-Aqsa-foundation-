@@ -1041,6 +1041,51 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .install-bar .ib-x { border: 0; background: none; color: #8a998a; font-size: 1.1rem; padding: 4px 6px; flex: none; }
 
         .site-logo { height: 40px; width: 40px; object-fit: contain; border-radius: 50%; background: #fff; margin-right: 8px; vertical-align: middle; padding: 2px; }
+            /* ===== ADMIN: সুন্দর ড্যাশবোর্ড ও বড় ডিটেলস ===== */
+        .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:10px 0 18px}
+        .dash-stat{display:flex;align-items:center;gap:16px;padding:22px 20px;border-radius:20px;color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.12)}
+        .dash-stat i{font-size:1.8rem;width:62px;height:62px;border-radius:18px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex:none}
+        .dash-stat h3{margin:0;font-size:2.2rem;font-weight:700;line-height:1.1}
+        .dash-stat p{margin:0;opacity:.92;font-size:1rem}
+        .dash-stat.s1{background:linear-gradient(135deg,#1a6b3c,#2ea36a)}
+        .dash-stat.s2{background:linear-gradient(135deg,#1558b0,#3b8cf0)}
+        .dash-stat.s3{background:linear-gradient(135deg,#d97706,#f5a524)}
+        .dash-stat.s4{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+        @media (max-width: 992px) { .dash-stats { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 480px) { .dash-stat { padding: 16px 14px; gap: 10px; } .dash-stat h3 { font-size: 1.7rem; } .dash-stat i { width: 48px; height: 48px; font-size: 1.4rem; } }
+        .dash-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+        .dash-actions button{border:1px solid #dfe9e3;background:#fff;border-radius:16px;padding:16px 14px;font-size:1.02rem;font-weight:600;color:#14532d;display:flex;align-items:center;gap:12px;transition:.2s;text-align:left}
+        .dash-actions button i{width:42px;height:42px;border-radius:12px;background:#e8f5ee;color:#1a6b3c;display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex:none}
+        .dash-actions button:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,.08);border-color:#1a6b3c}
+        .mem-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+        .mem-top{display:flex;align-items:center;gap:16px}
+        .mem-btns{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid #eef2ee}
+        .mem-card{display:block;padding:16px;border:1px solid #e3ece6;border-radius:18px;background:#fff;cursor:pointer;transition:.2s;position:relative}
+        .mem-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(0,0,0,.1);border-color:#1a6b3c}
+        .mem-photo{width:84px;height:108px;object-fit:cover;border-radius:12px;flex:none;background:#e8f1ec;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#9ab8a6}
+        .mem-name{font-size:1.15rem;font-weight:700;color:#14532d;line-height:1.3}
+        .mem-meta{color:#64748b;font-size:.95rem;margin-bottom:6px}
+        .mem-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+        .mem-tags span{background:#eef6f1;color:#14532d;border-radius:20px;padding:2px 10px;font-size:.82rem}
+        .mem-phone{font-size:.95rem;color:#334155}
+        .mem-go{display:none}
+        .mem-info{min-width:0;padding-right:18px}
+        .mv-head{background:linear-gradient(135deg,#0a2a66,#1558b0 60%,#2f7de1);color:#fff;border-radius:16px 16px 0 0;padding:26px;display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+        .mv-head img,.mv-head .mv-ph{width:130px;height:167px;object-fit:cover;border-radius:14px;border:3px solid rgba(255,255,255,.85);background:#dbe9ff;flex:none;display:flex;align-items:center;justify-content:center;font-size:3rem;color:#7aa6e6}
+        .mv-head h4{font-size:1.7rem;font-weight:700;margin:0 0 6px}
+        .mv-head .badge{font-weight:500;font-size:.9rem;padding:7px 12px;background:rgba(255,255,255,.18)!important;margin:0 6px 6px 0}
+        .mv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:20px 22px 6px}
+        .mv-item{background:#f6f9ff;border-radius:14px;padding:12px 16px}
+        .mv-item.wide{grid-column:1/-1}
+        .mv-item small{display:block;color:#64748b;font-size:.85rem}
+        .mv-item b{font-size:1.1rem;font-weight:600;color:#0f2447;word-break:break-word}
+        .mv-actions{padding:14px 22px 22px}
+        .mv-actions h6{font-weight:700;color:#14532d;margin-bottom:10px}
+        .mv-actions .btn{padding:12px 10px;font-size:1rem;border-radius:12px}
+        @media (max-width: 576px) { .mv-grid { grid-template-columns: 1fr; } .mv-head { padding: 18px; } .mv-head h4 { font-size: 1.35rem; } }
+        .admin-table td, .admin-table th { padding: 1rem .8rem !important; font-size: 1rem; }
+        .admin-table img, .admin-table .thumb-round { width: 64px !important; height: 64px !important; object-fit: cover; }
+        .admin-content h4 { font-size: 1.5rem; }
     </style>
 </head>
 <body>
@@ -1076,7 +1121,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     </li>
                     <li class="nav-item ms-lg-2 my-2 my-lg-0">
                         <form id="navSearchForm" class="nav-search" autocomplete="off">
-                            <input type="search" id="navSearchInput" class="form-control form-control-sm" placeholder="নাম বা সদস্য নম্বর" aria-label="সদস্য খুঁজুন" />
+                            <input type="search" id="navSearchInput" class="form-control form-control-sm" placeholder="ফরম বা সদস্য নম্বর" aria-label="সদস্য খুঁজুন" />
                             <button type="submit" aria-label="খুঁজুন"><i class="fas fa-search"></i></button>
                         </form>
                     </li>
@@ -1533,17 +1578,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="container">
                 <div class="text-center mb-4">
                     <h2 class="section-title text-center">সদস্য আইডি কার্ড</h2>
-                    <p class="section-subtitle">নাম অথবা সদস্য নম্বর দিয়ে খুঁজুন — কার্ড দেখুন এবং PDF/PNG ডাউনলোড করুন।</p>
+                    <p class="section-subtitle">আপনার ফরম নম্বর বা সদস্য নম্বর দিয়ে খুঁজুন — নিজের তথ্য দেখুন এবং কার্ড ডাউনলোড করুন।</p>
                 </div>
 
                 <div class="row justify-content-center">
                     <div class="col-lg-6 col-xl-5">
                         <div class="membership-form idc-box">
                             <form id="idcForm">
-                                <label class="form-label" for="idcMemberNo">নাম অথবা সদস্য নম্বর</label>
+                                <label class="form-label" for="idcMemberNo">ফরম নম্বর অথবা সদস্য নম্বর</label>
                                 <div class="input-group input-group-lg mb-2">
                                     <span class="input-group-text idc-ic"><i class="fas fa-id-card"></i></span>
-                                    <input type="text" class="form-control" id="idcMemberNo" required autocomplete="off" placeholder="নাম বা সদস্য নম্বর লিখুন" />
+                                    <input type="text" class="form-control" id="idcMemberNo" required autocomplete="off" placeholder="ফরম নম্বর বা সদস্য নম্বর লিখুন" />
                                 </div>
                                 <div id="idcMsg" class="alert d-none py-2 small"></div>
                                 <button type="submit" class="btn btn-primary-custom idc-btn w-100 mt-2" id="idcSearchBtn"><i class="fas fa-search me-2"></i> খুঁজুন</button>
@@ -1597,6 +1642,20 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <div class="text-center mt-5">
                     <p class="text-muted mb-2">এখনো সদস্য নন?</p>
                     <a href="#" class="btn btn-primary-custom idc-btn" onclick="navigateTo('join');return false;"><i class="fas fa-user-plus me-1"></i> সদস্য হোন</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- MEMBER INFORMATION PAGE (কিউআর স্ক্যান করলে শুধু এই পেজ দেখাবে) -->
+        <section class="page-section section-padding" id="page-minfo" style="padding-top:120px;">
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2 class="section-title text-center">সদস্য ইনফরমেশন</h2>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-lg-7 col-xl-6">
+                        <div id="minfoBody"><div class="page-loader"><div class="loader"></div></div></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1707,6 +1766,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="activities"><i class="fas fa-calendar-check"></i> কার্যক্রম</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="gallery"><i class="fas fa-images"></i> গ্যালারি</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="members"><i class="fas fa-users"></i> সদস্য</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="offlineforms"><i class="fas fa-file-signature"></i> সদস্য আবেদন ফরম</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="contacts"><i class="fas fa-envelope"></i> বার্তা</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="files"><i class="fas fa-file-pdf"></i> ডাউনলোড ফাইল</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="settings"><i class="fas fa-signature"></i> সাইন ও সেটিংস</a></li>
@@ -1716,18 +1776,29 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         <div class="col-lg-9 col-xl-10 admin-content">
                             <div class="admin-page active" id="admin-dashboard">
                                 <h4 class="fw-bold text-primary-dark mb-2"><i class="fas fa-chart-pie me-2"></i> ড্যাশবোর্ড</h4>
+                                <div class="dash-stats">
+                                    <div class="dash-stat s1"><i class="fas fa-users"></i><div><h3 id="adminStatMembers">০</h3><p>মোট সদস্য</p></div></div>
+                                    <div class="dash-stat s2"><i class="fas fa-calendar-check"></i><div><h3 id="adminStatActivities">০</h3><p>মোট কার্যক্রম</p></div></div>
+                                    <div class="dash-stat s3"><i class="fas fa-bullhorn"></i><div><h3 id="adminStatNotices">০</h3><p>মোট নোটিশ</p></div></div>
+                                    <div class="dash-stat s4"><i class="fas fa-envelope"></i><div><h3 id="adminStatContacts">০</h3><p>মোট বার্তা</p></div></div>
+                                </div>
+                                <div class="dash-actions">
+                                    <button type="button" data-bs-toggle="modal" data-bs-target="#memberModal"><i class="fas fa-user-plus"></i> নতুন সদস্য যোগ করুন</button>
+                                    <button type="button" onclick="adminGo('members')"><i class="fas fa-users"></i> সদস্য তালিকা</button>
+                                    <button type="button" onclick="adminGo('offlineforms')"><i class="fas fa-file-signature"></i> আবেদন ফরম তৈরি</button>
+                                    <button type="button" onclick="adminGo('notices')"><i class="fas fa-bullhorn"></i> নোটিশ</button>
+                                </div>
+                                <div class="admin-card">
+                                    <h5 class="fw-bold text-primary-dark mb-3"><i class="fas fa-clock-rotate-left me-2"></i> সাম্প্রতিক সদস্য <small class="text-muted fw-normal">(ক্লিক করে বিস্তারিত ও ডাউনলোড)</small></h5>
+                                    <div id="dashRecentMembers"><div class="page-loader"><div class="loader"></div></div></div>
+                                </div>
                                 <div class="wheel-stage" id="wheelStage">
                                     <div class="wheel-pointer"></div>
                                     <div class="wheel-rotor" id="wheelRotor"></div>
                                     <button type="button" class="wheel-hub" id="wheelSpin"><i class="fas fa-rotate"></i><span>ঘোরান</span></button>
                                 </div>
                                 <div class="wheel-result" id="wheelResult">চক্র ঘুরান অথবা যেকোনো অংশে চাপ দিন</div>
-                                <div class="wheel-stats">
-                                    <div><h3 id="adminStatMembers">০</h3><p>মোট সদস্য</p></div>
-                                    <div><h3 id="adminStatActivities">০</h3><p>মোট কার্যক্রম</p></div>
-                                    <div><h3 id="adminStatNotices">০</h3><p>মোট নোটিশ</p></div>
-                                    <div><h3 id="adminStatContacts">০</h3><p>মোট বার্তা</p></div>
-                                </div>
+                                
                             </div>
                             <div class="admin-page" id="admin-notices">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -1762,7 +1833,39 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                     <h4 class="fw-bold text-primary-dark"><i class="fas fa-users me-2"></i> সদস্য ব্যবস্থাপনা</h4>
                                     <button class="btn btn-primary-custom btn-sm" data-bs-toggle="modal" data-bs-target="#memberModal"><i class="fas fa-plus me-1"></i> নতুন সদস্য</button>
                                 </div>
-                                <div class="admin-card"><div id="adminMembersList"><div class="page-loader"><div class="loader"></div></div></div></div>
+                                <div class="admin-card"><input type="search" class="form-control form-control-lg mb-3" id="adminMemSearch" placeholder="🔍 নাম, মোবাইল, সদস্য নম্বর বা ফরম নম্বর দিয়ে খুঁজুন..." /><div id="adminMembersList"><div class="page-loader"><div class="loader"></div></div></div></div>
+                            </div>
+                            <div class="admin-page" id="admin-offlineforms">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="fw-bold text-primary-dark"><i class="fas fa-file-signature me-2"></i> সদস্য আবেদন ফরম (অফলাইন)</h4>
+                                </div>
+                                <div class="admin-card">
+                                    <p class="text-muted small mb-3">ছাপিয়ে সদস্য গ্রহণের জন্য ফরম তৈরি করুন। প্রতিটি ফরমে আলাদা নম্বর থাকবে। ফরমের নিচে দুটি কাটার লাইনের মাঝে সদস্য কপি থাকবে, যেটি কেটে সদস্যকে দেওয়া হবে। সদস্য কপির কিউআর স্ক্যান করলে ফরম নম্বর অনুযায়ী তার আবেদন দেখা যাবে।</p>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fw-semibold">পেপার সাইজ</label>
+                                            <div class="d-flex flex-column gap-2">
+                                                <label class="border rounded-3 p-2 d-flex align-items-center gap-2"><input type="radio" name="ofLayout" value="full" checked /> <span>পূর্ণ A4 পেপার — প্রতি পেজে ১টি ফরম</span></label>
+                                                <label class="border rounded-3 p-2 d-flex align-items-center gap-2"><input type="radio" name="ofLayout" value="half" /> <span>অর্ধেক A4 — Landscape পেজে পাশাপাশি ২টি সোজা ফরম</span></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="form-label fw-semibold" for="ofCount">কতগুলো ফরম?</label>
+                                            <input type="number" class="form-control" id="ofCount" min="1" max="500" value="10" />
+                                        </div>
+                                        <div class="col-md-3 col-6">
+                                            <label class="form-label fw-semibold" for="ofStart">শুরুর সিরিয়াল</label>
+                                            <input type="number" class="form-control" id="ofStart" min="1" value="1" />
+                                        </div>
+                                    </div>
+                                    <div class="alert alert-info py-2 small mt-3 mb-3" id="ofInfo"></div>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <button type="button" class="btn btn-primary-custom" id="ofDownloadBtn"><i class="fas fa-file-pdf me-1"></i> ডাউনলোড</button>
+                                        <button type="button" class="btn btn-outline-secondary" id="ofPrevBtn"><i class="fas fa-backward me-1"></i> পিছনের সিরিয়াল</button>
+                                        <button type="button" class="btn btn-outline-secondary" id="ofNextBtn"><i class="fas fa-forward me-1"></i> পরের সিরিয়ালে যান</button>
+                                    </div>
+                                    <div class="form-text mt-2">ডাউনলোড করলে পরের বার নিজে থেকে পরের সিরিয়াল থেকে শুরু হবে। আগের সিরিয়াল লাগলে "পিছনের সিরিয়াল" চাপুন বা শুরুর সিরিয়াল নিজে লিখুন।</div>
+                                </div>
                             </div>
                             <div class="admin-page" id="admin-settings">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -2029,6 +2132,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <div class="col-md-6"><label class="form-label" for="memName">সদস্যের নাম <span class="text-danger">*</span></label><input type="text" class="form-control" id="memName" required /></div>
                             <div class="col-md-6"><label class="form-label" for="memDesignation">পদবি</label><input type="text" class="form-control" id="memDesignation" list="designationList" placeholder="যেমন: সভাপতি, সদস্য" /></div>
                             <div class="col-md-6"><label class="form-label" for="memNo">সদস্য / কার্ড নম্বর</label><input type="text" class="form-control" id="memNo" placeholder="ফাঁকা রাখলে স্বয়ংক্রিয়" /></div>
+                            <div class="col-md-6"><label class="form-label" for="memFormNo">আবেদন ফরম নম্বর</label><input type="text" class="form-control" id="memFormNo" placeholder="অফলাইন ফরমের নম্বর (যেমন: ০০০৭)" /></div>
                             <div class="col-md-6"><label class="form-label" for="memIssue">কার্ড প্রদানের তারিখ</label><input type="date" class="form-control" id="memIssue" /></div>
                             <div class="col-12"><label class="form-label" for="memDetails">সদস্য বিস্তারিত (স্লাইডারে দেখাবে)</label><textarea class="form-control" id="memDetails" rows="3"></textarea></div>
                             <div class="col-md-6"><label class="form-label" for="memPhone">ফোন</label><input type="text" class="form-control" id="memPhone" /></div>
@@ -2050,6 +2154,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Member View Modal (বড় ডিটেলস + ডাউনলোড অপশন) -->
+    <div class="modal fade" id="memberViewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+            <div class="modal-content border-0" style="border-radius:16px;">
+                <button type="button" class="btn-close btn-close-white position-absolute" style="right:16px;top:16px;z-index:5;" data-bs-dismiss="modal"></button>
+                <div id="memberViewBody"></div>
             </div>
         </div>
     </div>
@@ -2963,14 +3077,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         // প্রত্যেক ব্যক্তির ইউনিক ডিটেইলস লিংক
+        function siteBase() {
+            let base = window.location.href.split('?')[0].split('#')[0];
+            if (!base || base.startsWith('file:') || base === 'about:blank') base = 'https://your-domain.com/';
+            return base;
+        }
         function getMemberUrl(m) {
             if (!m) return '';
-            const id = m.member_no || m.id || '';
-            let base = window.location.href.split('?')[0].split('#')[0];
-            if (!base || base.startsWith('file:') || base === 'about:blank') {
-                base = 'https://allaqsafoundation.org/';
-            }
-            return `${base}?member=${encodeURIComponent(id)}`;
+            return `${siteBase()}?info=${encodeURIComponent(m.member_no || m.id || '')}`;
         }
 
         // কিউআর কোড জেনারেটর (100% নির্ভরযোগ্য ও সেলফ-কনটেইন্ড)
@@ -3345,73 +3459,68 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const [photo, sig, logo, seal] = await Promise.all([loadImg(m.photo_url), loadImg(S.signature_url), loadImg(S.logo_url), loadImg(S.seal_url)]);
             c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
 
-            // হেডার (নীল ব্যানার)
-            const g = c.createLinearGradient(0, 0, W, 260);
+            // হেডার (ছোট নীল ব্যানার)
+            const HH = 170;
+            const g = c.createLinearGradient(0, 0, W, HH);
             g.addColorStop(0, CARD.navy); g.addColorStop(0.6, CARD.blue); g.addColorStop(1, CARD.mid);
-            c.fillStyle = g; c.fillRect(0, 0, W, 250);
-            c.save(); c.beginPath(); c.rect(0, 0, W, 250); c.clip();
-            c.strokeStyle = 'rgba(255,255,255,0.07)'; c.lineWidth = 22;
-            for (let x = -120; x < W + 240; x += 80) { c.beginPath(); c.moveTo(x, 260); c.lineTo(x + 200, -10); c.stroke(); }
-            c.restore();
-            c.fillStyle = CARD.mid; c.fillRect(0, 250, W, 8);
-            c.fillStyle = CARD.mid; c.beginPath(); c.arc(170, 125, 92, 0, Math.PI * 2); c.fill();
-            c.fillStyle = '#fff'; c.beginPath(); c.arc(170, 125, 86, 0, Math.PI * 2); c.fill();
+            c.fillStyle = g; c.fillRect(0, 0, W, HH);
+            c.fillStyle = CARD.mid; c.fillRect(0, HH, W, 6);
+            c.fillStyle = '#fff'; c.beginPath(); c.arc(130, HH / 2, 56, 0, Math.PI * 2); c.fill();
             if (logo) {
-                c.save(); c.beginPath(); c.arc(170, 125, 82, 0, Math.PI * 2); c.clip();
-                const r = Math.min(156 / logo.width, 156 / logo.height);
-                c.drawImage(logo, 170 - logo.width * r / 2, 125 - logo.height * r / 2, logo.width * r, logo.height * r);
+                c.save(); c.beginPath(); c.arc(130, HH / 2, 52, 0, Math.PI * 2); c.clip();
+                const r = Math.min(100 / logo.width, 100 / logo.height);
+                c.drawImage(logo, 130 - logo.width * r / 2, HH / 2 - logo.height * r / 2, logo.width * r, logo.height * r);
                 c.restore();
             } else {
-                c.fillStyle = CARD.blue; c.font = `700 100px ${F}`; c.textAlign = 'center'; c.fillText(LANG === 'en' ? 'A' : 'আ', 170, 160);
+                c.fillStyle = CARD.blue; c.font = `700 64px ${F}`; c.textAlign = 'center'; c.fillText(LANG === 'en' ? 'A' : 'আ', 130, HH / 2 + 22);
             }
             c.textAlign = 'left'; c.fillStyle = '#fff';
-            c.font = `700 66px ${F}`; c.fillText(fitText(c, tr(S.org_name), 820), 300, 120);
-            c.font = `400 30px ${F}`; c.globalAlpha = 0.92; c.fillText(fitText(c, tr(S.org_tagline), 820), 302, 168); c.globalAlpha = 1;
-            c.font = `400 25px ${F}`; c.globalAlpha = 0.85;
-            c.fillText(fitText(c, [tr(S.org_address), S.org_phone, S.org_email].filter(Boolean).join('  •  '), 880), 302, 212); c.globalAlpha = 1;
+            c.font = `700 46px ${F}`; c.fillText(fitText(c, tr(S.org_name), 960), 215, 78);
+            c.font = `400 22px ${F}`; c.globalAlpha = 0.92; c.fillText(fitText(c, tr(S.org_tagline), 960), 217, 112); c.globalAlpha = 1;
+            c.font = `400 18px ${F}`; c.globalAlpha = 0.85;
+            c.fillText(fitText(c, [tr(S.org_address), S.org_phone, S.org_email].filter(Boolean).join('  •  '), 960), 217, 142); c.globalAlpha = 1;
 
             // শিরোনাম
-            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 56px ${F}`;
-            c.fillText(tr('সদস্য তথ্য ও ভেরিফিকেশন ফর্ম'), W / 2, 345);
+            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `600 40px ${F}`;
+            c.fillText(tr('সদস্য ইনফরমেশন'), W / 2, 252);
             const issue = m.issue_date || m.created_at;
-            c.fillStyle = CARD.muted; c.font = `400 27px ${F}`;
-            c.fillText(`${tr('কার্ড নং')}: ${m.member_no || '—'}    •    ${tr('কার্ডের মেয়াদ')}: ২০৩০ সাল পর্যন্ত`, W / 2, 415);
+            c.fillStyle = CARD.muted; c.font = `400 20px ${F}`;
+            c.fillText(`${tr('কার্ড নং')}: ${m.member_no || '—'}    •    ${tr('কার্ডের মেয়াদ')}: ২০৩০ সাল পর্যন্ত`, W / 2, 292);
+            c.strokeStyle = CARD.line; c.lineWidth = 2; c.beginPath(); c.moveTo(100, 314); c.lineTo(W - 100, 314); c.stroke();
 
-            // ছবি (ডানে)
-            const px = 880, py = 470, pw = 250, ph = 312;
-            c.fillStyle = CARD.light; rr(c, px - 12, py - 12, pw + 24, ph + 24, 30); c.fill();
-            c.save(); rr(c, px, py, pw, ph, 20); c.clip();
+            // ছবি (ডানে) — পাসপোর্ট সাইজের চেয়ে একটু ছোট
+            const pw = 165, ph = 212, px = W - 100 - pw, py = 345;
+            c.fillStyle = CARD.light; rr(c, px - 8, py - 8, pw + 16, ph + 16, 14); c.fill();
+            c.save(); rr(c, px, py, pw, ph, 10); c.clip();
             if (photo) drawCover(c, photo, px, py, pw, ph);
             else {
                 c.fillStyle = '#dbe9ff'; c.fillRect(px, py, pw, ph); c.fillStyle = '#9fc2f5';
-                c.beginPath(); c.arc(px + pw / 2, py + 120, 62, 0, Math.PI * 2); c.fill();
-                c.beginPath(); c.ellipse(px + pw / 2, py + 300, 115, 100, 0, 0, Math.PI * 2); c.fill();
+                c.beginPath(); c.arc(px + pw / 2, py + 80, 40, 0, Math.PI * 2); c.fill();
+                c.beginPath(); c.ellipse(px + pw / 2, py + 200, 76, 66, 0, 0, Math.PI * 2); c.fill();
             }
             c.restore();
-            c.lineWidth = 4; c.strokeStyle = CARD.blue; rr(c, px, py, pw, ph, 20); c.stroke();
-            c.fillStyle = CARD.blue; rr(c, px - 12, py + ph + 20, pw + 24, 52, 26); c.fill();
-            c.fillStyle = '#fff'; c.font = `700 26px ${F}`; c.textAlign = 'center';
-            c.fillText(fitText(c, tr(m.designation || 'সদস্য'), pw), px + pw / 2, py + ph + 55);
+            c.lineWidth = 2.5; c.strokeStyle = CARD.blue; rr(c, px, py, pw, ph, 10); c.stroke();
+            c.fillStyle = CARD.blue; rr(c, px - 8, py + ph + 18, pw + 16, 38, 19); c.fill();
+            c.fillStyle = '#fff'; c.font = `600 19px ${F}`; c.textAlign = 'center';
+            c.fillText(fitText(c, tr(m.designation || 'সদস্য'), pw), px + pw / 2, py + ph + 44);
 
-            // কিউআর কোড বক্স (ছবির নিচে)
-            const qBoxY = py + ph + 94;
+            // কিউআর কোড (ছবির নিচে)
+            const qBoxY = py + ph + 76, qs = 120;
             const memberUrl = getMemberUrl(m);
-            c.fillStyle = CARD.pale; rr(c, px - 12, qBoxY, pw + 24, 250, 20); c.fill();
-            c.lineWidth = 1.5; c.strokeStyle = CARD.line; rr(c, px - 12, qBoxY, pw + 24, 250, 20); c.stroke();
-            c.fillStyle = CARD.navy; c.font = `700 22px ${F}`; c.textAlign = 'center';
-            c.fillText('অনলাইন ভেরিফিকেশন', px + pw / 2, qBoxY + 34);
-            drawQrOnCanvas(c, memberUrl, px + (pw - 136) / 2, qBoxY + 48, 136);
-            c.fillStyle = CARD.blue; c.font = `600 16px ${F}`; c.textAlign = 'center';
-            c.fillText('স্ক্যান করে বিস্তারিত দেখুন', px + pw / 2, qBoxY + 206);
-            c.fillStyle = CARD.muted; c.font = `400 14px ${F}`;
-            c.fillText('মেয়াদ: ২০৩০ সাল পর্যন্ত', px + pw / 2, qBoxY + 228);
+            c.fillStyle = CARD.pale; rr(c, px - 18, qBoxY, pw + 36, 214, 14); c.fill();
+            c.lineWidth = 1.2; c.strokeStyle = CARD.line; rr(c, px - 18, qBoxY, pw + 36, 214, 14); c.stroke();
+            c.fillStyle = CARD.navy; c.font = `600 17px ${F}`; c.textAlign = 'center';
+            c.fillText('অনলাইন ভেরিফিকেশন', px + pw / 2, qBoxY + 28);
+            drawQrOnCanvas(c, memberUrl, px + (pw - qs) / 2, qBoxY + 42, qs);
+            c.fillStyle = CARD.blue; c.font = `400 15px ${F}`;
+            c.fillText('স্ক্যান করে বিস্তারিত দেখুন', px + pw / 2, qBoxY + 190);
 
-            // তথ্য-টেবিল (বামে)
+            // তথ্য-টেবিল (বামে) — ছোট ও চিকন লেখা
             const rows = [
                 [tr('কার্ড নং'), m.member_no],
                 [tr('নাম'), m.name],
                 [tr('পদ'), tr(m.designation || 'সদস্য')],
-                [tr('কার্ডের মেয়াদ'), '২০৩০ সাল পর্যন্ত'],
+                [tr('কার্ডের মেয়াদ'), '২০৩০ সাল পর্যন্ত'],
                 [tr('পিতার নাম'), m.father_name],
                 [tr('মোবাইল'), m.phone],
                 [tr('ইমেইল'), m.email],
@@ -3420,40 +3529,43 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 [tr('পেশা'), m.occupation],
                 [tr('কার্ড প্রদানের তারিখ'), issue ? fmtDate(issue) : '']
             ];
-            let y = 470; const rh = 62;
+            let y = 345; const rh = 44, tx0 = 100, tw = px - 50 - tx0;
             rows.forEach(([k, v], i) => {
-                c.fillStyle = i % 2 ? '#fff' : CARD.pale; rr(c, 100, y, 740, rh - 6, 12); c.fill();
+                c.fillStyle = i % 2 ? '#fff' : CARD.pale; rr(c, tx0, y, tw, rh - 4, 8); c.fill();
                 c.textAlign = 'left';
-                c.fillStyle = CARD.muted; c.font = `400 24px ${F}`; c.fillText(k, 124, y + 38);
-                c.fillStyle = CARD.ink; c.font = `600 27px ${F}`; c.fillText(fitText(c, v || '—', 440), 360, y + 39);
+                c.fillStyle = CARD.muted; c.font = `400 18px ${F}`; c.fillText(k, tx0 + 18, y + 28);
+                c.fillStyle = CARD.ink; c.font = `400 21px ${F}`; c.fillText(fitText(c, v || '—', tw - 250), tx0 + 235, y + 29);
                 y += rh;
             });
 
             // ঠিকানা + বিস্তারিত
-            let yy = y + 30;
-            c.fillStyle = CARD.navy; c.font = `700 28px ${F}`; c.textAlign = 'left';
+            let yy = Math.max(y, qBoxY + 214) + 34;
+            c.fillStyle = CARD.navy; c.font = `600 21px ${F}`; c.textAlign = 'left';
             c.fillText(tr('ঠিকানা'), 100, yy);
-            c.fillStyle = CARD.ink; c.font = `400 26px ${F}`;
-            const addrLines = wrapLines(c, m.address || '—', 1040, 3);
-            addrLines.forEach((ln, i) => c.fillText(ln, 100, yy + 38 + i * 36));
-            yy += 38 + addrLines.length * 36 + 24;
+            c.fillStyle = CARD.ink; c.font = `400 20px ${F}`;
+            const addrLines = wrapLines(c, m.address || '—', W - 200, 3);
+            addrLines.forEach((ln, i) => c.fillText(ln, 100, yy + 32 + i * 30));
+            yy += 32 + addrLines.length * 30 + 20;
             if (m.details) {
-                c.fillStyle = CARD.navy; c.font = `700 28px ${F}`; c.fillText(tr('সদস্য বিস্তারিত'), 100, yy);
-                c.fillStyle = CARD.ink; c.font = `400 25px ${F}`;
-                wrapLines(c, m.details, 1040, 4).forEach((ln, i) => c.fillText(ln, 100, yy + 38 + i * 34));
+                c.fillStyle = CARD.navy; c.font = `600 21px ${F}`; c.fillText(tr('সদস্য বিস্তারিত'), 100, yy);
+                c.fillStyle = CARD.ink; c.font = `400 19px ${F}`;
+                const dl = wrapLines(c, m.details, W - 200, 4);
+                dl.forEach((ln, i) => c.fillText(ln, 100, yy + 32 + i * 28));
+                yy += 32 + dl.length * 28 + 10;
             }
 
-            // সাইন + সিল
-            drawSignBlock(c, sig, seal, S, 840, 1140, 1490, 1585, 1596, F, 1.35);
-            c.textAlign = 'left'; c.fillStyle = CARD.muted; c.font = `400 22px ${F}`;
-            c.fillText(`${tr('তথ্য প্রস্তুতের তারিখ')}: ${fmtDate(new Date())}`, 100, 1640);
-            c.fillText(`${tr('অনলাইন লিংক')}: ${memberUrl}`, 100, 1670);
+            // সাইন + সিল (তথ্যের ঠিক নিচে; পেজের নিচের অংশ ফাঁকা থাকবে)
+            const sy = yy + 50;
+            drawSignBlock(c, sig, seal, S, W - 100 - 260, W - 100, sy, sy + 80, sy + 92, F, 1.1);
+            c.textAlign = 'left'; c.fillStyle = CARD.muted; c.font = `400 17px ${F}`;
+            c.fillText(`${tr('তথ্য প্রস্তুতের তারিখ')}: ${fmtDate(new Date())}`, 100, sy + 92);
+            c.fillText(fitText(c, `${tr('অনলাইন লিংক')}: ${memberUrl}`, 700), 100, sy + 118);
 
-            // ফুটার
-            c.fillStyle = CARD.navy; c.fillRect(0, H - 70, W, 70);
-            c.fillStyle = CARD.mid; c.fillRect(0, H - 70, W, 5);
-            c.fillStyle = '#fff'; c.font = `400 24px ${F}`; c.textAlign = 'center';
-            c.fillText(fitText(c, tr(S.org_name) + '   •   ' + tr(S.org_tagline), W - 120), W / 2, H - 28);
+            // ফুটার (পাতলা)
+            c.fillStyle = CARD.navy; c.fillRect(0, H - 52, W, 52);
+            c.fillStyle = CARD.mid; c.fillRect(0, H - 52, W, 4);
+            c.fillStyle = '#fff'; c.font = `400 19px ${F}`; c.textAlign = 'center';
+            c.fillText(fitText(c, tr(S.org_name) + '   •   ' + tr(S.org_tagline), W - 120), W / 2, H - 20);
         }
 
         function canvasBlob(cv, type, q) {
@@ -3531,8 +3643,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         // অ্যাডমিন: একজন সদস্যের সব তথ্য এক পেজে (A4 PDF)
-        async function downloadMemberDetails(id) {
-            const m = (adminCache.members || []).find(x => x.id === id);
+        async function downloadMemberDetailsFor(m) {
             if (!m) return;
             try {
                 await loadSettings();
@@ -3540,10 +3651,355 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 await drawMemberDetailsPage(cv, m, SETTINGS);
                 const PW = 595.28, PH = 841.89;
                 const pdf = buildPdf(PW, PH, [{ jpeg: await canvasToJpeg(cv), w: cv.width, h: cv.height, x: 0, y: 0, dw: PW, dh: PH }]);
-                triggerDownload(pdf, `member-details-${m.member_no || m.id}.pdf`);
-                showToast('✅ সদস্যের তথ্য PDF ডাউনলোড হয়েছে!');
+                triggerDownload(pdf, `member-information-${m.member_no || m.id}.pdf`);
+                showToast('✅ সদস্য ইনফরমেশন PDF ডাউনলোড হয়েছে!');
             } catch (err) { showToast('❌ PDF তৈরি করা যায়নি: ' + errMsg(err), 'error'); }
         }
+        async function downloadMemberDetails(id) {
+            await downloadMemberDetailsFor((adminCache.members || []).find(x => x.id === id));
+        }
+        window.downloadMemberDetailsFor = downloadMemberDetailsFor;
+
+        // ---------- সদস্য ইনফরমেশন পেজ (কিউআর স্ক্যান করলে শুধু এটি দেখাবে) ----------
+        async function showMemberInfo(q) {
+            const box = $('minfoBody');
+            if (!box) return;
+            box.innerHTML = '<div class="page-loader"><div class="loader"></div></div>';
+            try {
+                const res = await searchMembers(String(q || '').trim());
+                const m = res.list[0];
+                if (!m) {
+                    box.innerHTML = `<div class="membership-form text-center" style="padding:32px 22px;">
+                        <div style="font-size:3rem;color:#1558b0;"><i class="far fa-clock"></i></div>
+                        <h5 class="fw-bold mt-2">দুঃখিত!</h5>
+                        <p class="mb-0 text-muted">এখনো আপনার ডিটেলস ওয়েবসাইটে এন্ট্রি হয়নি। অনুগ্রহ করে কিছুদিন অপেক্ষা করুন।</p>
+                    </div>`;
+                    return;
+                }
+                window._minfoMember = m;
+                const issue = m.issue_date || m.created_at;
+                const rows = [
+                    ['ফরম নং', m.form_no], ['সদস্য নং', m.member_no], ['পদ', m.designation || 'সদস্য'], ['পিতার নাম', m.father_name],
+                    ['মোবাইল', m.phone], ['ইমেইল', m.email], ['জন্ম তারিখ', m.birth_date ? fmtDate(m.birth_date) : ''],
+                    ['রক্তের গ্রুপ', m.blood_group], ['পেশা', m.occupation], ['ঠিকানা', m.address],
+                    ['কার্ডের মেয়াদ', '২০৩০ সাল পর্যন্ত'], ['কার্ড প্রদানের তারিখ', issue ? fmtDate(issue) : '']
+                ].filter(r => r[1]);
+                box.innerHTML = `<div class="membership-form" style="padding:22px;">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        ${m.photo_url ? `<img src="${escAttr(m.photo_url)}" alt="" style="width:96px;height:123px;object-fit:cover;border-radius:10px;border:2px solid #1558b0;" />` : `<div style="width:96px;height:123px;border-radius:10px;background:#dbe9ff;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#7aa6e6;"><i class="fas fa-user"></i></div>`}
+                        <div>
+                            <span class="badge mb-2" style="background:#1558b0;font-weight:400;"><i class="fas fa-check-circle me-1"></i> আবেদন এন্ট্রি সম্পন্ন</span>
+                            <h4 class="fw-bold mb-0" style="font-size:1.25rem;">${escHtml(m.name)}</h4>
+                        </div>
+                    </div>
+                    <div>${rows.map(([k, v]) => `<div class="d-flex py-2 border-top" style="font-size:.92rem;"><div class="text-muted" style="width:42%;">${escHtml(k)}</div><div style="width:58%;">${escHtml(String(v))}</div></div>`).join('')}</div>
+                    ${m.details ? `<div class="border-top pt-2 mt-1" style="font-size:.9rem;"><div class="text-muted mb-1">সদস্য বিস্তারিত</div>${escHtml(m.details)}</div>` : ''}
+                    <div class="row g-2 mt-3">
+                        <div class="col-12"><button type="button" class="btn btn-primary-custom w-100" id="minfoDetBtn"><i class="fas fa-file-pdf me-1"></i> আমার ডিটেলস ডাউনলোড (PDF)</button></div>
+                        <div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPdfBtn"><i class="fas fa-id-card me-1"></i> আইডি কার্ড PDF</button></div>
+                        <div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPngBtn"><i class="fas fa-image me-1"></i> আইডি কার্ড PNG</button></div>
+                    </div>
+                </div>`;
+                $('minfoDetBtn').onclick = async function () { setBusy(this, true, 'তৈরি হচ্ছে...'); await downloadMemberDetailsFor(m); setBusy(this, false); };
+                const cardDl = (kind) => async function () {
+                    setBusy(this, true, 'তৈরি হচ্ছে...');
+                    try { await downloadCardFiles(m, kind); showToast('✅ কার্ড ডাউনলোড হয়েছে!'); } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+                    setBusy(this, false);
+                };
+                $('minfoCardPdfBtn').onclick = cardDl('pdf');
+                $('minfoCardPngBtn').onclick = cardDl('png');
+            } catch (e) {
+                console.error(e);
+                box.innerHTML = '<div class="alert alert-danger">❌ ' + escHtml(errMsg(e)) + '</div>';
+            }
+        }
+        window.showMemberInfo = showMemberInfo;
+
+        // ---------- অফলাইন সদস্য ফরম (A4 PDF) ----------
+        const OF_KEY = 'of_next_serial';
+        function ofGetNext() { try { return Math.max(1, parseInt(localStorage.getItem(OF_KEY), 10) || 1); } catch (e) { return 1; } }
+        function ofSetNext(n) { try { localStorage.setItem(OF_KEY, String(n)); } catch (e) { /* ignore */ } }
+        function ofNo(n) { return String(n).padStart(4, '0').replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]); }
+        function ofKey(n) { return String(n).padStart(4, '0'); }
+        function formUrl(n) { return `${siteBase()}?form=${ofKey(n)}`; }
+        function ofHeader(c, x, y, w, h, S, logo, F, withTag) {
+            const g = c.createLinearGradient(x, y, x + w, y + h);
+            g.addColorStop(0, CARD.navy); g.addColorStop(0.65, CARD.blue); g.addColorStop(1, CARD.mid);
+            c.fillStyle = g; rr(c, x, y, w, h, 14); c.fill();
+            const r = h * 0.36, cx = x + 12 + r, cy = y + h / 2;
+            c.fillStyle = '#fff'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill();
+            if (logo) {
+                c.save(); c.beginPath(); c.arc(cx, cy, r - 3, 0, Math.PI * 2); c.clip();
+                const k = Math.min((2 * r - 6) / logo.width, (2 * r - 6) / logo.height);
+                c.drawImage(logo, cx - logo.width * k / 2, cy - logo.height * k / 2, logo.width * k, logo.height * k);
+                c.restore();
+            } else {
+                c.fillStyle = CARD.blue; c.font = `700 ${Math.round(r * 1.2)}px ${F}`; c.textAlign = 'center'; c.fillText('আ', cx, cy + r * 0.4);
+            }
+            const tx = cx + r + 14, avail = x + w - tx - 12;
+            c.textAlign = 'left'; c.fillStyle = '#fff';
+            let fs = Math.round(Math.min(h * 0.36, 46));
+            c.font = `700 ${fs}px ${F}`;
+            const name = tr(S.org_name || '');
+            if (c.measureText(name).width <= avail) {
+                c.fillText(name, tx, cy + (withTag ? -2 : fs * 0.35));
+            } else {
+                fs = Math.round(fs * 0.72); c.font = `700 ${fs}px ${F}`;
+                const ls = wrapLines(c, name, avail, 2);
+                ls.forEach((l, i) => c.fillText(l, tx, cy - (ls.length - 1) * fs * 0.55 + fs * 0.35 + i * fs * 1.1));
+                withTag = false;
+            }
+            if (withTag && S.org_tagline) {
+                c.font = `400 ${Math.round(h * 0.2)}px ${F}`; c.globalAlpha = 0.92;
+                c.fillText(fitText(c, tr(S.org_tagline), avail), tx, cy + h * 0.3); c.globalAlpha = 1;
+            }
+        }
+        function ofPill(c, text, cx, y, h, F, fill) {
+            c.font = `600 ${Math.round(h * 0.5)}px ${F}`;
+            const w = c.measureText(text).width + h;
+            c.fillStyle = fill || CARD.blue; rr(c, cx - w / 2, y, w, h, h / 2); c.fill();
+            c.fillStyle = '#fff'; c.textAlign = 'center'; c.fillText(text, cx, y + h * 0.68);
+        }
+        // লেবেল + ডটেড লাইন (বাধ্যতামূলক হলে লাল তারা)
+        function ofField(c, label, x1, x2, base, fs, F, value, req) {
+            c.textAlign = 'left';
+            let lx0 = x1;
+            if (req) { c.font = `700 ${fs + 3}px ${F}`; c.fillStyle = '#d32f2f'; c.fillText('*', x1, base + 3); lx0 = x1 + c.measureText('*').width + 3; }
+            c.font = `600 ${fs}px ${F}`; c.fillStyle = CARD.navy;
+            c.fillText(label, lx0, base);
+            const lx = lx0 + c.measureText(label).width + 8;
+            if (value) { c.font = `700 ${fs}px ${F}`; c.fillStyle = CARD.ink; c.fillText(value, lx + 4, base); return; }
+            c.save(); c.setLineDash([2, 5]); c.lineWidth = 1.5; c.strokeStyle = '#7b8cab';
+            c.beginPath(); c.moveTo(lx, base + 3); c.lineTo(x2, base + 3); c.stroke(); c.restore();
+        }
+
+        async function drawOfflineForm(canvas, no, S, logo, mode) {
+            const full = mode === 'full';
+            const W = 1240, H = full ? 1754 : 877;
+            canvas.width = W; canvas.height = H;
+            const c = canvas.getContext('2d');
+            const F = CARD_FONT;
+            const url = formUrl(no);
+            const noS = ofNo(no);
+            c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
+
+            // ডাবল বর্ডার
+            c.lineWidth = 5; c.strokeStyle = CARD.navy; rr(c, 30, 30, W - 60, H - 60, 16); c.stroke();
+            c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, 40, 40, W - 80, H - 80, 11); c.stroke();
+
+            const pad = 58;
+            const stubH = full ? 290 : 158;
+            const lineBot = H - pad + 6;
+            const lineTop = lineBot - stubH - 22;
+            const O = { x: pad, y: pad - 4, w: W - 2 * pad, h: lineTop - 26 - (pad - 4) };
+            const S0 = { x: pad, y: lineTop + 12, w: W - 2 * pad, h: stubH };
+
+            // দুটি কাটার লাইন (মাঝের অংশটি কেটে সদস্যকে দেওয়া হবে)
+            [lineTop, lineBot].forEach((ly, i) => {
+                c.save(); c.setLineDash([14, 9]); c.lineWidth = 2; c.strokeStyle = '#475569';
+                c.beginPath(); c.moveTo(30, ly); c.lineTo(W - 30, ly); c.stroke(); c.restore();
+            });
+            c.font = `600 17px ${F}`;
+            const ct = '✂  এখান থেকে কেটে নিন';
+            const cw = c.measureText(ct).width + 30;
+            c.fillStyle = '#fff'; c.fillRect(W / 2 - cw / 2, lineTop - 14, cw, 28);
+            c.fillStyle = '#475569'; c.textAlign = 'center'; c.fillText(ct, W / 2, lineTop + 6);
+
+            // ===== প্রতিষ্ঠান কপি (উপরে) =====
+            const hh = full ? 100 : 58, titleH = full ? 52 : 34;
+            ofHeader(c, O.x, O.y, O.w, hh, S, logo, F, full);
+            let y = O.y + hh + 8;
+            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 ${full ? 34 : 27}px ${F}`;
+            c.fillText('সদস্য আবেদন ফরম', O.x + O.w / 2, y + titleH * 0.74);
+            c.textAlign = 'left'; c.fillStyle = '#d32f2f'; c.font = `400 ${full ? 18 : 15}px ${F}`;
+            c.fillText('* চিহ্নিত ঘর অবশ্যই পূরণ করতে হবে', O.x, y + titleH * 0.72);
+            const bw = full ? 250 : 210;
+            c.fillStyle = CARD.light; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.fill();
+            c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.stroke();
+            c.fillStyle = CARD.navy; c.textAlign = 'center'; c.font = `700 ${full ? 26 : 22}px ${F}`;
+            c.fillText('ফরম নং: ' + noS, O.x + O.w - bw / 2, y + titleH * 0.68);
+            y += titleH + 6;
+
+            // অঙ্গীকার / শপথ
+            const rules = [
+                'আমি উপরে প্রদত্ত সকল তথ্য সত্য ও সঠিক বলে ঘোষণা করছি।',
+                'আমি প্রতিষ্ঠানের গঠনতন্ত্র, নিয়ম-নীতি ও আদর্শ মেনে চলব।',
+                'প্রতিষ্ঠানের সুনাম ক্ষুণ্ণ হয় এমন কোনো কাজে আমি জড়িত হব না।',
+                'প্রতিষ্ঠানের সিদ্ধান্ত ও নির্দেশনা সম্মানের সঙ্গে মেনে চলব।',
+                'আমি স্বেচ্ছায় ও সজ্ঞানে সদস্যপদ গ্রহণ করছি।'
+            ].slice(0, full ? 5 : 4);
+            const lh = full ? 31 : 21, ofs = full ? 20 : 15;
+            const oathH = (full ? 38 : 24) + rules.length * lh + lh;
+            const oathTop = O.y + O.h - oathH;
+
+            const rowsDef = [
+                [['সদস্যের নাম', 1]],
+                [['পিতার নাম', 1], ['মাতার নাম', 1]],
+                [['জন্ম তারিখ', 1], ['রক্তের গ্রুপ', 1]],
+                [['মোবাইল নম্বর', 1], ['পেশা', 1]],
+                [['জাতীয় পরিচয়পত্র / জন্মনিবন্ধন নং', 0], ['ইমেইল', 0]],
+                [['শিক্ষাগত যোগ্যতা', 1], ['গ্রাম / মহল্লা', 1]],
+                [['ডাকঘর', 1], ['থানা / উপজেলা', 1]],
+                [['জেলা', 1], ['আবেদনের তারিখ', 1]],
+                [['বর্তমান ঠিকানা', 1]]
+            ];
+            const availH = oathTop - 8 - y;
+            const rh = Math.max(32, Math.min(full ? 100 : 56, availH / rowsDef.length));
+            const fs = Math.max(17, Math.min(full ? 30 : 26, Math.round(rh * 0.42)));
+            const phh = Math.min(full ? 270 : 210, Math.round(rh * 5 - 10)), pww = Math.round(phh * 0.8);
+            const px = O.x + O.w - pww, py = y + 2;
+            c.save(); c.setLineDash([6, 5]); c.lineWidth = 2; c.strokeStyle = CARD.blue; c.fillStyle = CARD.pale;
+            rr(c, px, py, pww, phh, 8); c.fill(); rr(c, px, py, pww, phh, 8); c.stroke(); c.restore();
+            c.fillStyle = CARD.muted; c.textAlign = 'center'; c.font = `400 ${full ? 19 : 16}px ${F}`;
+            c.fillText('পাসপোর্ট সাইজ', px + pww / 2, py + phh / 2 - 4);
+            c.fillText('ছবি', px + pww / 2, py + phh / 2 + (full ? 24 : 20));
+            c.fillStyle = '#d32f2f'; c.font = `700 ${full ? 20 : 16}px ${F}`; c.fillText('*', px + pww / 2 + 36, py + phh / 2 + (full ? 24 : 20));
+
+            rowsDef.forEach((cells, i) => {
+                const top = y + i * rh, base = top + rh - 9;
+                const xr = (top < py + phh + 6) ? px - 22 : O.x + O.w;
+                if (cells.length === 1) ofField(c, cells[0][0] + ':', O.x, xr, base, fs, F, '', cells[0][1]);
+                else {
+                    const gap = 30, cw2 = (xr - O.x - gap) / 2;
+                    ofField(c, cells[0][0] + ':', O.x, O.x + cw2, base, fs, F, '', cells[0][1]);
+                    ofField(c, cells[1][0] + ':', O.x + cw2 + gap, xr, base, fs, F, '', cells[1][1]);
+                }
+            });
+
+            // শপথনামা (বামে) + স্বাক্ষর (ডানে)
+            const sigW = full ? 330 : 300, oathW = O.w - sigW - 30;
+            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 ${full ? 24 : 18}px ${F}`;
+            c.fillText('শপথনামা — আমি শপথ করছি যে:', O.x, oathTop + (full ? 24 : 16));
+            c.fillStyle = CARD.ink; c.font = `400 ${ofs}px ${F}`;
+            rules.forEach((r, i) => c.fillText(fitText(c, `${'১২৩৪৫'[i]}. ${r}`, oathW), O.x, oathTop + (full ? 38 : 24) + (i + 1) * lh - 4));
+            c.fillStyle = CARD.blue; c.font = `600 ${ofs}px ${F}`;
+            c.fillText(fitText(c, 'উপরোক্ত নিয়মগুলো মেনে আমি প্রতিষ্ঠানের সদস্য হচ্ছি।', oathW), O.x, oathTop + (full ? 38 : 24) + (rules.length + 1) * lh - 4);
+            const sx = O.x + O.w - sigW;
+            [['সদস্যের স্বাক্ষর', 0.40], ['গ্রহণকারীর স্বাক্ষর ও সিল', 0.84]].forEach(([lb, f]) => {
+                const ly = oathTop + oathH * f - (full ? 4 : 2);
+                c.strokeStyle = CARD.ink; c.lineWidth = 1.5; c.beginPath(); c.moveTo(sx, ly); c.lineTo(sx + sigW, ly); c.stroke();
+                c.fillStyle = CARD.ink; c.textAlign = 'center'; c.font = `600 ${full ? 19 : 15}px ${F}`;
+                c.fillText(lb, sx + sigW / 2, ly + (full ? 24 : 18));
+            });
+
+            // ===== সদস্য কপি (নিচে, দুই লাইনের মাঝে) =====
+            const qs = full ? 170 : 108;
+            const qx = S0.x + S0.w - qs - 24, qy = S0.y + (full ? 14 : 6);
+            drawQrOnCanvas(c, url, qx, qy, qs);
+            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `600 ${full ? 17 : 13}px ${F}`;
+            c.fillText('স্ক্যান করে আপনার আবেদন দেখুন', qx + qs / 2, qy + qs + (full ? 30 : 22));
+            c.fillStyle = CARD.muted; c.font = `400 ${full ? 14 : 11}px ${F}`;
+            if (full) c.fillText(fitText(c, url.replace(/^https?:\/\//, ''), 300), qx + qs / 2, qy + qs + 52);
+
+            const lw = qx - S0.x - 40;
+            if (full) {
+                ofHeader(c, S0.x, S0.y, lw, 66, S, logo, F, false);
+                ofPill(c, 'সদস্য কপি', S0.x + 100, S0.y + 84, 40, F, CARD.navy);
+                c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 40px ${F}`;
+                c.fillText('ফরম নং: ' + noS, S0.x + 230, S0.y + 116);
+                ofField(c, 'সদস্যের নাম:', S0.x + 4, S0.x + lw, S0.y + 178, 24, F);
+                ofField(c, 'মোবাইল নম্বর:', S0.x + 4, S0.x + lw * 0.62, S0.y + 226, 24, F);
+                ofField(c, 'তারিখ:', S0.x + lw * 0.66, S0.x + lw, S0.y + 226, 24, F);
+                c.fillStyle = CARD.muted; c.font = `400 16px ${F}`; c.textAlign = 'left';
+                c.fillText('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।', S0.x + 4, S0.y + 266);
+            } else {
+                ofPill(c, 'সদস্য কপি', S0.x + 70, S0.y + 2, 32, F, CARD.navy);
+                c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 22px ${F}`;
+                c.fillText(fitText(c, tr(S.org_name || ''), 380), S0.x + 160, S0.y + 26);
+                c.textAlign = 'right'; c.font = `700 30px ${F}`;
+                c.fillText('ফরম নং: ' + noS, S0.x + lw, S0.y + 28);
+                ofField(c, 'সদস্যের নাম:', S0.x + 4, S0.x + lw, S0.y + 78, 20, F);
+                ofField(c, 'মোবাইল নম্বর:', S0.x + 4, S0.x + lw * 0.6, S0.y + 116, 20, F);
+                ofField(c, 'তারিখ:', S0.x + lw * 0.64, S0.x + lw, S0.y + 116, 20, F);
+                c.fillStyle = CARD.muted; c.font = `400 14px ${F}`; c.textAlign = 'left';
+                c.fillText('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।', S0.x + 4, S0.y + 146);
+            }
+        }
+
+        function buildPdfPages(pw, ph, pages) {
+            const enc = new TextEncoder();
+            const parts = []; const offs = []; let pos = 0;
+            const push = (d) => { const u = typeof d === 'string' ? enc.encode(d) : d; parts.push(u); pos += u.length; };
+            const obj = (n, body) => { offs[n] = pos; push(`${n} 0 obj\n`); body(); push('\nendobj\n'); };
+            let n = 3;
+            const meta = pages.map(p => { const pageNo = n++, contentNo = n++; const imgNos = p.items.map(() => n++); return { pageNo, contentNo, imgNos }; });
+            const total = n;
+            push('%PDF-1.4\n');
+            obj(1, () => push('<< /Type /Catalog /Pages 2 0 R >>'));
+            obj(2, () => push(`<< /Type /Pages /Kids [${meta.map(m => m.pageNo + ' 0 R').join(' ')}] /Count ${pages.length} >>`));
+            pages.forEach((p, pi) => {
+                const m = meta[pi];
+                const xo = p.items.map((_, i) => `/Im${i} ${m.imgNos[i]} 0 R`).join(' ');
+                obj(m.pageNo, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pw} ${ph}] /Resources << /XObject << ${xo} >> >> /Contents ${m.contentNo} 0 R >>`));
+                const content = p.items.map((it, i) => `q ${it.dw.toFixed(2)} 0 0 ${it.dh.toFixed(2)} ${it.x.toFixed(2)} ${(ph - it.y - it.dh).toFixed(2)} cm /Im${i} Do Q`).join('\n') + (p.extra ? '\n' + p.extra : '');
+                obj(m.contentNo, () => push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`));
+                p.items.forEach((it, i) => obj(m.imgNos[i], () => {
+                    push(`<< /Type /XObject /Subtype /Image /Width ${it.w} /Height ${it.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${it.jpeg.length} >>\nstream\n`);
+                    push(it.jpeg); push('\nendstream');
+                }));
+            });
+            const xrefPos = pos;
+            push(`xref\n0 ${total}\n0000000000 65535 f \n`);
+            for (let i = 1; i < total; i++) push(String(offs[i]).padStart(10, '0') + ' 00000 n \n');
+            push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xrefPos}\n%%EOF`);
+            return new Blob(parts, { type: 'application/pdf' });
+        }
+
+        function ofLayout() { const r = document.querySelector('input[name="ofLayout"]:checked'); return r ? r.value : 'full'; }
+        function ofRefreshInfo() {
+            const next = ofGetNext();
+            const lk = siteBase().startsWith('https://your-domain') ? '<br><span class="text-danger">⚠️ ফাইলটি এখনো ওয়েবসাইটে আপলোড হয়নি — হোস্টিং করা সাইট থেকে ফরম ডাউনলোড করলে কিউআর সঠিক ডোমেনে যাবে।</span>' : `<br>কিউআর লিংক: <strong dir="ltr">${escHtml(siteBase())}?form=০০০১</strong>`;
+            $('ofInfo').innerHTML = `পরবর্তী নতুন সিরিয়াল: <strong>${ofNo(next)}</strong>` + (next > 1 ? ` &nbsp;•&nbsp; এ পর্যন্ত ডাউনলোড হয়েছে: ০০০১ – ${ofNo(next - 1)}` : ' &nbsp;•&nbsp; এখনো কোনো ফরম ডাউনলোড হয়নি') + lk;
+        }
+        function initOfflineForms() {
+            if (!initOfflineForms.done) {
+                initOfflineForms.done = true;
+                $('ofPrevBtn').addEventListener('click', () => {
+                    const cnt = Math.max(1, parseInt($('ofCount').value, 10) || 1);
+                    $('ofStart').value = Math.max(1, (parseInt($('ofStart').value, 10) || 1) - cnt);
+                });
+                $('ofNextBtn').addEventListener('click', () => {
+                    const cnt = Math.max(1, parseInt($('ofCount').value, 10) || 1);
+                    $('ofStart').value = (parseInt($('ofStart').value, 10) || 1) + cnt;
+                });
+                $('ofDownloadBtn').addEventListener('click', async function () {
+                    const cnt = Math.min(500, Math.max(1, parseInt($('ofCount').value, 10) || 0));
+                    const start = Math.max(1, parseInt($('ofStart').value, 10) || 1);
+                    if (!cnt) { showToast('❌ কতগুলো ফরম লাগবে লিখুন', 'error'); return; }
+                    const mode = ofLayout();
+                    setBusy(this, true, 'ফরম তৈরি হচ্ছে...');
+                    try {
+                        await loadSettings(); await cardFontsReady();
+                        const logo = await loadImg(SETTINGS.logo_url);
+                        const half = mode === 'half';
+                        const PW = half ? 841.89 : 595.28, PH = half ? 595.28 : 841.89;
+                        const per = half ? 2 : 1;
+                        const pages = [];
+                        for (let i = 0; i < cnt; i += per) {
+                            const items = [];
+                            for (let k = 0; k < per && i + k < cnt; k++) {
+                                const cv = document.createElement('canvas');
+                                await drawOfflineForm(cv, start + i + k, SETTINGS, logo, 'full');
+                                const jpeg = await canvasToJpeg(cv);
+                                items.push(half
+                                    ? { jpeg, w: cv.width, h: cv.height, x: k * PW / 2, y: 0, dw: PW / 2, dh: PH }
+                                    : { jpeg, w: cv.width, h: cv.height, x: 0, y: 0, dw: PW, dh: PH });
+                            }
+                            pages.push({ items, extra: half && items.length > 1 ? `q 0.5 w [4 3] 0 d 0.45 G ${(PW / 2).toFixed(2)} 0 m ${(PW / 2).toFixed(2)} ${PH.toFixed(2)} l S Q` : '' });
+                        }
+                        triggerDownload(buildPdfPages(PW, PH, pages), `member-application-forms-${ofKey(start)}-${ofKey(start + cnt - 1)}.pdf`);
+                        ofSetNext(Math.max(ofGetNext(), start + cnt));
+                        $('ofStart').value = ofGetNext();
+                        ofRefreshInfo();
+                        showToast(`✅ ${toBn(cnt)}টি ফরম ডাউনলোড হয়েছে (${ofNo(start)} – ${ofNo(start + cnt - 1)})`);
+                    } catch (err) { console.error(err); showToast('❌ ফরম তৈরি করা যায়নি: ' + errMsg(err), 'error'); }
+                    finally { setBusy(this, false); }
+                });
+            }
+            $('ofStart').value = ofGetNext();
+            ofRefreshInfo();
+        }
+        window.initOfflineForms = initOfflineForms;
 
         async function renderCard() {
             if (!myMember) return;
@@ -3567,26 +4023,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         // ---------- লগইন ছাড়া আইডি কার্ড (সদস্য নম্বর দিয়ে) ----------
         let idcMember = null;
         function bnToEn(s) { return String(s || '').replace(/[০-৯]/g, d => '০১২৩৪৫৬৭৮৯'.indexOf(d)); }
+        function normFormNo(v) { v = bnToEn(String(v || '').trim()); return /^\d+$/.test(v) ? v.padStart(4, '0') : v; }
         async function searchMembers(q) {
-            const variants = [...new Set([q, bnToEn(q)])].filter(Boolean);
-            let rpcMissing = false;
-            const found = new Map();
-            for (const v of variants) {
-                const r = await sb.rpc('search_members', { p_q: v });
-                if (r.error) {
-                    if (/search_members|PGRST202|schema cache|does not exist/i.test((r.error.message || '') + ' ' + (r.error.code || ''))) rpcMissing = true;
-                    else throw r.error;
-                } else if (Array.isArray(r.data)) r.data.forEach(m => found.set(m.id || m.member_no, m));
+            const key = bnToEn(String(q || '').trim());
+            if (!key) return { list: [] };
+            const r = await sb.rpc('get_member_by_key', { p_key: key });
+            if (!r.error) { const d = Array.isArray(r.data) ? r.data[0] : r.data; return { list: d ? [d] : [] }; }
+            // RPC না থাকলে সরাসরি টেবিল (শুধু হুবহু মিল — নামে খোঁজা যাবে না)
+            const vs = [...new Set([key, normFormNo(key), key.replace(/^0+/, '')])].filter(Boolean);
+            for (const col of ['form_no', 'member_no']) {
+                for (const v of vs) {
+                    const r1 = await sb.from('members').select('*').eq(col, v).limit(1);
+                    if (!r1.error && r1.data && r1.data[0]) return { list: [r1.data[0]] };
+                }
             }
-            if (!rpcMissing) return { list: [...found.values()] };
-            // RPC না থাকলে সরাসরি টেবিল (RLS অনুমতি দিলে)
-            for (const v of variants) {
-                const r1 = await sb.from('members').select('*').eq('member_no', v).limit(5);
-                if (!r1.error) (r1.data || []).forEach(m => found.set(m.id, m));
-                const r2 = await sb.from('members').select('*').ilike('name', '%' + v.replace(/[%_]/g, '\\$&') + '%').limit(10);
-                if (!r2.error) (r2.data || []).forEach(m => found.set(m.id, m));
-            }
-            return { list: [...found.values()], rpcMissing: found.size === 0 };
+            return { list: [] };
         }
         async function renderIdcCard() {
             if (!idcMember) return;
@@ -3642,7 +4093,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     box.className = 'alert alert-danger py-2 small';
                     box.textContent = res.rpcMissing
                         ? '❌ সার্ভারে সার্চ সেটআপ এখনো করা হয়নি। অ্যাডমিন supabase_setup.sql ফাইলটি চালান।'
-                        : '❌ এই নাম বা নম্বরে কোনো সদস্য পাওয়া যায়নি।';
+                        : 'দুঃখিত, এখনো আপনার ডিটেলস ওয়েবসাইটে এন্ট্রি হয়নি। অনুগ্রহ করে কিছুদিন অপেক্ষা করুন।';
                     return;
                 }
                 window._idcList = res.list;
@@ -3834,6 +4285,94 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             showToast('লগআউট সম্পন্ন');
         });
 
+                // ---------- অ্যাডমিন: বড় সদস্য কার্ড + ক্লিক করলে ডিটেলস ও ডাউনলোড ----------
+        function memberCardsHtml(d) {
+            if (!d.length) return '<p class="text-muted text-center py-4">কোনো সদস্য পাওয়া যায়নি।</p>';
+            const stop = 'event.stopPropagation();';
+            return `<div class="mem-grid">${d.map(m => `<div class="mem-card" onclick="openMemberDetail('${m.id}')">
+                <div class="mem-top">
+                    ${m.photo_url ? `<img class="mem-photo" src="${escAttr(m.photo_url)}" alt="" />` : '<div class="mem-photo"><i class="fas fa-user"></i></div>'}
+                    <div class="mem-info">
+                        <div class="mem-name">${escHtml(m.name)}</div>
+                        <div class="mem-meta">${escHtml(m.designation || 'সদস্য')}</div>
+                        <div class="mem-tags">${m.member_no ? `<span>সদস্য নং: ${escHtml(m.member_no)}</span>` : ''}${m.form_no ? `<span>ফরম: ${escHtml(m.form_no)}</span>` : ''}</div>
+                        ${m.phone ? `<div class="mem-phone"><i class="fas fa-phone me-1 text-success"></i>${escHtml(m.phone)}</div>` : ''}
+                    </div>
+                </div>
+                <div class="mem-btns">
+                    <button class="btn btn-sm btn-success" onclick="${stop}mvDownload('${m.id}','png')"><i class="fas fa-image me-1"></i>কার্ড PNG</button>
+                    <button class="btn btn-sm btn-danger" onclick="${stop}mvDownload('${m.id}','pdf')"><i class="fas fa-file-pdf me-1"></i>কার্ড PDF</button>
+                    <button class="btn btn-sm btn-primary" onclick="${stop}mvDownload('${m.id}','info')"><i class="fas fa-file-lines me-1"></i>ইনফরমেশন</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="${stop}cardEdit('${m.id}')"><i class="fas fa-edit me-1"></i>এডিট</button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="${stop}deleteItem('${m.id}','members')"><i class="fas fa-trash me-1"></i>ডিলিট</button>
+                </div>
+            </div>`).join('')}</div>`;
+        }
+        function memById(id) { return (adminCache.members || []).find(x => x.id === id) || (adminCache._recent || []).find(x => x.id === id); }
+        function cardEdit(id) {
+            const m = memById(id); if (!m) return;
+            adminCache.members = adminCache.members || [];
+            if (!adminCache.members.find(x => x.id === id)) adminCache.members.push(m);
+            editMember(id);
+        }
+        window.cardEdit = cardEdit;
+        function adminGo(page) { const el = document.querySelector(`[data-admin-page="${page}"]`); if (el) el.click(); }
+        window.adminGo = adminGo;
+        function openMemberDetail(id) {
+            let m = (adminCache.members || []).find(x => x.id === id) || (adminCache._recent || []).find(x => x.id === id);
+            if (!m) return;
+            adminCache.members = adminCache.members || [];
+            if (!adminCache.members.find(x => x.id === id)) adminCache.members.push(m);
+            const issue = m.issue_date || m.created_at;
+            const items = [
+                ['সদস্য নম্বর', m.member_no], ['আবেদন ফরম নম্বর', m.form_no], ['মোবাইল', m.phone], ['ইমেইল', m.email],
+                ['পিতার নাম', m.father_name], ['জন্ম তারিখ', m.birth_date ? fmtDate(m.birth_date) : ''],
+                ['রক্তের গ্রুপ', m.blood_group], ['পেশা', m.occupation], ['কার্ড প্রদানের তারিখ', issue ? fmtDate(issue) : ''],
+                ['কার্ডের মেয়াদ', '২০৩০ সাল পর্যন্ত']
+            ].filter(r => r[1]);
+            $('memberViewBody').innerHTML = `
+                <div class="mv-head">
+                    ${m.photo_url ? `<img src="${escAttr(m.photo_url)}" alt="" />` : '<div class="mv-ph"><i class="fas fa-user"></i></div>'}
+                    <div>
+                        <h4>${escHtml(m.name)}</h4>
+                        <span class="badge">${escHtml(m.designation || 'সদস্য')}</span>
+                        ${m.show_on_home ? '<span class="badge"><i class="fas fa-eye me-1"></i>হোমে দেখানো হচ্ছে</span>' : ''}
+                    </div>
+                </div>
+                <div class="mv-grid">
+                    ${items.map(([k, v]) => `<div class="mv-item"><small>${escHtml(k)}</small><b>${escHtml(String(v))}</b></div>`).join('')}
+                    ${m.address ? `<div class="mv-item wide"><small>ঠিকানা</small><b>${escHtml(m.address)}</b></div>` : ''}
+                    ${m.details ? `<div class="mv-item wide"><small>সদস্য বিস্তারিত</small><b style="font-weight:400;white-space:pre-line;">${escHtml(m.details)}</b></div>` : ''}
+                </div>
+                <div class="mv-actions">
+                    <h6><i class="fas fa-download me-1"></i> ডাউনলোড</h6>
+                    <div class="row g-2 mb-3">
+                        <div class="col-sm-4"><button class="btn btn-success w-100" onclick="mvDownload('${m.id}','png')"><i class="fas fa-image me-1"></i> কার্ড PNG</button></div>
+                        <div class="col-sm-4"><button class="btn btn-danger w-100" onclick="mvDownload('${m.id}','pdf')"><i class="fas fa-file-pdf me-1"></i> কার্ড PDF (A4)</button></div>
+                        <div class="col-sm-4"><button class="btn btn-primary w-100" onclick="mvDownload('${m.id}','info')"><i class="fas fa-file-lines me-1"></i> সদস্য ইনফরমেশন</button></div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6"><button class="btn btn-outline-primary w-100" onclick="mvEdit('${m.id}')"><i class="fas fa-edit me-1"></i> সম্পাদনা</button></div>
+                        <div class="col-6"><button class="btn btn-outline-danger w-100" onclick="mvDelete('${m.id}')"><i class="fas fa-trash me-1"></i> মুছুন</button></div>
+                    </div>
+                </div>`;
+            bootstrap.Modal.getOrCreateInstance($('memberViewModal')).show();
+        }
+        async function mvDownload(id, kind) {
+            const m = memById(id); if (!m) return;
+            if (kind === 'info') { await downloadMemberDetailsFor(m); return; }
+            try { await downloadCardFiles(m, kind); showToast('✅ কার্ড ডাউনলোড হয়েছে!'); }
+            catch (err) { showToast('❌ কার্ড ডাউনলোড করা যায়নি: ' + errMsg(err), 'error'); }
+        }
+        function mvEdit(id) { bootstrap.Modal.getOrCreateInstance($('memberViewModal')).hide(); setTimeout(() => editMember(id), 250); }
+        function mvDelete(id) { bootstrap.Modal.getOrCreateInstance($('memberViewModal')).hide(); setTimeout(() => deleteItem(id, 'members'), 250); }
+        window.openMemberDetail = openMemberDetail; window.mvDownload = mvDownload; window.mvEdit = mvEdit; window.mvDelete = mvDelete;
+        $('adminMemSearch').addEventListener('input', function () {
+            const q = bnToEn(this.value.trim().toLowerCase());
+            const list = (adminCache.members || []).filter(m => !q || [m.name, m.phone, m.member_no, m.form_no, m.designation].some(v => bnToEn(String(v || '').toLowerCase()).includes(q)));
+            $('adminMembersList').innerHTML = memberCardsHtml(list);
+        });
+
         async function loadAdminDashboard() {
             try {
                 const [members, activities, notices, contacts] = await Promise.all([
@@ -3846,6 +4385,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 $('adminStatActivities').textContent = toBn(activities.count);
                 $('adminStatNotices').textContent = toBn(notices.count);
                 $('adminStatContacts').textContent = toBn(contacts.count);
+                const rec = await sb.from('members').select('*').order('created_at', { ascending: false }).limit(6);
+                adminCache._recent = rec.data || [];
+                $('dashRecentMembers').innerHTML = memberCardsHtml(adminCache._recent);
             } catch (e) { console.error(e); }
         }
 
@@ -3926,13 +4468,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             members: {
                 box: 'adminMembersList',
                 query: () => sb.from('members').select('*').order('created_at', { ascending: false }),
-                render: d => !d.length ? noData('কোনো সদস্য নেই।') :
-                    tbl(['ছবি', 'নাম', 'মোবাইল', 'হোমে', 'অ্যাকশন'], d.map(m => `<tr>
-                        <td>${m.photo_url ? `<img class="thumb-round" src="${escAttr(m.photo_url)}" alt="" />` : '<i class="fas fa-user-circle fs-2 text-muted"></i>'}</td>
-                        <td><strong>${escHtml(m.name)}</strong> <small class="text-muted">${escHtml(m.member_no || '')}</small><br/><small class="text-muted">${escHtml(m.designation || '')}${m.email ? ' • ' + escHtml(m.email) : ''}</small></td>
-                        <td>${escHtml(m.phone || '-')}</td>
-                        <td>${m.show_on_home ? '<span class="badge bg-success">হ্যাঁ</span>' : '<span class="badge bg-secondary">না</span>'}</td>
-                        <td><button class="btn btn-sm btn-outline-success me-1" title="কার্ড ডাউনলোড" onclick="downloadMemberCard('${m.id}','png')"><i class="fas fa-image"></i></button><button class="btn btn-sm btn-outline-danger me-1" title="কার্ড PDF (A4)" onclick="downloadMemberCard('${m.id}','pdf')"><i class="fas fa-file-pdf"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="তথ্য-পেজ PDF (A4)" onclick="downloadMemberDetails('${m.id}')"><i class="fas fa-file-lines"></i></button>${editBtn('editMember', m.id)}${delBtn(m.id, 'members')}</td></tr>`).join(''))
+                render: d => memberCardsHtml(d)
             },
             contacts: {
                 box: 'adminContactsList',
@@ -3948,6 +4484,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         async function loadAdminData(type) {
             if (type === 'settings') { await fillSettingsForm(); return; }
             if (type === 'mycard') { await loadAdminCard(); return; }
+            if (type === 'offlineforms') { initOfflineForms(); return; }
             const cfg = ADMIN_CFG[type];
             if (!cfg) return;
             const container = $(cfg.box);
@@ -4059,6 +4596,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             $('memDesignation').value = d.designation || '';
             $('memDetails').value = d.details || '';
             $('memNo').value = d.member_no || '';
+            $('memFormNo').value = d.form_no || '';
             $('memIssue').value = d.issue_date || '';
             $('memPhone').value = d.phone || '';
             $('memEmail').value = d.email || '';
@@ -4203,6 +4741,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 };
                 const noVal = $('memNo').value.trim();
                 if (noVal) payload.member_no = noVal;
+                const fnVal = normFormNo($('memFormNo').value);
+                if (fnVal) payload.form_no = fnVal; else if (id) payload.form_no = null;
                 const issueVal = $('memIssue').value;
                 if (issueVal) payload.issue_date = issueVal;
                 if (!payload.name) throw new Error('সদস্যের নাম দিন');
@@ -4210,7 +4750,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 if (f) payload.photo_url = await uploadMedia(f, 'members/admin', { max: 700 });
                 try { await saveRow('members', id, payload); }
                 catch (e1) {
-                    if (payload.issue_date && /issue_date/i.test(e1.message || '')) {
+                    if (/form_no/i.test(e1.message || '')) {
+                        delete payload.form_no;
+                        await saveRow('members', id, payload);
+                        showToast('⚠️ ফরম নম্বর সেভ হয়নি — supabase_form_no.sql চালান।', 'error');
+                    } else if (payload.issue_date && /issue_date/i.test(e1.message || '')) {
                         delete payload.issue_date;
                         await saveRow('members', id, payload);
                         showToast('⚠️ প্রদানের তারিখ সেভ হয়নি — supabase_setup.sql চালান (কার্ডে নিবন্ধনের তারিখ দেখাবে)।', 'error');
@@ -4707,11 +5251,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             // কিউআর কোড স্ক্যান বা লিংকের মাধ্যমে কোনো সদস্য সার্চ করা হলে সরাসরি লোড
             try {
                 const sp = new URLSearchParams(window.location.search);
-                const memQ = sp.get('member') || sp.get('id');
+                const memQ = sp.get('form') || sp.get('info') || sp.get('member') || sp.get('id');
                 if (memQ) {
-                    navigateTo('idcard');
-                    $('idcMemberNo').value = memQ;
-                    runIdcSearch(memQ);
+                    navigateTo('minfo');
+                    showMemberInfo(memQ);
                 }
             } catch (e) { console.error(e); }
         });
