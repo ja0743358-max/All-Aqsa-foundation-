@@ -1112,6 +1112,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('gallery')">গ্যালারি</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('downloads')">ডাউনলোড</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('contact')">যোগাযোগ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('minfo')"><i class="fas fa-magnifying-glass me-1"></i> আবেদন দেখুন</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('idcard')"><i class="fas fa-id-card me-1"></i> আইডি কার্ড</a></li>
                     <li class="nav-item ms-lg-1">
                         <button type="button" class="nav-link nav-tool" id="langBtn" aria-label="Language"><i class="fas fa-language"></i> <span>English</span></button>
@@ -1654,7 +1655,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
                 <div class="row justify-content-center">
                     <div class="col-lg-7 col-xl-6">
-                        <div id="minfoBody"><div class="page-loader"><div class="loader"></div></div></div>
+                        <form id="minfoForm" class="d-flex gap-2 mb-3" autocomplete="off">
+                            <input type="search" class="form-control form-control-lg" id="minfoInput" placeholder="ফরম নম্বর / সদস্য নম্বর / লিংক লিখুন" />
+                            <button type="submit" class="btn btn-primary-custom px-4"><i class="fas fa-search"></i></button>
+                        </form>
+                        <div id="minfoBody"><div class="membership-form text-center text-muted" style="padding:28px 18px;"><i class="fas fa-magnifying-glass fa-2x mb-2" style="color:#1558b0;"></i><p class="mb-0">আপনার আবেদন ফরমের নম্বর, সদস্য নম্বর অথবা কিউআর কোডের লিংক লিখে খুঁজুন।</p></div></div>
                     </div>
                 </div>
             </div>
@@ -1767,6 +1772,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="gallery"><i class="fas fa-images"></i> গ্যালারি</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="members"><i class="fas fa-users"></i> সদস্য</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="offlineforms"><i class="fas fa-file-signature"></i> সদস্য আবেদন ফরম</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="photouploads"><i class="fas fa-camera"></i> ছবি আপলোড</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="contacts"><i class="fas fa-envelope"></i> বার্তা</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="files"><i class="fas fa-file-pdf"></i> ডাউনলোড ফাইল</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="settings"><i class="fas fa-signature"></i> সাইন ও সেটিংস</a></li>
@@ -1786,6 +1792,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                     <button type="button" data-bs-toggle="modal" data-bs-target="#memberModal"><i class="fas fa-user-plus"></i> নতুন সদস্য যোগ করুন</button>
                                     <button type="button" onclick="adminGo('members')"><i class="fas fa-users"></i> সদস্য তালিকা</button>
                                     <button type="button" onclick="adminGo('offlineforms')"><i class="fas fa-file-signature"></i> আবেদন ফরম তৈরি</button>
+                                    <button type="button" onclick="adminGo('photouploads')"><i class="fas fa-camera"></i> ছবি আপলোড</button>
                                     <button type="button" onclick="adminGo('notices')"><i class="fas fa-bullhorn"></i> নোটিশ</button>
                                 </div>
                                 <div class="admin-card">
@@ -1834,6 +1841,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                     <button class="btn btn-primary-custom btn-sm" data-bs-toggle="modal" data-bs-target="#memberModal"><i class="fas fa-plus me-1"></i> নতুন সদস্য</button>
                                 </div>
                                 <div class="admin-card"><input type="search" class="form-control form-control-lg mb-3" id="adminMemSearch" placeholder="🔍 নাম, মোবাইল, সদস্য নম্বর বা ফরম নম্বর দিয়ে খুঁজুন..." /><div id="adminMembersList"><div class="page-loader"><div class="loader"></div></div></div></div>
+                            </div>
+                            <div class="admin-page" id="admin-photouploads">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="fw-bold text-primary-dark"><i class="fas fa-camera me-2"></i> ছবি আপলোড (ফরমের কিউআর থেকে)</h4>
+                                </div>
+                                <div class="admin-card"><div id="adminPhotoUploadsList"><div class="page-loader"><div class="loader"></div></div></div></div>
                             </div>
                             <div class="admin-page" id="admin-offlineforms">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -3669,11 +3682,24 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 const res = await searchMembers(String(q || '').trim());
                 const m = res.list[0];
                 if (!m) {
-                    box.innerHTML = `<div class="membership-form text-center" style="padding:32px 22px;">
+                    const fk = bnToEn(String(q || '').trim());
+                    const isForm = /^\d{1,8}$/.test(fk);
+                    box.innerHTML = `<div class="membership-form text-center" style="padding:28px 22px;">
                         <div style="font-size:3rem;color:#1558b0;"><i class="far fa-clock"></i></div>
                         <h5 class="fw-bold mt-2">দুঃখিত!</h5>
                         <p class="mb-0 text-muted">এখনো আপনার ডিটেলস ওয়েবসাইটে এন্ট্রি হয়নি। অনুগ্রহ করে কিছুদিন অপেক্ষা করুন।</p>
-                    </div>`;
+                    </div>
+                    ${isForm ? `<div class="membership-form mt-3" style="padding:22px;">
+                        <h5 class="fw-bold mb-1"><i class="fas fa-camera me-1 text-primary"></i> ছবি আপলোড করুন</h5>
+                        <p class="text-muted small mb-3">ফরম নং <strong>${escHtml(normFormNo(fk))}</strong> — আপনার অ্যাকাউন্ট তৈরি না হলেও ছবি জমা দিতে পারবেন। ছবিটি অ্যাডমিনের কাছে যাবে।</p>
+                        <form id="photoUpForm">
+                            <div class="mb-2"><label class="form-label">আপনার নাম <span class="text-danger">*</span></label><input type="text" class="form-control" id="pupName" required /></div>
+                            <div class="mb-2"><label class="form-label">মোবাইল নম্বর <span class="text-danger">*</span></label><input type="tel" class="form-control" id="pupPhone" required /></div>
+                            <div class="mb-3"><label class="form-label">আপনার ছবি <span class="text-danger">*</span></label><input type="file" class="form-control" id="pupFile" accept="image/*" required /><div id="pupPreview" class="mt-2"></div></div>
+                            <button type="submit" class="btn btn-primary-custom w-100" id="pupBtn"><i class="fas fa-upload me-1"></i> ছবি জমা দিন</button>
+                        </form>
+                    </div>` : ''}`;
+                    if (isForm) bindPhotoUpload(normFormNo(fk));
                     return;
                 }
                 window._minfoMember = m;
@@ -3726,7 +3752,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const g = c.createLinearGradient(x, y, x + w, y + h);
             g.addColorStop(0, CARD.navy); g.addColorStop(0.65, CARD.blue); g.addColorStop(1, CARD.mid);
             c.fillStyle = g; rr(c, x, y, w, h, 14); c.fill();
-            const r = h * 0.36, cx = x + 12 + r, cy = y + h / 2;
+            const r = h * 0.38, cx = x + 14 + r, cy = y + h / 2;
             c.fillStyle = '#fff'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill();
             if (logo) {
                 c.save(); c.beginPath(); c.arc(cx, cy, r - 3, 0, Math.PI * 2); c.clip();
@@ -3736,22 +3762,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             } else {
                 c.fillStyle = CARD.blue; c.font = `700 ${Math.round(r * 1.2)}px ${F}`; c.textAlign = 'center'; c.fillText('আ', cx, cy + r * 0.4);
             }
-            const tx = cx + r + 14, avail = x + w - tx - 12;
-            c.textAlign = 'left'; c.fillStyle = '#fff';
-            let fs = Math.round(Math.min(h * 0.36, 46));
-            c.font = `700 ${fs}px ${F}`;
+            const tx = cx + r + 16, avail = x + w - tx - 18, mid = tx + avail / 2;
             const name = tr(S.org_name || '');
-            if (c.measureText(name).width <= avail) {
-                c.fillText(name, tx, cy + (withTag ? -2 : fs * 0.35));
-            } else {
-                fs = Math.round(fs * 0.72); c.font = `700 ${fs}px ${F}`;
-                const ls = wrapLines(c, name, avail, 2);
-                ls.forEach((l, i) => c.fillText(l, tx, cy - (ls.length - 1) * fs * 0.55 + fs * 0.35 + i * fs * 1.1));
-                withTag = false;
-            }
+            let fs = Math.round(Math.min(h * (withTag ? 0.44 : 0.52), 60));
+            c.font = `700 ${fs}px ${F}`;
+            while (c.measureText(name).width > avail && fs > 16) { fs -= 1; c.font = `700 ${fs}px ${F}`; }
+            c.textAlign = 'center'; c.fillStyle = '#fff';
+            c.fillText(name, mid, cy + (withTag && S.org_tagline ? -h * 0.02 : fs * 0.33));
             if (withTag && S.org_tagline) {
                 c.font = `400 ${Math.round(h * 0.2)}px ${F}`; c.globalAlpha = 0.92;
-                c.fillText(fitText(c, tr(S.org_tagline), avail), tx, cy + h * 0.3); c.globalAlpha = 1;
+                c.fillText(fitText(c, tr(S.org_tagline), avail), mid, cy + h * 0.33); c.globalAlpha = 1;
             }
         }
         function ofPill(c, text, cx, y, h, F, fill) {
@@ -3773,9 +3793,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.beginPath(); c.moveTo(lx, base + 3); c.lineTo(x2, base + 3); c.stroke(); c.restore();
         }
 
-        async function drawOfflineForm(canvas, no, S, logo, mode) {
-            const full = mode === 'full';
-            const W = 1240, H = full ? 1754 : 877;
+        async function drawOfflineForm(canvas, no, S, logo) {
+            const W = 1240, H = 1754;
             canvas.width = W; canvas.height = H;
             const c = canvas.getContext('2d');
             const F = CARD_FONT;
@@ -3783,137 +3802,119 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const noS = ofNo(no);
             c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
 
-            // ডাবল বর্ডার
-            c.lineWidth = 5; c.strokeStyle = CARD.navy; rr(c, 30, 30, W - 60, H - 60, 16); c.stroke();
-            c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, 40, 40, W - 80, H - 80, 11); c.stroke();
-
-            const pad = 58;
-            const stubH = full ? 290 : 158;
-            const lineBot = H - pad + 6;
-            const lineTop = lineBot - stubH - 22;
-            const O = { x: pad, y: pad - 4, w: W - 2 * pad, h: lineTop - 26 - (pad - 4) };
-            const S0 = { x: pad, y: lineTop + 12, w: W - 2 * pad, h: stubH };
-
-            // দুটি কাটার লাইন (মাঝের অংশটি কেটে সদস্যকে দেওয়া হবে)
-            [lineTop, lineBot].forEach((ly, i) => {
-                c.save(); c.setLineDash([14, 9]); c.lineWidth = 2; c.strokeStyle = '#475569';
-                c.beginPath(); c.moveTo(30, ly); c.lineTo(W - 30, ly); c.stroke(); c.restore();
-            });
-            c.font = `600 17px ${F}`;
+            // দুটি আলাদা বর্ডার (ফরম + সদস্য স্লিপ) ও মাঝে কাটার অংশ
+            const M = 30, stubBoxH = 330, gap = 54;
+            const formH = H - 2 * M - stubBoxH - gap;
+            const stubY = M + formH + gap;
+            const box = (y, h) => {
+                c.lineWidth = 5; c.strokeStyle = CARD.navy; rr(c, M, y, W - 2 * M, h, 16); c.stroke();
+                c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, M + 10, y + 10, W - 2 * M - 20, h - 20, 11); c.stroke();
+            };
+            box(M, formH); box(stubY, stubBoxH);
+            const cy = M + formH + gap / 2;
+            c.save(); c.setLineDash([14, 9]); c.lineWidth = 2; c.strokeStyle = '#475569';
+            c.beginPath(); c.moveTo(8, cy); c.lineTo(W - 8, cy); c.stroke(); c.restore();
+            c.font = `600 18px ${F}`;
             const ct = '✂  এখান থেকে কেটে নিন';
             const cw = c.measureText(ct).width + 30;
-            c.fillStyle = '#fff'; c.fillRect(W / 2 - cw / 2, lineTop - 14, cw, 28);
-            c.fillStyle = '#475569'; c.textAlign = 'center'; c.fillText(ct, W / 2, lineTop + 6);
+            c.fillStyle = '#fff'; c.fillRect(W / 2 - cw / 2, cy - 15, cw, 30);
+            c.fillStyle = '#475569'; c.textAlign = 'center'; c.fillText(ct, W / 2, cy + 6);
 
-            // ===== প্রতিষ্ঠান কপি (উপরে) =====
-            const hh = full ? 100 : 58, titleH = full ? 52 : 34;
-            ofHeader(c, O.x, O.y, O.w, hh, S, logo, F, full);
+            const O = { x: 58, y: M + 22, w: W - 116, h: formH - 44 };
+            const S0 = { x: 58, y: stubY + 22, w: W - 116, h: stubBoxH - 44 };
+
+            // ===== আবেদন ফরম =====
+            const hh = 118, titleH = 52;
+            ofHeader(c, O.x, O.y, O.w, hh, S, logo, F, true);
             let y = O.y + hh + 8;
-            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 ${full ? 34 : 27}px ${F}`;
+            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 34px ${F}`;
             c.fillText('সদস্য আবেদন ফরম', O.x + O.w / 2, y + titleH * 0.74);
-            c.textAlign = 'left'; c.fillStyle = '#d32f2f'; c.font = `400 ${full ? 18 : 15}px ${F}`;
+            c.textAlign = 'left'; c.fillStyle = '#d32f2f'; c.font = `400 18px ${F}`;
             c.fillText('* চিহ্নিত ঘর অবশ্যই পূরণ করতে হবে', O.x, y + titleH * 0.72);
-            const bw = full ? 250 : 210;
+            const bw = 250;
             c.fillStyle = CARD.light; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.fill();
             c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.stroke();
-            c.fillStyle = CARD.navy; c.textAlign = 'center'; c.font = `700 ${full ? 26 : 22}px ${F}`;
+            c.fillStyle = CARD.navy; c.textAlign = 'center'; c.font = `700 26px ${F}`;
             c.fillText('ফরম নং: ' + noS, O.x + O.w - bw / 2, y + titleH * 0.68);
             y += titleH + 6;
 
-            // অঙ্গীকার / শপথ
             const rules = [
                 'আমি উপরে প্রদত্ত সকল তথ্য সত্য ও সঠিক বলে ঘোষণা করছি।',
                 'আমি প্রতিষ্ঠানের গঠনতন্ত্র, নিয়ম-নীতি ও আদর্শ মেনে চলব।',
                 'প্রতিষ্ঠানের সুনাম ক্ষুণ্ণ হয় এমন কোনো কাজে আমি জড়িত হব না।',
                 'প্রতিষ্ঠানের সিদ্ধান্ত ও নির্দেশনা সম্মানের সঙ্গে মেনে চলব।',
                 'আমি স্বেচ্ছায় ও সজ্ঞানে সদস্যপদ গ্রহণ করছি।'
-            ].slice(0, full ? 5 : 4);
-            const lh = full ? 31 : 21, ofs = full ? 20 : 15;
-            const oathH = (full ? 38 : 24) + rules.length * lh + lh;
+            ];
+            const lh = 31, ofs = 20;
+            const oathH = 38 + rules.length * lh + lh;
             const oathTop = O.y + O.h - oathH;
 
             const rowsDef = [
                 [['সদস্যের নাম', 1]],
-                [['পিতার নাম', 1], ['মাতার নাম', 1]],
-                [['জন্ম তারিখ', 1], ['রক্তের গ্রুপ', 1]],
-                [['মোবাইল নম্বর', 1], ['পেশা', 1]],
+                [['পিতার নাম', 1], ['জন্ম তারিখ', 1]],
+                [['রক্তের গ্রুপ', 1], ['মোবাইল নম্বর', 1]],
+                [['পেশা', 1], ['শিক্ষাগত যোগ্যতা', 1]],
                 [['জাতীয় পরিচয়পত্র / জন্মনিবন্ধন নং', 0], ['ইমেইল', 0]],
-                [['শিক্ষাগত যোগ্যতা', 1], ['গ্রাম / মহল্লা', 1]],
-                [['ডাকঘর', 1], ['থানা / উপজেলা', 1]],
-                [['জেলা', 1], ['আবেদনের তারিখ', 1]],
+                [['গ্রাম / মহল্লা', 1], ['ডাকঘর', 1]],
+                [['থানা / উপজেলা', 1], ['জেলা', 1]],
                 [['বর্তমান ঠিকানা', 1]]
             ];
             const availH = oathTop - 8 - y;
-            const rh = Math.max(32, Math.min(full ? 100 : 56, availH / rowsDef.length));
-            const fs = Math.max(17, Math.min(full ? 30 : 26, Math.round(rh * 0.42)));
-            const phh = Math.min(full ? 270 : 210, Math.round(rh * 5 - 10)), pww = Math.round(phh * 0.8);
+            const rh = Math.max(40, Math.min(110, availH / rowsDef.length));
+            const fs = Math.max(20, Math.min(30, Math.round(rh * 0.42)));
+            const phh = Math.min(290, Math.round(rh * 3 - 8)), pww = Math.round(phh * 0.8);
             const px = O.x + O.w - pww, py = y + 2;
             c.save(); c.setLineDash([6, 5]); c.lineWidth = 2; c.strokeStyle = CARD.blue; c.fillStyle = CARD.pale;
             rr(c, px, py, pww, phh, 8); c.fill(); rr(c, px, py, pww, phh, 8); c.stroke(); c.restore();
-            c.fillStyle = CARD.muted; c.textAlign = 'center'; c.font = `400 ${full ? 19 : 16}px ${F}`;
-            c.fillText('পাসপোর্ট সাইজ', px + pww / 2, py + phh / 2 - 4);
-            c.fillText('ছবি', px + pww / 2, py + phh / 2 + (full ? 24 : 20));
-            c.fillStyle = '#d32f2f'; c.font = `700 ${full ? 20 : 16}px ${F}`; c.fillText('*', px + pww / 2 + 36, py + phh / 2 + (full ? 24 : 20));
+            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `700 34px ${F}`;
+            c.fillText('ছবি', px + pww / 2, py + phh * 0.34);
+            c.fillStyle = CARD.muted; c.font = `400 15px ${F}`;
+            wrapLines(c, 'ছবি লাগিয়ে দিন অথবা কিউআর কোড স্ক্যান করে ছবি আপলোড করুন', pww - 24, 4)
+                .forEach((ln, i) => c.fillText(ln, px + pww / 2, py + phh * 0.34 + 34 + i * 22));
 
             rowsDef.forEach((cells, i) => {
-                const top = y + i * rh, base = top + rh - 9;
+                const top = y + i * rh, base = top + rh - 11;
                 const xr = (top < py + phh + 6) ? px - 22 : O.x + O.w;
                 if (cells.length === 1) ofField(c, cells[0][0] + ':', O.x, xr, base, fs, F, '', cells[0][1]);
                 else {
-                    const gap = 30, cw2 = (xr - O.x - gap) / 2;
+                    const gp = 30, cw2 = (xr - O.x - gp) / 2;
                     ofField(c, cells[0][0] + ':', O.x, O.x + cw2, base, fs, F, '', cells[0][1]);
-                    ofField(c, cells[1][0] + ':', O.x + cw2 + gap, xr, base, fs, F, '', cells[1][1]);
+                    ofField(c, cells[1][0] + ':', O.x + cw2 + gp, xr, base, fs, F, '', cells[1][1]);
                 }
             });
 
-            // শপথনামা (বামে) + স্বাক্ষর (ডানে)
-            const sigW = full ? 330 : 300, oathW = O.w - sigW - 30;
-            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 ${full ? 24 : 18}px ${F}`;
-            c.fillText('শপথনামা — আমি শপথ করছি যে:', O.x, oathTop + (full ? 24 : 16));
+            // শপথনামা + স্বাক্ষর
+            const sigW = 330, oathW = O.w - sigW - 30;
+            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 24px ${F}`;
+            c.fillText('শপথনামা — আমি শপথ করছি যে:', O.x, oathTop + 24);
             c.fillStyle = CARD.ink; c.font = `400 ${ofs}px ${F}`;
-            rules.forEach((r, i) => c.fillText(fitText(c, `${'১২৩৪৫'[i]}. ${r}`, oathW), O.x, oathTop + (full ? 38 : 24) + (i + 1) * lh - 4));
+            rules.forEach((r, i) => c.fillText(fitText(c, `${'১২৩৪৫'[i]}. ${r}`, oathW), O.x, oathTop + 38 + (i + 1) * lh - 4));
             c.fillStyle = CARD.blue; c.font = `600 ${ofs}px ${F}`;
-            c.fillText(fitText(c, 'উপরোক্ত নিয়মগুলো মেনে আমি প্রতিষ্ঠানের সদস্য হচ্ছি।', oathW), O.x, oathTop + (full ? 38 : 24) + (rules.length + 1) * lh - 4);
+            c.fillText(fitText(c, 'উপরোক্ত নিয়মগুলো মেনে আমি প্রতিষ্ঠানের সদস্য হচ্ছি।', oathW), O.x, oathTop + 38 + (rules.length + 1) * lh - 4);
             const sx = O.x + O.w - sigW;
-            [['সদস্যের স্বাক্ষর', 0.40], ['গ্রহণকারীর স্বাক্ষর ও সিল', 0.84]].forEach(([lb, f]) => {
-                const ly = oathTop + oathH * f - (full ? 4 : 2);
+            [['সদস্যের স্বাক্ষর ও তারিখ', 0.40], ['গ্রহণকারীর স্বাক্ষর ও সিল', 0.84]].forEach(([lb, f]) => {
+                const ly = oathTop + oathH * f - 4;
                 c.strokeStyle = CARD.ink; c.lineWidth = 1.5; c.beginPath(); c.moveTo(sx, ly); c.lineTo(sx + sigW, ly); c.stroke();
-                c.fillStyle = CARD.ink; c.textAlign = 'center'; c.font = `600 ${full ? 19 : 15}px ${F}`;
-                c.fillText(lb, sx + sigW / 2, ly + (full ? 24 : 18));
+                c.fillStyle = CARD.ink; c.textAlign = 'center'; c.font = `600 19px ${F}`;
+                c.fillText(lb, sx + sigW / 2, ly + 24);
             });
 
-            // ===== সদস্য কপি (নিচে, দুই লাইনের মাঝে) =====
-            const qs = full ? 170 : 108;
-            const qx = S0.x + S0.w - qs - 24, qy = S0.y + (full ? 14 : 6);
+            // ===== সদস্য স্লিপ (নিচের আলাদা বর্ডারে) =====
+            const qs = 164;
+            const qx = S0.x + S0.w - qs - 24, qy = S0.y + 6;
             drawQrOnCanvas(c, url, qx, qy, qs);
-            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `600 ${full ? 17 : 13}px ${F}`;
-            c.fillText('স্ক্যান করে আপনার আবেদন দেখুন', qx + qs / 2, qy + qs + (full ? 30 : 22));
-            c.fillStyle = CARD.muted; c.font = `400 ${full ? 14 : 11}px ${F}`;
-            if (full) c.fillText(fitText(c, url.replace(/^https?:\/\//, ''), 300), qx + qs / 2, qy + qs + 52);
-
+            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `600 15px ${F}`;
+            wrapLines(c, 'স্ক্যান করে আবেদন দেখুন ও ছবি আপলোড করুন', 176, 3).forEach((ln, i) => c.fillText(ln, qx + qs / 2, qy + qs + 24 + i * 20));
             const lw = qx - S0.x - 40;
-            if (full) {
-                ofHeader(c, S0.x, S0.y, lw, 66, S, logo, F, false);
-                ofPill(c, 'সদস্য কপি', S0.x + 100, S0.y + 84, 40, F, CARD.navy);
-                c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 40px ${F}`;
-                c.fillText('ফরম নং: ' + noS, S0.x + 230, S0.y + 116);
-                ofField(c, 'সদস্যের নাম:', S0.x + 4, S0.x + lw, S0.y + 178, 24, F);
-                ofField(c, 'মোবাইল নম্বর:', S0.x + 4, S0.x + lw * 0.62, S0.y + 226, 24, F);
-                ofField(c, 'তারিখ:', S0.x + lw * 0.66, S0.x + lw, S0.y + 226, 24, F);
-                c.fillStyle = CARD.muted; c.font = `400 16px ${F}`; c.textAlign = 'left';
-                c.fillText('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।', S0.x + 4, S0.y + 266);
-            } else {
-                ofPill(c, 'সদস্য কপি', S0.x + 70, S0.y + 2, 32, F, CARD.navy);
-                c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 22px ${F}`;
-                c.fillText(fitText(c, tr(S.org_name || ''), 380), S0.x + 160, S0.y + 26);
-                c.textAlign = 'right'; c.font = `700 30px ${F}`;
-                c.fillText('ফরম নং: ' + noS, S0.x + lw, S0.y + 28);
-                ofField(c, 'সদস্যের নাম:', S0.x + 4, S0.x + lw, S0.y + 78, 20, F);
-                ofField(c, 'মোবাইল নম্বর:', S0.x + 4, S0.x + lw * 0.6, S0.y + 116, 20, F);
-                ofField(c, 'তারিখ:', S0.x + lw * 0.64, S0.x + lw, S0.y + 116, 20, F);
-                c.fillStyle = CARD.muted; c.font = `400 14px ${F}`; c.textAlign = 'left';
-                c.fillText('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।', S0.x + 4, S0.y + 146);
-            }
+            ofHeader(c, S0.x, S0.y, lw, 74, S, logo, F, false);
+            ofPill(c, 'সদস্য কপি', S0.x + 100, S0.y + 92, 40, F, CARD.navy);
+            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 40px ${F}`;
+            c.fillText('ফরম নং: ' + noS, S0.x + 230, S0.y + 124);
+            ofField(c, 'সদস্যের নাম:', S0.x + 4, S0.x + lw, S0.y + 186, 24, F);
+            ofField(c, 'মোবাইল নম্বর:', S0.x + 4, S0.x + lw * 0.62, S0.y + 234, 24, F);
+            ofField(c, 'তারিখ:', S0.x + lw * 0.66, S0.x + lw, S0.y + 234, 24, F);
+            c.fillStyle = CARD.muted; c.font = `400 16px ${F}`; c.textAlign = 'left';
+            c.fillText('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।', S0.x + 4, S0.y + 268);
         }
 
         function buildPdfPages(pw, ph, pages) {
@@ -3979,7 +3980,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             const items = [];
                             for (let k = 0; k < per && i + k < cnt; k++) {
                                 const cv = document.createElement('canvas');
-                                await drawOfflineForm(cv, start + i + k, SETTINGS, logo, 'full');
+                                await drawOfflineForm(cv, start + i + k, SETTINGS, logo);
                                 const jpeg = await canvasToJpeg(cv);
                                 items.push(half
                                     ? { jpeg, w: cv.width, h: cv.height, x: k * PW / 2, y: 0, dw: PW / 2, dh: PH }
@@ -4111,9 +4112,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             e.preventDefault();
             const q = $('navSearchInput').value.trim();
             if (!q) return;
-            navigateTo('idcard');
-            $('idcMemberNo').value = q;
-            runIdcSearch(q);
+            navigateTo('minfo');
+            showMemberInfo(keyFromInput(q));
             $('navSearchInput').value = '';
         });
         cardBtnHandler('idcPdfBtn', () => idcMember, 'pdf');
@@ -4373,6 +4373,53 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             $('adminMembersList').innerHTML = memberCardsHtml(list);
         });
 
+                // ---------- কিউআর/লিংক থেকে নম্বর বের করা + ছবি আপলোড ----------
+        function keyFromInput(v) {
+            v = String(v || '').trim();
+            const mt = v.match(/[?&](?:form|info|member|id)=([^&#\s]+)/i);
+            return mt ? decodeURIComponent(mt[1]) : v;
+        }
+        window.keyFromInput = keyFromInput;
+        function bindPhotoUpload(formNo) {
+            const f = $('photoUpForm'); if (!f) return;
+            $('pupFile').addEventListener('change', function () {
+                const file = this.files[0];
+                $('pupPreview').innerHTML = file ? `<img src="${URL.createObjectURL(file)}" alt="" style="width:110px;height:140px;object-fit:cover;border-radius:10px;border:2px solid #1558b0;" />` : '';
+            });
+            f.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const btn = $('pupBtn');
+                setBusy(btn, true, 'জমা হচ্ছে...');
+                try {
+                    const file = $('pupFile').files[0];
+                    if (!file) throw new Error('ছবি নির্বাচন করুন');
+                    const url = await uploadMedia(file, 'photo-uploads', { max: 700 });
+                    const { error } = await sb.from('photo_uploads').insert({
+                        form_no: formNo, name: $('pupName').value.trim(), phone: bnToEn($('pupPhone').value.trim()), photo_url: url
+                    });
+                    if (error) throw error;
+                    f.innerHTML = '<div class="text-center py-3"><div style="font-size:2.6rem;color:#1a6b3c;"><i class="fas fa-circle-check"></i></div><h6 class="fw-bold mt-2">ধন্যবাদ! আপনার ছবি জমা হয়েছে।</h6><p class="text-muted small mb-0">অ্যাডমিন আপনার আবেদন সম্পন্ন করবেন। কিছুদিন পর এই নম্বর দিয়ে আবার দেখুন।</p></div>';
+                } catch (err) { showToast('❌ ' + errMsg(err), 'error'); setBusy(btn, false); }
+            });
+        }
+        $('minfoForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const q = keyFromInput($('minfoInput').value);
+            if (q) showMemberInfo(q);
+        });
+
+        // ---------- অ্যাডমিন: ছবি আপলোড থেকে আবেদন সম্পূর্ণ ----------
+        function completeFromUpload(id) {
+            const u = (adminCache.photouploads || []).find(x => x.id === id); if (!u) return;
+            window._pendingUpload = u;
+            $('memberForm').reset(); $('memberEditId').value = '';
+            $('memName').value = u.name || ''; $('memPhone').value = u.phone || ''; $('memFormNo').value = u.form_no || '';
+            $('memPhotoPreview').innerHTML = previewImg(u.photo_url, true);
+            bootstrap.Modal.getOrCreateInstance($('memberModal')).show();
+        }
+        window.completeFromUpload = completeFromUpload;
+        $('memberModal').addEventListener('hidden.bs.modal', () => { window._pendingUpload = null; });
+
         async function loadAdminDashboard() {
             try {
                 const [members, activities, notices, contacts] = await Promise.all([
@@ -4470,6 +4517,26 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 query: () => sb.from('members').select('*').order('created_at', { ascending: false }),
                 render: d => memberCardsHtml(d)
             },
+            photouploads: {
+                box: 'adminPhotoUploadsList',
+                query: () => sb.from('photo_uploads').select('*').order('created_at', { ascending: false }),
+                render: d => !d.length ? noData('এখনো কেউ ছবি আপলোড করেনি।') : `<div class="mem-grid">${d.map(u => `<div class="mem-card" style="cursor:default;">
+                    <div class="mem-top">
+                        <a href="${escAttr(u.photo_url)}" target="_blank" rel="noopener"><img class="mem-photo" style="width:96px;height:123px;" src="${escAttr(u.photo_url)}" alt="" /></a>
+                        <div class="mem-info">
+                            <div class="mem-name">${escHtml(u.name || '-')}</div>
+                            <div class="mem-tags"><span>ফরম নং: ${escHtml(u.form_no || '-')}</span><span style="background:${u.status === 'done' ? '#d1fae5' : '#fef3c7'};">${u.status === 'done' ? 'সম্পন্ন' : 'অপেক্ষমাণ'}</span></div>
+                            <div class="mem-phone"><i class="fas fa-phone me-1 text-success"></i><a href="tel:${escAttr(u.phone || '')}">${escHtml(u.phone || '-')}</a></div>
+                            <small class="text-muted">${escHtml(fmtDate(u.created_at))}</small>
+                        </div>
+                    </div>
+                    <div class="mem-btns">
+                        ${u.status === 'done' ? '' : `<button class="btn btn-sm btn-success" onclick="completeFromUpload('${u.id}')"><i class="fas fa-user-check me-1"></i>আবেদন সম্পূর্ণ করুন</button>`}
+                        <a class="btn btn-sm btn-outline-primary" href="${escAttr(u.photo_url)}" target="_blank" rel="noopener"><i class="fas fa-image me-1"></i>ছবি দেখুন</a>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteItem('${u.id}','photo_uploads')"><i class="fas fa-trash me-1"></i>ডিলিট</button>
+                    </div>
+                </div>`).join('')}</div>`
+            },
             contacts: {
                 box: 'adminContactsList',
                 query: () => sb.from('contacts').select('*').order('created_at', { ascending: false }),
@@ -4485,6 +4552,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if (type === 'settings') { await fillSettingsForm(); return; }
             if (type === 'mycard') { await loadAdminCard(); return; }
             if (type === 'offlineforms') { initOfflineForms(); return; }
+            if (type === 'photouploads') { /* ADMIN_CFG দিয়ে লোড হবে */ }
             const cfg = ADMIN_CFG[type];
             if (!cfg) return;
             const container = $(cfg.box);
@@ -4748,6 +4816,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 if (!payload.name) throw new Error('সদস্যের নাম দিন');
                 const f = $('memPhoto').files[0];
                 if (f) payload.photo_url = await uploadMedia(f, 'members/admin', { max: 700 });
+                else if (window._pendingUpload && !id) payload.photo_url = window._pendingUpload.photo_url;
                 try { await saveRow('members', id, payload); }
                 catch (e1) {
                     if (/form_no/i.test(e1.message || '')) {
@@ -4760,6 +4829,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         showToast('⚠️ প্রদানের তারিখ সেভ হয়নি — supabase_setup.sql চালান (কার্ডে নিবন্ধনের তারিখ দেখাবে)।', 'error');
                     } else throw e1;
                 }
+                if (window._pendingUpload) { await sb.from('photo_uploads').update({ status: 'done' }).eq('id', window._pendingUpload.id); window._pendingUpload = null; loadAdminData('photouploads'); }
                 showToast(id ? '✅ সদস্য আপডেট হয়েছে!' : '✅ নতুন সদস্য যোগ হয়েছে!');
                 afterSave('memberModal', 'members');
             } catch (err) { showToast('❌ ' + errMsg(err), 'error'); }
