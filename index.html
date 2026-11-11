@@ -1943,6 +1943,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                         <button type="button" class="btn btn-outline-secondary" id="ofNextBtn"><i class="fas fa-forward me-1"></i> পরের সিরিয়ালে যান</button>
                                     </div>
                                     <div class="form-text mt-2">ডাউনলোড করলে পরের বার নিজে থেকে পরের সিরিয়াল থেকে শুরু হবে। আগের সিরিয়াল লাগলে "পিছনের সিরিয়াল" চাপুন বা শুরুর সিরিয়াল নিজে লিখুন।</div>
+                                    <hr class="my-4" />
+                                    <h6 class="fw-bold text-primary-dark mb-1"><i class="fas fa-palette me-1"></i> ফরমের রঙ ও বক্সের মার্জিন কাস্টমাইজ</h6>
+                                    <p class="text-muted small mb-3">নিচের রঙগুলো নিজের পছন্দমতো বদলান বা তৈরি থিম বেছে নিন। পরিবর্তন সঙ্গে সঙ্গে সেভ হয়; "প্রিভিউ ও ডাউনলোড" চাপলে নতুন রঙে ফরম দেখাবে।</p>
+                                    <div class="d-flex flex-wrap gap-2 mb-3" id="ofPresets"></div>
+                                    <div class="row g-3" id="ofColorGrid"></div>
+                                    <div class="row g-3 mt-1 align-items-end">
+                                        <div class="col-md-5">
+                                            <label class="form-label small fw-semibold" for="ofMargin">A4 পেপারের কিনারা থেকে ফরম বক্সের দূরত্ব (সেমি)</label>
+                                            <input type="number" class="form-control" id="ofMargin" min="0.2" max="3" step="0.1" value="0.5" />
+                                            <div class="form-text">ডিফল্ট ০.৫ সেমি (এক সেমি-র অর্ধেক)। অর্ধেক A4 (২টি ফরম) মোডেও বাস্তব পেপারের কিনারা থেকে এই দূরত্বই থাকবে।</div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button type="button" class="btn btn-outline-danger" id="ofColorReset"><i class="fas fa-rotate-left me-1"></i> ডিফল্টে ফিরুন</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="admin-page" id="admin-settings">
@@ -3824,9 +3839,82 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         function dgt(s) { s = String(s == null ? '' : s); return LANG === 'en' ? bnToEn(s) : s; }
         function ofKey(n) { return String(n).padStart(4, '0'); }
         function formUrl(n) { return `${siteBase()}?form=${ofKey(n)}`; }
+        // ---------- ফরমের রঙ ও মার্জিন (কাস্টমাইজ) ----------
+        const OFC_KEY = 'of_colors_v1', OFM_KEY = 'of_margin_cm';
+        const OFC_DEFAULT = { navy: '#0a2a66', blue: '#1558b0', mid: '#2f7de1', light: '#e6f0ff', ink: '#0f2447', star: '#d32f2f' };
+        const OFC_LABELS = {
+            navy: 'প্রধান রঙ (বর্ডার, শিরোনাম, লেবেল)', blue: 'দ্বিতীয় রঙ (হেডার, ছবির বক্স)', mid: 'তৃতীয় রঙ (হেডারের শেষ, ভিতরের বর্ডার)',
+            light: 'হালকা ব্যাকগ্রাউন্ড (ফরম নং বক্স)', ink: 'লেখার রঙ', star: 'তারা (*) চিহ্নের রঙ'
+        };
+        const OFC_PRESETS = [
+            ['নীল', OFC_DEFAULT],
+            ['সবুজ', { navy: '#0b4f2c', blue: '#1a7a45', mid: '#2e9e5f', light: '#e3f6ea', ink: '#10301f', star: '#d32f2f' }],
+            ['মেরুন', { navy: '#6b1020', blue: '#9b1c31', mid: '#c0394f', light: '#fde8ec', ink: '#3a0c14', star: '#1d4ed8' }],
+            ['বেগুনি', { navy: '#3b1b6b', blue: '#5b2fa3', mid: '#8450d6', light: '#efe7fd', ink: '#261347', star: '#d32f2f' }],
+            ['কমলা', { navy: '#7c2d12', blue: '#c2410c', mid: '#ea580c', light: '#ffedd5', ink: '#431407', star: '#1d4ed8' }],
+            ['কালো-ধূসর', { navy: '#1f2937', blue: '#374151', mid: '#6b7280', light: '#eceff3', ink: '#111827', star: '#d32f2f' }]
+        ];
+        function ofColors() {
+            let o = {};
+            try { o = JSON.parse(localStorage.getItem(OFC_KEY) || '{}') || {}; } catch (e) { o = {}; }
+            const r = Object.assign({}, OFC_DEFAULT);
+            Object.keys(OFC_DEFAULT).forEach(k => { if (/^#[0-9a-f]{6}$/i.test(o[k] || '')) r[k] = o[k]; });
+            return r;
+        }
+        function ofSetColors(o) { try { localStorage.setItem(OFC_KEY, JSON.stringify(o)); } catch (e) { /* ignore */ } }
+        function ofMargin() {
+            let v = 0.5;
+            try { const n = parseFloat(localStorage.getItem(OFM_KEY)); if (isFinite(n)) v = n; } catch (e) { /* ignore */ }
+            return Math.min(3, Math.max(0.2, v));
+        }
+        function ofMix(a, b, t) {
+            const p = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
+            const x = p(a), y = p(b);
+            return '#' + x.map((v, i) => Math.round(v + (y[i] - v) * t).toString(16).padStart(2, '0')).join('');
+        }
+        function ofPalette() {
+            const o = ofColors();
+            return Object.assign({}, o, { pale: ofMix(o.light, '#ffffff', 0.5), muted: ofMix(o.ink, '#ffffff', 0.38), dot: ofMix(o.ink, '#ffffff', 0.5) });
+        }
+        let OFP = ofPalette();
+        function ofBuildColorUi() {
+            const grid = $('ofColorGrid'); if (!grid) return;
+            if (!grid.dataset.built) {
+                grid.dataset.built = '1';
+                const cur0 = ofColors();
+                grid.innerHTML = Object.keys(OFC_DEFAULT).map(k =>
+                    `<div class="col-md-4 col-6"><label class="form-label small fw-semibold" for="ofC_${k}">${OFC_LABELS[k]}</label><input type="color" class="form-control form-control-color w-100" id="ofC_${k}" value="${cur0[k]}" /></div>`).join('');
+                grid.addEventListener('input', e => {
+                    const id = (e.target && e.target.id) || '';
+                    if (id.indexOf('ofC_') !== 0) return;
+                    const o = ofColors(); o[id.slice(4)] = e.target.value; ofSetColors(o);
+                });
+                $('ofPresets').innerHTML = OFC_PRESETS.map((p, i) =>
+                    `<button type="button" class="btn btn-sm btn-outline-secondary" data-of-preset="${i}"><span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${p[1].navy};margin-right:6px;vertical-align:-1px"></span>${p[0]}</button>`).join('');
+                $('ofPresets').addEventListener('click', e => {
+                    const bt = e.target.closest ? e.target.closest('[data-of-preset]') : null; if (!bt) return;
+                    ofSetColors(Object.assign({}, OFC_PRESETS[parseInt(bt.getAttribute('data-of-preset'), 10)][1]));
+                    ofBuildColorUi();
+                });
+                $('ofMargin').addEventListener('change', function () {
+                    const n = Math.min(3, Math.max(0.2, parseFloat(this.value) || 0.5));
+                    try { localStorage.setItem(OFM_KEY, String(n)); } catch (e) { /* ignore */ }
+                    this.value = n;
+                });
+                $('ofColorReset').addEventListener('click', () => {
+                    try { localStorage.removeItem(OFC_KEY); localStorage.removeItem(OFM_KEY); } catch (e) { /* ignore */ }
+                    ofBuildColorUi();
+                    showToast('✅ ফরমের রঙ ও মার্জিন ডিফল্টে ফিরেছে');
+                });
+            }
+            const cur = ofColors();
+            Object.keys(OFC_DEFAULT).forEach(k => { const el = $('ofC_' + k); if (el) el.value = cur[k]; });
+            $('ofMargin').value = ofMargin();
+        }
+
         function ofHeader(c, x, y, w, h, S, logo, F, withTag) {
             const g = c.createLinearGradient(x, y, x + w, y + h);
-            g.addColorStop(0, CARD.navy); g.addColorStop(0.65, CARD.blue); g.addColorStop(1, CARD.mid);
+            g.addColorStop(0, OFP.navy); g.addColorStop(0.65, OFP.blue); g.addColorStop(1, OFP.mid);
             c.fillStyle = g; rr(c, x, y, w, h, 14); c.fill();
             const r = h * 0.38, cx = x + 14 + r, cy = y + h / 2;
             c.fillStyle = '#fff'; c.beginPath(); c.arc(cx, cy, r, 0, Math.PI * 2); c.fill();
@@ -3836,7 +3924,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 c.drawImage(logo, cx - logo.width * k / 2, cy - logo.height * k / 2, logo.width * k, logo.height * k);
                 c.restore();
             } else {
-                c.fillStyle = CARD.blue; c.font = `700 ${Math.round(r * 1.2)}px ${F}`; c.textAlign = 'center'; c.fillText(LANG === 'en' ? 'A' : 'আ', cx, cy + r * 0.4);
+                c.fillStyle = OFP.blue; c.font = `700 ${Math.round(r * 1.2)}px ${F}`; c.textAlign = 'center'; c.fillText(LANG === 'en' ? 'A' : 'আ', cx, cy + r * 0.4);
             }
             const tx = cx + r + 16, avail = x + w - tx - 18, mid = tx + avail / 2;
             const name = tr(S.org_name || '');
@@ -3853,19 +3941,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         function ofPill(c, text, cx, y, h, F, fill) {
             c.font = `600 ${Math.round(h * 0.5)}px ${F}`;
             const w = c.measureText(text).width + h;
-            c.fillStyle = fill || CARD.blue; rr(c, cx - w / 2, y, w, h, h / 2); c.fill();
+            c.fillStyle = fill || OFP.blue; rr(c, cx - w / 2, y, w, h, h / 2); c.fill();
             c.fillStyle = '#fff'; c.textAlign = 'center'; c.fillText(text, cx, y + h * 0.68);
         }
         // লেবেল + ডটেড লাইন (বাধ্যতামূলক হলে লাল তারা)
         function ofField(c, label, x1, x2, base, fs, F, value, req) {
             c.textAlign = 'left';
             let lx0 = x1;
-            if (req) { c.font = `700 ${fs + 3}px ${F}`; c.fillStyle = '#d32f2f'; c.fillText('*', x1, base + 3); lx0 = x1 + c.measureText('*').width + 3; }
-            c.font = `600 ${fs}px ${F}`; c.fillStyle = CARD.navy;
+            if (req) { c.font = `700 ${fs + 3}px ${F}`; c.fillStyle = OFP.star; c.fillText('*', x1, base + 3); lx0 = x1 + c.measureText('*').width + 3; }
+            c.font = `600 ${fs}px ${F}`; c.fillStyle = OFP.navy;
             c.fillText(label, lx0, base);
             const lx = lx0 + c.measureText(label).width + 8;
-            if (value) { c.font = `700 ${fs}px ${F}`; c.fillStyle = CARD.ink; c.fillText(value, lx + 4, base); return; }
-            c.save(); c.setLineDash([2, 5]); c.lineWidth = 1.5; c.strokeStyle = '#7b8cab';
+            if (value) { c.font = `700 ${fs}px ${F}`; c.fillStyle = OFP.ink; c.fillText(value, lx + 4, base); return; }
+            c.save(); c.setLineDash([2, 5]); c.lineWidth = 1.5; c.strokeStyle = OFP.dot;
             c.beginPath(); c.moveTo(lx, base + 3); c.lineTo(x2, base + 3); c.stroke(); c.restore();
         }
 
@@ -3879,12 +3967,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
 
             // দুটি আলাদা বর্ডার (ফরম + সদস্য স্লিপ) ও মাঝে কাটার অংশ
-            const M = 30, stubBoxH = 330, gap = 54;
+            OFP = ofPalette();
+            const half = ofLayout() === 'half';
+            // বক্সের বাইরের কিনারা পেপারের কিনারা থেকে ঠিক ofMargin() সেমি ভেতরে (বর্ডার ৫px, তাই +২.৫)
+            const M = Math.round(ofMargin() * W / (half ? 14.85 : 21) + 2.5), stubBoxH = 330, gap = 54;
             const formH = H - 2 * M - stubBoxH - gap;
             const stubY = M + formH + gap;
             const box = (y, h) => {
-                c.lineWidth = 5; c.strokeStyle = CARD.navy; rr(c, M, y, W - 2 * M, h, 16); c.stroke();
-                c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, M + 10, y + 10, W - 2 * M - 20, h - 20, 11); c.stroke();
+                c.lineWidth = 5; c.strokeStyle = OFP.navy; rr(c, M, y, W - 2 * M, h, 16); c.stroke();
+                c.lineWidth = 1.5; c.strokeStyle = OFP.mid; rr(c, M + 10, y + 10, W - 2 * M - 20, h - 20, 11); c.stroke();
             };
             box(M, formH); box(stubY, stubBoxH);
             const cy = M + formH + gap / 2;
@@ -3896,21 +3987,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.fillStyle = '#fff'; c.fillRect(W / 2 - cw / 2, cy - 15, cw, 30);
             c.fillStyle = '#475569'; c.textAlign = 'center'; c.fillText(ct, W / 2, cy + 6);
 
-            const O = { x: 58, y: M + 22, w: W - 116, h: formH - 44 };
-            const S0 = { x: 58, y: stubY + 22, w: W - 116, h: stubBoxH - 44 };
+            const O = { x: M + 28, y: M + 22, w: W - 2 * (M + 28), h: formH - 44 };
+            const S0 = { x: M + 28, y: stubY + 22, w: W - 2 * (M + 28), h: stubBoxH - 44 };
 
             // ===== আবেদন ফরম =====
             const hh = 118, titleH = 52;
             ofHeader(c, O.x, O.y, O.w, hh, S, logo, F, true);
             let y = O.y + hh + 8;
-            c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 34px ${F}`;
+            c.textAlign = 'center'; c.fillStyle = OFP.navy; c.font = `700 34px ${F}`;
             c.fillText(tr('সদস্য আবেদন ফরম'), O.x + O.w / 2, y + titleH * 0.74);
-            c.textAlign = 'left'; c.fillStyle = '#d32f2f'; c.font = `400 18px ${F}`;
+            c.textAlign = 'left'; c.fillStyle = OFP.star; c.font = `400 18px ${F}`;
             c.fillText(tr('* চিহ্নিত ঘর অবশ্যই পূরণ করতে হবে'), O.x, y + titleH * 0.72);
             const bw = 250;
-            c.fillStyle = CARD.light; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.fill();
-            c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.stroke();
-            c.fillStyle = CARD.navy; c.textAlign = 'center'; c.font = `700 26px ${F}`;
+            c.fillStyle = OFP.light; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.fill();
+            c.lineWidth = 1.5; c.strokeStyle = OFP.mid; rr(c, O.x + O.w - bw, y, bw, titleH - 4, 10); c.stroke();
+            c.fillStyle = OFP.navy; c.textAlign = 'center'; c.font = `700 26px ${F}`;
             c.fillText(tr('ফরম নং') + ': ' + noS, O.x + O.w - bw / 2, y + titleH * 0.68);
             y += titleH + 6;
 
@@ -3940,11 +4031,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const fs = Math.max(20, Math.min(30, Math.round(rh * 0.42)));
             const phh = Math.min(290, Math.round(rh * 3 - 8)), pww = Math.round(phh * 0.8);
             const px = O.x + O.w - pww, py = y + 2;
-            c.save(); c.setLineDash([6, 5]); c.lineWidth = 2; c.strokeStyle = CARD.blue; c.fillStyle = CARD.pale;
+            c.save(); c.setLineDash([6, 5]); c.lineWidth = 2; c.strokeStyle = OFP.blue; c.fillStyle = OFP.pale;
             rr(c, px, py, pww, phh, 8); c.fill(); rr(c, px, py, pww, phh, 8); c.stroke(); c.restore();
-            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `700 34px ${F}`;
+            c.textAlign = 'center'; c.fillStyle = OFP.blue; c.font = `700 34px ${F}`;
             c.fillText(tr('ছবি'), px + pww / 2, py + phh * 0.34);
-            c.fillStyle = CARD.muted; c.font = `400 15px ${F}`;
+            c.fillStyle = OFP.muted; c.font = `400 15px ${F}`;
             wrapLines(c, tr('ছবি লাগিয়ে দিন অথবা কিউআর কোড স্ক্যান করে ছবি আপলোড করুন'), pww - 24, 4)
                 .forEach((ln, i) => c.fillText(ln, px + pww / 2, py + phh * 0.34 + 34 + i * 22));
 
@@ -3962,17 +4053,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
             // শপথনামা + স্বাক্ষর
             const sigW = 330, oathW = O.w - sigW - 30;
-            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 24px ${F}`;
+            c.textAlign = 'left'; c.fillStyle = OFP.navy; c.font = `700 24px ${F}`;
             c.fillText(tr('শপথনামা — আমি শপথ করছি যে:'), O.x, oathTop + 24);
-            c.fillStyle = CARD.ink; c.font = `400 ${ofs}px ${F}`;
+            c.fillStyle = OFP.ink; c.font = `400 ${ofs}px ${F}`;
             rules.forEach((r, i) => c.fillText(fitText(c, `${LANG === 'en' ? (i + 1) : '১২৩৪৫'[i]}. ${tr(r)}`, oathW), O.x, oathTop + 38 + (i + 1) * lh - 4));
-            c.fillStyle = CARD.blue; c.font = `600 ${ofs}px ${F}`;
+            c.fillStyle = OFP.blue; c.font = `600 ${ofs}px ${F}`;
             c.fillText(fitText(c, tr('উপরোক্ত নিয়মগুলো মেনে আমি প্রতিষ্ঠানের সদস্য হচ্ছি।'), oathW), O.x, oathTop + 38 + (rules.length + 1) * lh - 4);
             const sx = O.x + O.w - sigW;
             [['সদস্যের স্বাক্ষর ও তারিখ', 0.40], ['গ্রহণকারীর স্বাক্ষর ও সিল', 0.84]].forEach(([lb, f]) => {
                 const ly = oathTop + oathH * f - 4;
-                c.strokeStyle = CARD.ink; c.lineWidth = 1.5; c.beginPath(); c.moveTo(sx, ly); c.lineTo(sx + sigW, ly); c.stroke();
-                c.fillStyle = CARD.ink; c.textAlign = 'center'; c.font = `600 19px ${F}`;
+                c.strokeStyle = OFP.ink; c.lineWidth = 1.5; c.beginPath(); c.moveTo(sx, ly); c.lineTo(sx + sigW, ly); c.stroke();
+                c.fillStyle = OFP.ink; c.textAlign = 'center'; c.font = `600 19px ${F}`;
                 c.fillText(tr(lb), sx + sigW / 2, ly + 24);
             });
 
@@ -3980,17 +4071,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const qs = 164;
             const qx = S0.x + S0.w - qs - 24, qy = S0.y + 6;
             drawQrOnCanvas(c, url, qx, qy, qs);
-            c.textAlign = 'center'; c.fillStyle = CARD.blue; c.font = `600 15px ${F}`;
+            c.textAlign = 'center'; c.fillStyle = OFP.blue; c.font = `600 15px ${F}`;
             wrapLines(c, tr('স্ক্যান করে আবেদন দেখুন ও ছবি আপলোড করুন'), 176, 3).forEach((ln, i) => c.fillText(ln, qx + qs / 2, qy + qs + 24 + i * 20));
             const lw = qx - S0.x - 40;
             ofHeader(c, S0.x, S0.y, lw, 74, S, logo, F, false);
-            ofPill(c, tr('সদস্য কপি'), S0.x + 100, S0.y + 92, 40, F, CARD.navy);
-            c.textAlign = 'left'; c.fillStyle = CARD.navy; c.font = `700 40px ${F}`;
+            ofPill(c, tr('সদস্য কপি'), S0.x + 100, S0.y + 92, 40, F, OFP.navy);
+            c.textAlign = 'left'; c.fillStyle = OFP.navy; c.font = `700 40px ${F}`;
             c.fillText(tr('ফরম নং') + ': ' + noS, S0.x + 230, S0.y + 124);
             ofField(c, tr('সদস্যের নাম') + ':', S0.x + 4, S0.x + lw, S0.y + 186, 24, F);
             ofField(c, tr('মোবাইল নম্বর') + ':', S0.x + 4, S0.x + lw * 0.62, S0.y + 234, 24, F);
             ofField(c, tr('তারিখ') + ':', S0.x + lw * 0.66, S0.x + lw, S0.y + 234, 24, F);
-            c.fillStyle = CARD.muted; c.font = `400 16px ${F}`; c.textAlign = 'left';
+            c.fillStyle = OFP.muted; c.font = `400 16px ${F}`; c.textAlign = 'left';
             c.fillText(tr('এই অংশটি সদস্য নিজের কাছে সংরক্ষণ করবেন।'), S0.x + 4, S0.y + 268);
         }
 
@@ -4078,6 +4169,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }
             $('ofStart').value = ofGetNext();
             ofRefreshInfo();
+            ofBuildColorUi();
         }
         window.initOfflineForms = initOfflineForms;
 
