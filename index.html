@@ -1593,7 +1593,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <div class="col-md-6"><label class="form-label" for="joinFather">পিতার নাম <span class="text-danger">*</span></label><input type="text" class="form-control" id="joinFather" required /></div>
                                 <div class="col-md-6"><label class="form-label" for="joinPhone">মোবাইল নাম্বার <span class="text-danger">*</span></label><input type="tel" class="form-control" id="joinPhone" required placeholder="01XXXXXXXXX" /></div>
                                 <div class="col-md-6"><label class="form-label" for="joinEmail">ইমেইল</label><input type="email" class="form-control" id="joinEmail" /></div>
-                                <div class="col-md-6"><label class="form-label" for="joinDob">জন্ম তারিখ <span class="text-danger">*</span></label><input type="date" class="form-control" id="joinDob" required /></div>
+                                <div class="col-md-6"><label class="form-label" for="joinDob">জন্ম তারিখ <span class="text-danger">*</span></label><div class="row g-2">
+                                    <div class="col-4"><select class="form-select" id="joinDobD" required aria-label="দিন"><option value="">দিন</option></select></div>
+                                    <div class="col-4"><select class="form-select" id="joinDobM" required aria-label="মাস"><option value="">মাস</option></select></div>
+                                    <div class="col-4"><select class="form-select" id="joinDobY" required aria-label="বছর"><option value="">বছর</option></select></div>
+                                </div><input type="hidden" id="joinDob" /></div>
                                 <div class="col-md-6"><label class="form-label" for="joinBlood">রক্তের গ্রুপ <span class="text-danger">*</span></label>
                                     <select class="form-select" id="joinBlood" required><option value="">নির্বাচন করুন</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>AB+</option><option>AB-</option><option>O+</option><option>O-</option></select></div>
                                 <div class="col-md-6"><label class="form-label" for="joinOcc">পেশা <span class="text-danger">*</span></label><input type="text" class="form-control" id="joinOcc" required /></div>
@@ -1681,6 +1685,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         </section>
 
         <!-- MEMBER INFORMATION PAGE (কিউআর স্ক্যান করলে শুধু এই পেজ দেখাবে) -->
+        <section class="page-section section-padding" id="page-memno" style="padding-top:120px;">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-xl-5">
+                        <div class="membership-form text-center" style="padding:40px 22px;" id="memnoBody"><div class="page-loader"><div class="loader"></div></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="page-section section-padding" id="page-minfo" style="padding-top:120px;">
             <div class="container">
                 <div class="text-center mb-4">
@@ -1811,6 +1825,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="files"><i class="fas fa-file-pdf"></i> ডাউনলোড ফাইল</a></li>
                                 <li class="nav-section">অন্যান্য</li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="contacts"><i class="fas fa-envelope"></i> বার্তা</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="templates"><i class="fas fa-palette"></i> কার্ড টেমপ্লেট</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="settings"><i class="fas fa-signature"></i> সাইন ও সেটিংস</a></li>
                                 <li class="nav-item mt-3"><a class="nav-link text-danger" href="#" id="adminLogoutBtn"><i class="fas fa-sign-out-alt"></i> লগআউট</a></li>
                             </ul>
@@ -1941,6 +1956,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                         <button type="button" class="btn btn-primary-custom" id="ofDownloadBtn"><i class="fas fa-eye me-1"></i> প্রিভিউ ও ডাউনলোড</button>
                                         <button type="button" class="btn btn-outline-secondary" id="ofPrevBtn"><i class="fas fa-backward me-1"></i> পিছনের সিরিয়াল</button>
                                         <button type="button" class="btn btn-outline-secondary" id="ofNextBtn"><i class="fas fa-forward me-1"></i> পরের সিরিয়ালে যান</button>
+                                        <button type="button" class="btn btn-outline-danger" id="ofReshuffleBtn"><i class="fas fa-shuffle me-1"></i> ১৬ থেকে সব নম্বর বাতিল করে নতুন করুন</button>
                                     </div>
                                     <div class="form-text mt-2">ডাউনলোড করলে পরের বার নিজে থেকে পরের সিরিয়াল থেকে শুরু হবে। আগের সিরিয়াল লাগলে "পিছনের সিরিয়াল" চাপুন বা শুরুর সিরিয়াল নিজে লিখুন।</div>
                                     <hr class="my-4" />
@@ -1959,6 +1975,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="admin-page" id="admin-templates">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="fw-bold text-primary-dark"><i class="fas fa-palette me-2"></i> আইডি কার্ড টেমপ্লেট</h4>
+                                </div>
+                                <div class="alert alert-info py-2 small">যে টেমপ্লেটটি বেছে নেবেন, সব সদস্য নিজের কার্ড সেই ডিজাইনেই দেখবেন ও ডাউনলোড করবেন।</div>
+                                <div class="row g-3" id="tplGrid"><div class="page-loader"><div class="loader"></div></div></div>
                             </div>
                             <div class="admin-page" id="admin-settings">
                                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -2433,7 +2456,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             seal_url: '',
             logo_url: '',
             org_about: 'আল আকসা ফাউন্ডেশন একটি অলাভজনক মানবিক সংস্থা, যা সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া মানুষের পাশে দাঁড়াতে কাজ করে।',
-            org_website: ''
+            org_website: 'allaqsa.vercel.app'
         };
 
         // ================================================================
@@ -3189,11 +3212,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         // প্রত্যেক ব্যক্তির ইউনিক ডিটেইলস লিংক
-        function siteBase() {
-            let base = window.location.href.split('?')[0].split('#')[0];
-            if (!base || base.startsWith('file:') || base === 'about:blank') base = 'https://your-domain.com/';
-            return base;
-        }
+        const SITE_URL = 'https://allaqsa.vercel.app/';
+        const SITE_HOST = 'allaqsa.vercel.app';
+        function siteBase() { return SITE_URL; }
         function getMemberUrl(m) {
             if (!m) return '';
             return `${siteBase()}?info=${encodeURIComponent(m.member_no || m.id || '')}`;
@@ -3217,7 +3238,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     const count = qr.getModuleCount();
                     const pad = 4;
                     const cellSize = (size - 2 * pad) / count;
-                    c.fillStyle = CARD.navy;
+                    c.fillStyle = '#0f172a';
                     for (let row = 0; row < count; row++) {
                         for (let col = 0; col < count; col++) {
                             if (qr.isDark(row, col)) {
@@ -3269,37 +3290,221 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }
         }
 
-        function drawBrandHeader(c, S, logo, badgeRaw, F, W) {
-            const HH = 136;
+        // ---------- কার্ড টেমপ্লেট (১২টি ডিজাইন) ----------
+        const CARD_CLASSIC = { navy: '#0a2a66', blue: '#1558b0', mid: '#2f7de1', light: '#e6f0ff', pale: '#f3f8ff', ink: '#0f2447', muted: '#5b6f91', line: '#d3e2f8' };
+        const CARD_TEMPLATES = [
+            { id: 'classic', name: 'ক্লাসিক নীল', hdr: 'band', deco: 'rings', pat: 'none', frame: 'double', photo: 'rect', top: '#f6faff', bot: '#ffffff', pal: CARD_CLASSIC },
+            { id: 'emerald', name: 'সবুজ ইসলামিক', hdr: 'band', hdrG: ['#06391f', '#0f7a3e', '#2fae68'], deco: 'stars', pat: 'stars', frame: 'corner', photo: 'arch', top: '#f3fbf6', bot: '#ffffff',
+              pal: { navy: '#0b4d2e', blue: '#12803f', mid: '#c9a227', light: '#e6f5ec', pale: '#f1faf5', ink: '#0d2a1b', muted: '#58786a', line: '#cfe8da' } },
+            { id: 'palestine', name: 'ফিলিস্তিন', hdr: 'flag', deco: 'none', pat: 'none', frame: 'thick', photo: 'rect', top: '#f8fbf8', bot: '#ffffff',
+              pal: { navy: '#161616', blue: '#0f7a3d', mid: '#c62828', light: '#eaf5ee', pale: '#f6faf7', ink: '#161616', muted: '#5f6b62', line: '#d9e6dc' } },
+            { id: 'blackgold', name: 'ব্ল্যাক ও গোল্ড (প্রিমিয়াম)', dark: true, hdr: 'diagonal', hdrG: ['#050505', '#101013', '#202026'], hdrText: '#f0d27a', deco: 'hex', pat: 'lines', frame: 'corner', photo: 'rect',
+              top: '#131316', bot: '#09090b', foot: '#000000', footText: '#e6c25a', onFill: '#15130c',
+              pal: { navy: '#e6c25a', blue: '#c9a227', mid: '#f0d27a', light: '#1f1f24', pale: '#19191d', ink: '#f4f1e8', muted: '#a8a18c', line: '#35322b' } },
+            { id: 'navygold', name: 'নেভি ও গোল্ড', hdr: 'wave', hdrG: ['#07163a', '#0f2a63', '#1f4aa8'], deco: 'tri', pat: 'none', frame: 'double', photo: 'rect', top: '#f7f9fe', bot: '#ffffff',
+              pal: { navy: '#0b1f4d', blue: '#16336e', mid: '#c9a227', light: '#eef2fb', pale: '#f6f8fd', ink: '#0b1738', muted: '#5a6788', line: '#d9e0f0' } },
+            { id: 'violet', name: 'পার্পল ভিআইপি', dark: true, hdr: 'diagonal', hdrG: ['#2a0f55', '#6d28d9', '#c026d3'], deco: 'rings', pat: 'dots', frame: 'thick', photo: 'oval',
+              top: '#1b1033', bot: '#110a22', foot: '#0b0517', footText: '#f0abfc', onFill: '#1a0b33',
+              pal: { navy: '#f0abfc', blue: '#a855f7', mid: '#e879f9', light: '#2a1850', pale: '#22143f', ink: '#f5eefe', muted: '#b7a6d6', line: '#3d2a6b' } },
+            { id: 'ocean', name: 'সমুদ্র টিল', hdr: 'wave', hdrG: ['#053a52', '#0a7e8c', '#2cc3d0'], deco: 'rings', pat: 'waves', frame: 'thick', photo: 'oval', top: '#f2fafb', bot: '#ffffff',
+              pal: { navy: '#064663', blue: '#0a7e8c', mid: '#22b6c4', light: '#def4f6', pale: '#eefafb', ink: '#0a2e3d', muted: '#4f7480', line: '#c9e6ea' } },
+            { id: 'sunrise', name: 'সূর্যোদয় কমলা', hdr: 'band', deco: 'stripes', pat: 'dots', frame: 'double', photo: 'rect', top: '#fff8f0', bot: '#ffffff',
+              pal: { navy: '#7a2e0e', blue: '#d9560f', mid: '#f59e0b', light: '#fdebd3', pale: '#fff6ea', ink: '#3a1a0a', muted: '#8a6a55', line: '#f3d9bd' } },
+            { id: 'charcoal', name: 'চারকোল ও রেড', hdr: 'light', hdrText: '#1f2328', deco: 'none', pat: 'none', frame: 'thick', photo: 'rect', top: '#ffffff', bot: '#ffffff', foot: '#1f2328',
+              pal: { navy: '#1f2328', blue: '#3b4350', mid: '#e11d48', light: '#f1f3f5', pale: '#f7f8fa', ink: '#14181d', muted: '#6b7480', line: '#e3e6ea' } },
+            { id: 'neon', name: 'নিয়ন গ্রিন (ডার্ক)', dark: true, hdr: 'band', hdrG: ['#03140c', '#0b3d23', '#15803d'], hdrText: '#eafff2', deco: 'hex', pat: 'lines', frame: 'thick', photo: 'rect',
+              top: '#0c1a13', bot: '#07120c', foot: '#030b07', footText: '#4ade80', onFill: '#04130a',
+              pal: { navy: '#4ade80', blue: '#16a34a', mid: '#22c55e', light: '#12281c', pale: '#0f2018', ink: '#e8fbef', muted: '#8fb7a0', line: '#1f3d2c' } },
+            { id: 'maroon', name: 'মেরুন হেরিটেজ', hdr: 'band', hdrG: ['#3d0a14', '#7f1526', '#b02a3d'], deco: 'arches', pat: 'stars', frame: 'corner', photo: 'arch', top: '#fffaf5', bot: '#ffffff',
+              pal: { navy: '#5b0f1d', blue: '#8b1a2b', mid: '#d4a72c', light: '#fbeee9', pale: '#fff7f3', ink: '#2c0a10', muted: '#8a6a6e', line: '#efd5cf' } },
+            { id: 'sky', name: 'স্কাই গ্রেডিয়েন্ট', hdr: 'diagonal', hdrG: ['#073b66', '#0284c7', '#5fd0fb'], deco: 'tri', pat: 'dots', frame: 'double', photo: 'oval', top: '#f0f9ff', bot: '#ffffff',
+              pal: { navy: '#0c4a6e', blue: '#0284c7', mid: '#38bdf8', light: '#e0f4fe', pale: '#f0f9ff', ink: '#082f49', muted: '#527a94', line: '#cde8f7' } }
+        ];
+        let CARD_STYLE = { hdr: 'band', hdrG: null, deco: 'none', pat: 'none', frame: 'double', photo: 'rect', top: '#f6faff', bot: '#ffffff' };
+        function getTplId(S) {
+            let id = S && S.card_template;
+            if (!id) { try { id = localStorage.getItem('card_tpl'); } catch (e) { /* ignore */ } }
+            return CARD_TEMPLATES.some(t => t.id === id) ? id : 'classic';
+        }
+        function applyTemplate(id) {
+            const t = CARD_TEMPLATES.find(x => x.id === id) || CARD_TEMPLATES[0];
+            Object.assign(CARD, t.pal);
+            CARD.accent = t.pal.mid; CARD.borderBlue = t.pal.blue;
+            CARD.onFill = t.onFill || '#ffffff';
+            CARD.footBg = t.foot || t.pal.navy; CARD.footText = t.footText || '#ffffff';
+            CARD.hdrText = t.hdrText || '#ffffff';
+            CARD_STYLE = { hdr: t.hdr, hdrG: t.hdrG || null, deco: t.deco || 'none', pat: t.pat, frame: t.frame, photo: t.photo || 'rect', top: t.top, bot: t.bot };
+        }
+        function fitFont(c, text, weight, startPx, minPx, maxW, F) {
+            let px = startPx;
+            for (; px > minPx; px -= 2) { c.font = `${weight} ${px}px ${F}`; if (c.measureText(text).width <= maxW) break; }
+            c.font = `${weight} ${px}px ${F}`;
+            return px;
+        }
+
+        // ---------- Code 128 বারকোড ----------
+        const C128 = '212222 222122 222221 121223 121322 131222 122213 122312 132212 221213 221312 231212 112232 122132 122231 113222 123122 123221 223211 221132 221231 213212 223112 312131 311222 321122 321221 312212 322112 322211 212123 212321 232121 111323 131123 131321 112313 132113 132311 211313 231113 231311 112133 112331 132131 113123 113321 133121 313121 211331 231131 213113 213311 213131 311123 311321 331121 312113 312311 332111 314111 221411 431111 111224 111422 121124 121421 141122 141221 112214 112412 122114 122411 142112 142211 241211 221114 413111 241112 134111 111242 121142 121241 114212 124112 124211 411212 421112 421211 212141 214121 412121 111143 111341 131141 114113 114311 411113 411311 113141 114131 311141 411131 211412 211214 211232 2331112'.split(' ');
+        function code128Modules(text) {
+            const vals = [104];
+            for (const ch of String(text)) { const v = ch.charCodeAt(0) - 32; vals.push(v >= 0 && v < 95 ? v : 0); }
+            let sum = 104; for (let i = 1; i < vals.length; i++) sum += vals[i] * i;
+            vals.push(sum % 103); vals.push(106);
+            const bars = []; vals.forEach(v => { String(C128[v]).split('').forEach(d => bars.push(+d)); });
+            return bars; // বার/স্পেস প্রস্থের তালিকা (প্রথমটি বার)
+        }
+        function drawBarcode(c, text, x, y, boxH, mwPref) {
+            const bars = code128Modules(text);
+            const total = bars.reduce((a, b) => a + b, 0);
+            const mw = mwPref || 2;
+            const bw = total * mw, pad = 14, boxW = bw + pad * 2;
+            c.save();
+            c.fillStyle = '#ffffff'; rr(c, x, y, boxW, boxH, 10); c.fill();
+            c.fillStyle = '#000000';
+            let cx = x + pad; const by = y + 10, bh = boxH - 20;
+            bars.forEach((w, i) => { if (i % 2 === 0) c.fillRect(cx, by, w * mw, bh); cx += w * mw; });
+            c.restore();
+            return boxW;
+        }
+        function barcodeWidth(text) { return code128Modules(text).reduce((a, b) => a + b, 0) * 2 + 28; }
+
+        function hdrPath(c, W, HH, st) {
+            c.beginPath();
+            if (st === 'wave') {
+                c.moveTo(0, 0); c.lineTo(W, 0); c.lineTo(W, HH - 16);
+                for (let x = W; x >= 0; x -= 10) c.lineTo(x, HH - 16 + Math.sin(x / 70) * 9);
+                c.closePath();
+            } else if (st === 'diagonal') {
+                c.moveTo(0, 0); c.lineTo(W, 0); c.lineTo(W, HH - 46); c.lineTo(W - 300, HH); c.lineTo(0, HH); c.closePath();
+            } else { c.rect(0, 0, W, HH); }
+        }
+        function drawHdrDeco(c, W, HH, type) {
+            if (!type || type === 'none') return;
+            c.save(); c.strokeStyle = '#ffffff'; c.fillStyle = '#ffffff'; c.lineWidth = 2;
+            if (type === 'rings') {
+                c.globalAlpha = 0.12;
+                [[W - 150, 30, 120], [W - 70, 120, 90], [W - 300, 140, 80], [560, -20, 70]].forEach(([x, y, r]) => { c.beginPath(); c.arc(x, y, r, 0, 7); c.stroke(); });
+                c.globalAlpha = 0.07; c.beginPath(); c.arc(W - 40, 10, 80, 0, 7); c.fill();
+            } else if (type === 'tri') {
+                const tris = [[[W - 560, 0], [W - 330, 0], [W - 440, HH], 0.05], [[W - 330, 0], [W - 120, 0], [W - 220, HH], 0.09], [[W - 440, HH], [W - 330, 0], [W - 220, HH], 0.04], [[W - 120, 0], [W, 0], [W, HH], 0.08], [[W - 220, HH], [W - 120, 0], [W, HH], 0.05]];
+                tris.forEach(([a, b2, d, al]) => { c.globalAlpha = al; c.beginPath(); c.moveTo(a[0], a[1]); c.lineTo(b2[0], b2[1]); c.lineTo(d[0], d[1]); c.closePath(); c.fill(); });
+            } else if (type === 'stars') {
+                c.globalAlpha = 0.16;
+                for (let x = 540; x < W + 60; x += 96) {
+                    c.beginPath();
+                    for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8 - Math.PI / 2, r = i % 2 ? 17 : 34; c.lineTo(x + Math.cos(a) * r, 68 + Math.sin(a) * r); }
+                    c.closePath(); c.stroke();
+                }
+            } else if (type === 'arches') {
+                c.globalAlpha = 0.20;
+                for (let x = 0; x < W; x += 64) { c.beginPath(); c.arc(x + 32, HH, 28, Math.PI, 0); c.stroke(); c.beginPath(); c.arc(x + 32, HH, 17, Math.PI, 0); c.stroke(); }
+            } else if (type === 'stripes') {
+                c.globalAlpha = 0.09; c.lineWidth = 10;
+                for (let x = -200; x < W; x += 34) { c.beginPath(); c.moveTo(x, HH); c.lineTo(x + 136, 0); c.stroke(); }
+            } else if (type === 'hex') {
+                c.globalAlpha = 0.11; c.lineWidth = 1.8;
+                const r = 26, h = r * Math.sqrt(3);
+                for (let row = -1; row < 4; row++) for (let col = 0; col < 14; col++) {
+                    const cx = 500 + col * r * 1.5, cy = row * h + (col % 2 ? h / 2 : 0) + 10;
+                    c.beginPath(); for (let i = 0; i < 6; i++) { const a = Math.PI / 3 * i; c.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a)); } c.closePath(); c.stroke();
+                }
+            }
+            c.restore();
+        }
+
+        function drawBrandHeader(c, S, logo, badgeRaw, F, W, barcodeText) {
+            const HH = 136, st = CARD_STYLE.hdr, light = st === 'light';
+            const gs = CARD_STYLE.hdrG || (st === 'flag' ? ['#0d0d0d', '#1d3a2a', CARD.blue] : [CARD.navy, CARD.blue, CARD.mid]);
             const g = c.createLinearGradient(0, 0, W, HH);
-            g.addColorStop(0, CARD.navy); g.addColorStop(0.55, CARD.blue); g.addColorStop(1, CARD.mid);
-            c.fillStyle = g; c.fillRect(0, 0, W, HH);
-            // লোগো
-            c.fillStyle = CARD.mid; c.beginPath(); c.arc(80, 68, 48, 0, Math.PI * 2); c.fill();
-            c.fillStyle = '#fff'; c.beginPath(); c.arc(80, 68, 44, 0, Math.PI * 2); c.fill();
+            g.addColorStop(0, gs[0]); g.addColorStop(0.55, gs[1]); g.addColorStop(1, gs[2]);
+            c.save();
+            hdrPath(c, W, HH, st);
+            c.fillStyle = light ? '#ffffff' : g; c.fill();
+            c.save(); hdrPath(c, W, HH, st); c.clip(); drawHdrDeco(c, W, HH, CARD_STYLE.deco); c.restore();
+            if (st === 'diagonal') {
+                c.strokeStyle = CARD.mid; c.lineWidth = 5; c.beginPath(); c.moveTo(W, HH - 40); c.lineTo(W - 296, HH + 5); c.lineTo(0, HH + 5); c.stroke();
+            }
+            if (st === 'flag') {
+                c.fillStyle = CARD.mid; c.beginPath(); c.moveTo(0, 0); c.lineTo(86, HH / 2); c.lineTo(0, HH); c.closePath(); c.fill();
+                c.fillStyle = '#ffffff'; c.fillRect(0, HH - 8, W, 4);
+                c.fillStyle = CARD.blue; c.fillRect(0, HH - 4, W, 4);
+            }
+            if (light) {
+                const lg = c.createLinearGradient(0, 0, W, 0); lg.addColorStop(0, CARD.navy); lg.addColorStop(1, CARD.mid);
+                c.fillStyle = lg; c.fillRect(0, HH - 8, W, 8);
+            }
+            c.restore();
+            const tcol = CARD.hdrText;
+            const lx = st === 'flag' ? 96 : 80;
+            c.fillStyle = CARD.mid; c.beginPath(); c.arc(lx, 64, 48, 0, Math.PI * 2); c.fill();
+            c.fillStyle = '#fff'; c.beginPath(); c.arc(lx, 64, 44, 0, Math.PI * 2); c.fill();
             if (logo) {
-                c.save(); c.beginPath(); c.arc(80, 68, 41, 0, Math.PI * 2); c.clip();
+                c.save(); c.beginPath(); c.arc(lx, 64, 41, 0, Math.PI * 2); c.clip();
                 const r = Math.min(80 / logo.width, 80 / logo.height);
-                c.drawImage(logo, 80 - logo.width * r / 2, 68 - logo.height * r / 2, logo.width * r, logo.height * r);
+                c.drawImage(logo, lx - logo.width * r / 2, 64 - logo.height * r / 2, logo.width * r, logo.height * r);
                 c.restore();
             } else {
                 c.fillStyle = CARD.blue; c.font = `700 50px ${F}`; c.textAlign = 'center'; c.textBaseline = 'middle';
-                c.fillText(LANG === 'en' ? 'A' : 'আ', 80, 72);
+                c.fillText(LANG === 'en' ? 'A' : 'আ', lx, 68);
             }
-            c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillStyle = '#fff';
-            c.font = `700 50px ${F}`;
-            c.fillText(fitText(c, tr(S.org_name), 540), 146, 72);
-            c.font = `400 22px ${F}`; c.globalAlpha = 0.92;
-            c.fillText(fitText(c, tr(S.org_tagline), 530), 148, 104); c.globalAlpha = 1;
-            // ব্যাজ (ডানে) — নীল রঙে নিখুঁত বর্ডার ও টেক্সট
-            c.font = `700 24px ${F}`;
-            const badgeText = fitText(c, badgeRaw, 250);
-            const bw = Math.max(180, Math.min(300, c.measureText(badgeText).width + 50));
-            c.fillStyle = '#fff'; rr(c, W - 36 - bw, 40, bw, 54, 27); c.fill();
-            c.lineWidth = 3; c.strokeStyle = CARD.blue; rr(c, W - 36 - bw, 40, bw, 54, 27); c.stroke();
-            c.fillStyle = CARD.blue; c.textAlign = 'center';
-            c.fillText(badgeText, W - 36 - bw / 2, 75);
+            const tx = lx + 66;
+            let rightEdge;
+            if (barcodeText) {
+                const bwid = barcodeWidth(barcodeText);
+                rightEdge = W - 34 - bwid;
+            } else rightEdge = W - 36 - 330;
+            const maxW = rightEdge - 18 - tx;
+            c.textAlign = 'left'; c.textBaseline = 'alphabetic'; c.fillStyle = tcol;
+            const orgT = tr(S.org_name);
+            fitFont(c, orgT, 700, 60, 34, maxW, F);
+            c.fillText(orgT, tx, 64);
+            c.font = `400 23px ${F}`; c.globalAlpha = 0.92;
+            c.fillText(fitText(c, tr(S.org_tagline), maxW), tx + 2, 102); c.globalAlpha = 1;
+            if (barcodeText) {
+                drawBarcode(c, barcodeText, rightEdge, 22, 88, 2);
+            } else {
+                c.font = `700 24px ${F}`;
+                const badgeText = fitText(c, badgeRaw, 250);
+                const bw = Math.max(180, Math.min(300, c.measureText(badgeText).width + 50));
+                c.fillStyle = '#fff'; rr(c, W - 36 - bw, 40, bw, 54, 27); c.fill();
+                c.lineWidth = 3; c.strokeStyle = CARD.blue; rr(c, W - 36 - bw, 40, bw, 54, 27); c.stroke();
+                c.fillStyle = CARD.blue; c.textAlign = 'center';
+                c.fillText(badgeText, W - 36 - bw / 2, 75);
+            }
             c.textAlign = 'left';
+        }
+
+        function drawPattern(c, W, H) {
+            const p = CARD_STYLE.pat; if (p === 'none') return;
+            c.save(); c.beginPath(); c.rect(0, 136, W, 494); c.clip();
+            c.strokeStyle = CARD.mid; c.fillStyle = CARD.mid; c.lineWidth = 1.4;
+            if (p === 'stars') {
+                c.globalAlpha = 0.11;
+                for (let y = 150; y < 640; y += 80) for (let x = ((y / 80) % 2 ? 40 : 0); x < W + 80; x += 80) {
+                    c.beginPath();
+                    for (let i = 0; i < 16; i++) { const a = i * Math.PI / 8 - Math.PI / 2, r = i % 2 ? 16 : 32; c.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r); }
+                    c.closePath(); c.stroke();
+                }
+            } else if (p === 'dots') {
+                c.globalAlpha = 0.14;
+                for (let y = 150; y < 640; y += 30) for (let x = 14; x < W; x += 30) { c.beginPath(); c.arc(x, y, 2.2, 0, Math.PI * 2); c.fill(); }
+            } else if (p === 'lines') {
+                c.globalAlpha = 0.10;
+                for (let x = -500; x < W; x += 28) { c.beginPath(); c.moveTo(x, 640); c.lineTo(x + 500, 136); c.stroke(); }
+            } else if (p === 'waves') {
+                c.globalAlpha = 0.12;
+                for (let y = 170; y < 640; y += 36) { c.beginPath(); for (let x = 0; x <= W; x += 8) c.lineTo(x, y + Math.sin(x / 38 + y / 20) * 8); c.stroke(); }
+            }
+            c.restore();
+        }
+        function photoPath(c, x, y, w, h, shape, g) {
+            x -= g; y -= g; w += 2 * g; h += 2 * g;
+            c.beginPath();
+            if (shape === 'oval') { c.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, Math.PI * 2); }
+            else if (shape === 'arch') {
+                const r = w / 2;
+                c.moveTo(x, y + h - 14); c.lineTo(x, y + r); c.arc(x + r, y + r, r, Math.PI, 0); c.lineTo(x + w, y + h - 14);
+                c.arcTo(x + w, y + h, x + w - 14, y + h, 14); c.lineTo(x + 14, y + h); c.arcTo(x, y + h, x, y + h - 14, 14); c.closePath();
+            } else { rr(c, x, y, w, h, 16 + g * 0.6); }
         }
 
         function drawWatermark(c, logo, F, W) {
@@ -3316,13 +3521,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         function cardBody(c, W, H) {
             const g = c.createLinearGradient(0, 0, 0, H);
-            g.addColorStop(0, '#f6faff'); g.addColorStop(1, '#ffffff');
+            g.addColorStop(0, CARD_STYLE.top); g.addColorStop(1, CARD_STYLE.bot);
             c.fillStyle = g; c.fillRect(0, 0, W, H);
+            drawPattern(c, W, H);
         }
 
         function cardFooter(c, W, text, F) {
-            c.fillStyle = CARD.navy; c.fillRect(0, 630, W, 40);
-            c.fillStyle = '#fff'; c.font = `400 18px ${F}`; c.textAlign = 'center';
+            c.fillStyle = CARD.footBg || CARD.navy; c.fillRect(0, 630, W, 40);
+            c.fillStyle = CARD.footText || '#fff'; c.font = `400 18px ${F}`; c.textAlign = 'center';
             c.fillText(fitText(c, text, W - 80), W / 2, 655);
         }
 
@@ -3356,9 +3562,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.textAlign = 'left';
         }
 
-        // পরিষ্কার ডাবল বর্ডার (সম্পূর্ণ নীল থিম, ভেতরের লাইন নীল)
+        // কার্ডের বর্ডার (টেমপ্লেট অনুযায়ী) — ভেতরের পাতলা লাইন নেই
         function drawCardFrame(c, W, H) {
-            const R = 28, B = 9;
+            const fr = CARD_STYLE.frame;
+            const R = 28, B = fr === 'thick' ? 14 : (fr === 'corner' ? 8 : 10);
             const sub = (x, y, w, h, r) => {
                 c.moveTo(x + r, y);
                 c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r);
@@ -3368,21 +3575,26 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             const g = c.createLinearGradient(0, 0, W, H);
             g.addColorStop(0, CARD.navy); g.addColorStop(1, CARD.blue);
             c.fillStyle = g;
-            c.beginPath(); sub(0, 0, W, H, R); sub(B, B, W - 2 * B, H - 2 * B, R - B); c.fill('evenodd');
-            const i = 15, r = 14, P = Math.PI;
-            c.beginPath();
-            c.moveTo(i + r, i);
-            c.lineTo(W - i - r, i);         c.arc(W - i, i, r, P, P / 2, true);
-            c.lineTo(W - i, H - i - r);     c.arc(W - i, H - i, r, -P / 2, P, true);
-            c.lineTo(i + r, H - i);         c.arc(i, H - i, r, 0, -P / 2, true);
-            c.lineTo(i, i + r);             c.arc(i, i, r, P / 2, 0, true);
-            c.closePath();
-            c.lineWidth = 2; c.strokeStyle = CARD.mid; c.stroke();
+            c.beginPath(); sub(0, 0, W, H, R); sub(B, B, W - 2 * B, H - 2 * B, Math.max(6, R - B)); c.fill('evenodd');
+            if (fr === 'corner') {
+                c.strokeStyle = CARD.mid; c.lineCap = 'round';
+                const dirs = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
+                [[24, 24], [W - 24, 24], [W - 24, H - 24], [24, H - 24]].forEach(([x, y], k) => {
+                    const [dx, dy] = dirs[k];
+                    c.lineWidth = 5; c.beginPath(); c.moveTo(x, y + dy * 52); c.lineTo(x, y); c.lineTo(x + dx * 52, y); c.stroke();
+                    c.lineWidth = 2.5; c.beginPath(); c.moveTo(x + dx * 12, y + dy * 40); c.lineTo(x + dx * 12, y + dy * 12); c.lineTo(x + dx * 40, y + dy * 12); c.stroke();
+                });
+            }
             c.restore();
         }
 
-        // আইডি কার্ডের সামনের অংশ (সাইজ হালকা বড় ১০৬০ x ৬৭০, ছবি আরেকটু ছোট ও সুন্দর সাইজ ১৮০ x ২২৪, মেয়াদ ২০৩০ পর্যন্ত)
+        // আইডি কার্ডের সামনের অংশ
+        function memberNoUrl(m) {
+            if (!m) return '';
+            return m.member_no ? `${siteBase()}?no=${encodeURIComponent(m.member_no)}` : getMemberUrl(m);
+        }
         async function drawCard(canvas, m, S) {
+            applyTemplate(getTplId(S));
             const W = 1060, H = 670;
             canvas.width = W; canvas.height = H;
             const c = canvas.getContext('2d');
@@ -3396,68 +3608,63 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.clip();
             cardBody(c, W, H);
             drawWatermark(c, logo, F, W);
-            // উপরে: কার্ড নম্বর
-            drawBrandHeader(c, S, logo, tr('সদস্য নং') + ' ' + dgt(m.member_no || '—'), F, W);
+            // উপরে: প্রতিষ্ঠানের নাম + ডানে আইডি নম্বরের বারকোড
+            drawBrandHeader(c, S, logo, '', F, W, m.member_no ? String(m.member_no) : '');
 
-            // ছবি: সুন্দর সাইজ ও অনুপাত (১৮০ x ২২৪ px)
-            const px = 52, py = 168, pw = 180, ph = 224;
-            c.fillStyle = CARD.light; rr(c, px - 8, py - 8, pw + 16, ph + 16, 22); c.fill();
-            c.save(); rr(c, px, py, pw, ph, 16); c.clip();
+            // ছবি (টেমপ্লেট অনুযায়ী আকার)
+            const px = 52, py = 168, pw = 180, ph = 224, shp = CARD_STYLE.photo;
+            c.fillStyle = CARD.light; photoPath(c, px, py, pw, ph, shp, 8); c.fill();
+            c.save(); photoPath(c, px, py, pw, ph, shp, 0); c.clip();
             if (photo) { drawCover(c, photo, px, py, pw, ph); }
             else {
-                c.fillStyle = '#dbe9ff'; c.fillRect(px, py, pw, ph);
-                c.fillStyle = '#9fc2f5';
+                c.fillStyle = CARD.light; c.fillRect(px, py, pw, ph);
+                c.fillStyle = CARD.mid; c.globalAlpha = 0.45;
                 c.beginPath(); c.arc(px + pw / 2, py + 86, 48, 0, Math.PI * 2); c.fill();
                 c.beginPath(); c.ellipse(px + pw / 2, py + 215, 85, 78, 0, 0, Math.PI * 2); c.fill();
+                c.globalAlpha = 1;
             }
             c.restore();
-            c.lineWidth = 3.5; c.strokeStyle = CARD.blue; rr(c, px, py, pw, ph, 16); c.stroke();
+            c.lineWidth = 3.5; c.strokeStyle = CARD.blue; photoPath(c, px, py, pw, ph, shp, 0); c.stroke();
 
-            // ছবির নিচে: পদবি ব্যাজ
+            // ছবির নিচে: শুধু পদবি (মেয়াদের লেখা কার্ডের পেছনে)
             const pg = c.createLinearGradient(px, 0, px + pw, 0);
             pg.addColorStop(0, CARD.navy); pg.addColorStop(1, CARD.mid);
-            c.fillStyle = pg; rr(c, px - 8, 404, pw + 16, 44, 22); c.fill();
-            c.fillStyle = '#fff'; c.font = `700 23px ${F}`; c.textAlign = 'center';
-            c.fillText(fitText(c, tr(m.designation || 'সদস্য'), pw), px + pw / 2, 434);
-
-            // পদবির নিচে: মেয়াদ ব্যাজ (২০৩০ সাল পর্যন্ত)
-            c.fillStyle = CARD.light; rr(c, px - 8, 456, pw + 16, 38, 19); c.fill();
-            c.lineWidth = 1.5; c.strokeStyle = CARD.blue; rr(c, px - 8, 456, pw + 16, 38, 19); c.stroke();
-            c.fillStyle = CARD.blue; c.font = `600 17px ${F}`; c.textAlign = 'center';
-            c.fillText(tr('মেয়াদ: ২০৩০ সাল পর্যন্ত'), px + pw / 2, 481);
+            c.fillStyle = pg; rr(c, px - 8, 404, pw + 16, 46, 23); c.fill();
+            c.fillStyle = CARD.onFill; c.font = `700 24px ${F}`; c.textAlign = 'center';
+            c.fillText(fitText(c, tr(m.designation || 'সদস্য'), pw), px + pw / 2, 436);
 
             // সদস্যের নাম
             const dx = 268;
             c.textAlign = 'left';
-            c.fillStyle = CARD.navy; c.font = `700 40px ${F}`;
-            c.fillText(fitText(c, m.name || '—', W - 44 - dx), dx, 204);
+            c.fillStyle = CARD.navy; c.font = `700 44px ${F}`;
+            c.fillText(fitText(c, m.name || '—', W - 44 - dx), dx, 206);
 
-            // তথ্য: পিতার নাম, মোবাইল, জন্ম তারিখ, রক্তের গ্রুপ, পেশা, কার্ডের মেয়াদ (২০৩০ সাল পর্যন্ত)
+            // তথ্য: পিতার নাম, জন্ম তারিখ, আইডি নং (নিচের সারিতে), মোবাইল, রক্তের গ্রুপ, পেশা
             const rows = [
                 [tr('পিতার নাম'), m.father_name],
-                [tr('মোবাইল'), m.phone],
                 [tr('জন্ম তারিখ'), m.birth_date ? fmtDate(m.birth_date) : ''],
+                [tr('আইডি নং'), dgt(m.member_no || '')],
+                [tr('মোবাইল'), m.phone],
                 [tr('রক্তের গ্রুপ'), m.blood_group],
-                [tr('পেশা'), m.occupation],
-                [tr('কার্ডের মেয়াদ'), tr('২০৩০ সাল পর্যন্ত')]
+                [tr('পেশা'), m.occupation]
             ];
-            let ry = 250;
+            let ry = 254;
             rows.forEach(([label, val]) => {
-                c.fillStyle = CARD.muted; c.font = `400 20px ${F}`; c.textAlign = 'left';
+                c.fillStyle = CARD.muted; c.font = `400 23px ${F}`; c.textAlign = 'left';
                 c.fillText(label, dx, ry);
-                c.fillStyle = CARD.ink; c.font = `600 24px ${F}`;
+                c.fillStyle = CARD.ink; c.font = `700 28px ${F}`;
                 c.fillText(fitText(c, val || '—', W - 44 - 450), 450, ry);
                 c.strokeStyle = CARD.line; c.lineWidth = 1.5;
                 c.beginPath(); c.moveTo(dx, ry + 10); c.lineTo(W - 44, ry + 10); c.stroke();
-                ry += 38;
+                ry += 40;
             });
-            c.fillStyle = CARD.muted; c.font = `400 20px ${F}`;
+            c.fillStyle = CARD.muted; c.font = `400 23px ${F}`;
             c.fillText(tr('ঠিকানা'), dx, ry);
-            c.fillStyle = CARD.ink; c.font = `600 21px ${F}`;
-            wrapLines(c, m.address || '—', 320, 3).forEach((ln, i) => c.fillText(ln, 450, ry + i * 26));
+            c.fillStyle = CARD.ink; c.font = `700 24px ${F}`;
+            wrapLines(c, m.address || '—', 330, 3).forEach((ln, i) => c.fillText(ln, 450, ry + i * 28));
 
-            // সাইন + সিল
-            drawSignBlock(c, sig, null, S, 805, 1025, 498, 560, 568, F, 1); // কার্ডে সাইন থাকবে, সিল থাকবে না
+            // পরিচালকের সাইন (আগের চেয়ে বড়)
+            drawSignBlock(c, sig, null, S, 790, 1030, 460, 562, 570, F, 1.1);
 
             cardFooter(c, W, [tr(S.org_address), S.org_phone, S.org_email].filter(Boolean).join('   •   '), F);
             c.restore();
@@ -3467,6 +3674,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         // আইডি কার্ডের পেছনের অংশ (ডানদিকের খালি জায়গায় কিউআর কোড এবং মেয়াদ ২০৩০ সাল পর্যন্ত)
         async function drawCardBack(canvas, S, m) {
+            applyTemplate(getTplId(S));
             const W = 1060, H = 670;
             canvas.width = W; canvas.height = H;
             const c = canvas.getContext('2d');
@@ -3510,7 +3718,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 [tr('ঠিকানা'), tr(S.org_address)],
                 [tr('ফোন'), S.org_phone],
                 [tr('ইমেইল'), S.org_email],
-                [tr('ওয়েবসাইট'), (S.org_website || '').replace(/^https?:\/\//, '')]
+                [tr('ওয়েবসাইট'), SITE_HOST]
             ].filter(r => r[1]);
             let y = 224;
             info.forEach(([k, v]) => {
@@ -3522,7 +3730,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             // ডানদিকের খালি জায়গা: ছোট কিউআর কোড (অনলাইন যাচাই ও ব্যক্তির নিজস্ব ডিটেইলস লিংক)
             const memberUrl = getMemberUrl(m);
             const qx = 814, qy = 154, qw = 202, qh = 268;
-            c.fillStyle = '#f0f6ff'; rr(c, qx, qy, qw, qh, 18); c.fill();
+            c.fillStyle = CARD.pale; rr(c, qx, qy, qw, qh, 18); c.fill();
             c.lineWidth = 1.5; c.strokeStyle = CARD.mid; rr(c, qx, qy, qw, qh, 18); c.stroke();
             c.fillStyle = CARD.navy; c.font = `700 19px ${F}`; c.textAlign = 'center';
             c.fillText(tr('অনলাইন যাচাই'), qx + qw / 2, qy + 30);
@@ -3563,6 +3771,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         // সদস্য তথ্য-পেজ (A4 PDF): কিউআর কোড ও মেয়াদ ২০৩০ সাল সহ
         async function drawMemberDetailsPage(canvas, m, S) {
+            applyTemplate('classic');
             const W = 1240, H = 1754;
             canvas.width = W; canvas.height = H;
             const c = canvas.getContext('2d');
@@ -3769,6 +3978,45 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         window.downloadMemberDetailsFor = downloadMemberDetailsFor;
 
         // ---------- সদস্য ইনফরমেশন পেজ (কিউআর স্ক্যান করলে শুধু এটি দেখাবে) ----------
+        // ---------- আইডি নম্বর (এলোমেলো: AAF + নামের প্রথম অক্ষর + ৬ ডিজিট) ----------
+        const BN_LETTER = { 'অ': 'A', 'আ': 'A', 'ই': 'I', 'ঈ': 'I', 'উ': 'U', 'ঊ': 'U', 'ঋ': 'R', 'এ': 'E', 'ঐ': 'O', 'ও': 'O', 'ঔ': 'O', 'ক': 'K', 'খ': 'K', 'গ': 'G', 'ঘ': 'G', 'ঙ': 'N', 'চ': 'C', 'ছ': 'C', 'জ': 'J', 'ঝ': 'J', 'ঞ': 'N', 'ট': 'T', 'ঠ': 'T', 'ড': 'D', 'ঢ': 'D', 'ণ': 'N', 'ত': 'T', 'থ': 'T', 'দ': 'D', 'ধ': 'D', 'ন': 'N', 'প': 'P', 'ফ': 'F', 'ব': 'B', 'ভ': 'B', 'ম': 'M', 'য': 'J', 'র': 'R', 'ল': 'L', 'শ': 'S', 'ষ': 'S', 'স': 'S', 'হ': 'H', 'ড়': 'R', 'ঢ়': 'R', 'য়': 'Y' };
+        function nameInitial(name) {
+            let n = String(name || '').trim().replace(/^(মোঃ|মোহাম্মদ|মুহাম্মদ|মোহাম্মাদ|মুহাম্মাদ|মোছাঃ|মোসাঃ|মোসা:|মোহা:|মো:|মোছা:|মো\.|Md\.?|Mohammad|Muhammad|Mohammed|Mst\.?)\s*/i, '').trim();
+            if (!n) n = String(name || '').trim();
+            const ch = n.charAt(0);
+            if (/[A-Za-z]/.test(ch)) return ch.toUpperCase();
+            return BN_LETTER[ch] || 'X';
+        }
+        function randDigits(len) {
+            const a = new Uint32Array(len); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.floor(Math.random() * 4294967295));
+            return Array.from(a).map((v, i) => (i === 0 ? 1 + v % 9 : v % 10)).join('');
+        }
+        function genMemberNo(name) { return 'AAF' + nameInitial(name) + randDigits(6); }
+        window.genMemberNo = genMemberNo;
+
+        // ---------- স্ক্যান করলে শুধু আইডি নম্বর ----------
+        async function showMemberNo(q) {
+            const box = $('memnoBody'); if (!box) return;
+            try {
+                const res = await searchMembers(String(q || '').trim());
+                const m = res.list[0];
+                if (!m || !m.member_no) {
+                    box.innerHTML = '<div style="font-size:2.6rem;color:#1558b0;"><i class="far fa-circle-question"></i></div><h5 class="fw-bold mt-2">দুঃখিত!</h5><p class="text-muted mb-0">এই আইডি নম্বরটি পাওয়া যায়নি।</p>';
+                    return;
+                }
+                box.innerHTML = `<div class="text-muted mb-2" style="font-size:1rem;">${escHtml(tr('আপনার আইডি নম্বর'))}</div>
+                    <div id="memnoVal" dir="ltr" style="font-size:clamp(1.9rem,8vw,2.8rem);font-weight:700;letter-spacing:2px;color:#0a2a66;word-break:break-all;line-height:1.2;user-select:all;">${escHtml(dgt(m.member_no))}</div>
+                    <button type="button" class="btn btn-primary-custom mt-4 px-4" id="memnoCopy"><i class="fas fa-copy me-2"></i> ${escHtml(tr('কপি করুন'))}</button>`;
+                $('memnoCopy').onclick = async function () {
+                    const t = m.member_no;
+                    try { await navigator.clipboard.writeText(t); }
+                    catch (e) { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e2) { /* ignore */ } ta.remove(); }
+                    showToast('✅ ' + tr('কপি হয়েছে'));
+                };
+            } catch (e) { console.error(e); box.innerHTML = '<div class="alert alert-danger">❌ ' + escHtml(errMsg(e)) + '</div>'; }
+        }
+        window.showMemberNo = showMemberNo;
+
         async function showMemberInfo(q) {
             const box = $('minfoBody');
             if (!box) return;
@@ -3835,9 +4083,31 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const OF_KEY = 'of_next_serial';
         function ofGetNext() { try { return Math.max(1, parseInt(localStorage.getItem(OF_KEY), 10) || 1); } catch (e) { return 1; } }
         function ofSetNext(n) { try { localStorage.setItem(OF_KEY, String(n)); } catch (e) { /* ignore */ } }
-        function ofNo(n) { const s = String(n).padStart(4, '0'); return LANG === 'en' ? s : s.replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]); }
+        function ofNo(n) { const s = ofKey(n); return LANG === 'en' ? s : s.replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]); }
         function dgt(s) { s = String(s == null ? '' : s); return LANG === 'en' ? bnToEn(s) : s; }
-        function ofKey(n) { return String(n).padStart(4, '0'); }
+        // প্রথম ১৫টি ফরম আগের মতোই (০০০১–০০১৫); ১৬ থেকে এলোমেলো ৬ ডিজিটের নম্বর (সিড বদলালে সব নতুন)
+        const OF_SEED_KEY = 'of_seed_v1', OF_FIXED = 15;
+        function ofSeed() { let s = ''; try { s = (SETTINGS && SETTINGS.form_seed) || localStorage.getItem(OF_SEED_KEY) || ''; } catch (e) { /* ignore */ } return String(s); }
+        function ofHash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+        function ofGcd(a, b) { while (b) { [a, b] = [b, a % b]; } return a; }
+        function ofKey(n) {
+            n = Math.max(1, parseInt(n, 10) || 1);
+            if (n <= OF_FIXED) return String(n).padStart(4, '0');
+            const M = 900000, seed = ofSeed() || 'default';
+            const h = ofHash(seed); let A = 250001 + (h % 40000) * 2;
+            while (ofGcd(A, M) !== 1) A++;
+            const B = ofHash(seed + 'b') % M;
+            return String(100000 + ((n * A + B) % M));
+        }
+        async function ensureFormSeed(force) {
+            let s = ofSeed();
+            if (s && !force) return s;
+            s = randDigits(10);
+            try { localStorage.setItem(OF_SEED_KEY, s); } catch (e) { /* ignore */ }
+            try { const r = await sb.from('settings').update({ form_seed: s }).eq('id', 1); if (!r.error) SETTINGS.form_seed = s; } catch (e) { /* ignore */ }
+            SETTINGS.form_seed = s;
+            return s;
+        }
         function formUrl(n) { return `${siteBase()}?form=${ofKey(n)}`; }
         // ---------- ফরমের রঙ ও মার্জিন (কাস্টমাইজ) ----------
         const OFC_KEY = 'of_colors_v1', OFM_KEY = 'of_margin_cm';
@@ -4118,7 +4388,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         function ofRefreshInfo() {
             const next = ofGetNext();
             const lk = siteBase().startsWith('https://your-domain') ? '<br><span class="text-danger">⚠️ ফাইলটি এখনো ওয়েবসাইটে আপলোড হয়নি — হোস্টিং করা সাইট থেকে ফরম ডাউনলোড করলে কিউআর সঠিক ডোমেনে যাবে।</span>' : `<br>কিউআর লিংক: <strong dir="ltr">${escHtml(siteBase())}?form=০০০১</strong>`;
-            $('ofInfo').innerHTML = `পরবর্তী নতুন সিরিয়াল: <strong>${ofNo(next)}</strong>` + (next > 1 ? ` &nbsp;•&nbsp; এ পর্যন্ত ডাউনলোড হয়েছে: ০০০১ – ${ofNo(next - 1)}` : ' &nbsp;•&nbsp; এখনো কোনো ফরম ডাউনলোড হয়নি') + lk;
+            $('ofInfo').innerHTML = `পরবর্তী সিরিয়াল: <strong>${toBn(next)}</strong> (ফরম নম্বর: <strong>${ofNo(next)}</strong>) <span class="text-muted">— প্রথম ${toBn(OF_FIXED)}টি ফরম আগের মতো ০০০১–০০১৫, ${toBn(OF_FIXED + 1)} থেকে এলোমেলো নম্বর</span>` + (next > 1 ? ` &nbsp;•&nbsp; এ পর্যন্ত ডাউনলোড হয়েছে: সিরিয়াল ১ – ${toBn(next - 1)}` : ' &nbsp;•&nbsp; এখনো কোনো ফরম ডাউনলোড হয়নি') + lk;
         }
         function initOfflineForms() {
             if (!initOfflineForms.done) {
@@ -4131,7 +4401,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     const cnt = Math.max(1, parseInt($('ofCount').value, 10) || 1);
                     $('ofStart').value = (parseInt($('ofStart').value, 10) || 1) + cnt;
                 });
+                $('ofReshuffleBtn').addEventListener('click', async function () {
+                    if (!confirm('সতর্কতা: প্রথম ১৫টি বাদে আগের সব এলোমেলো ফরম নম্বর বাতিল হয়ে যাবে এবং ১৬ নম্বর সিরিয়াল থেকে সম্পূর্ণ নতুন নম্বর তৈরি হবে। নিশ্চিত?')) return;
+                    await ensureFormSeed(true);
+                    ofSetNext(OF_FIXED + 1);
+                    $('ofStart').value = ofGetNext();
+                    ofRefreshInfo();
+                    showToast('✅ ১৬ থেকে সব ফরম নম্বর নতুন করে তৈরি হয়েছে');
+                });
                 $('ofDownloadBtn').addEventListener('click', async function () {
+                    await ensureFormSeed();
                     if (!window._ofConfirmed) { await ofShowPreview(); return; }
                     window._ofConfirmed = false;
                     const cnt = Math.min(500, Math.max(1, parseInt($('ofCount').value, 10) || 0));
@@ -4168,6 +4447,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 });
             }
             $('ofStart').value = ofGetNext();
+            ensureFormSeed().then(ofRefreshInfo);
             ofRefreshInfo();
             ofBuildColorUi();
         }
@@ -4443,6 +4723,22 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }));
         }
         bindPreview('joinPhoto', 'joinPhotoPreview', true);
+        (function initJoinDob() {
+            const mn = ['জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন', 'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'];
+            const d = $('joinDobD'), mo = $('joinDobM'), y = $('joinDobY');
+            for (let i = 1; i <= 31; i++) d.insertAdjacentHTML('beforeend', `<option value="${i}">${i}</option>`);
+            mn.forEach((n, i) => mo.insertAdjacentHTML('beforeend', `<option value="${i + 1}">${n}</option>`));
+            const cy = new Date().getFullYear();
+            for (let i = cy; i >= 1920; i--) y.insertAdjacentHTML('beforeend', `<option value="${i}">${i}</option>`);
+        })();
+        function syncJoinDob() {
+            const d = +$('joinDobD').value, m = +$('joinDobM').value, y = +$('joinDobY').value;
+            if (!d || !m || !y) throw new Error('জন্ম তারিখ (দিন, মাস, বছর) সিলেক্ট করুন');
+            const dt = new Date(y, m - 1, d);
+            if (dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) throw new Error('জন্ম তারিখটি সঠিক নয়');
+            const v = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            $('joinDob').value = v; return v;
+        }
         $('joinForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const btn = $('joinBtn');
@@ -4450,6 +4746,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             try {
                 const file = $('joinPhoto').files[0];
                 if (!file) throw new Error('ছবি দিন');
+                syncJoinDob();
                 let photo;
                 try { photo = await uploadMedia(file, 'members/public', { max: 700 }); }
                 catch (upErr) { photo = await fileToDataUrl(file, 480); }   // স্টোরেজে অনুমতি না থাকলে ছবি সরাসরি সেভ হবে
@@ -4462,9 +4759,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     blood_group: $('joinBlood').value,
                     occupation: $('joinOcc').value.trim(),
                     address: $('joinAddress').value.trim(),
-                    photo_url: photo
+                    photo_url: photo,
+                    member_no: genMemberNo($('joinName').value)
                 };
-                const { data: m, error } = await sb.rpc('register_member', { p_data: data });
+                let { data: m, error } = await sb.rpc('register_member', { p_data: data });
+                for (let t = 0; t < 3 && error && /duplicate|unique/i.test(error.message || ''); t++) {
+                    data.member_no = genMemberNo($('joinName').value);
+                    ({ data: m, error } = await sb.rpc('register_member', { p_data: data }));
+                }
+                if (!error && m && m.id && m.member_no !== data.member_no) {
+                    // সার্ভার নিজের নম্বর দিলে এলোমেলো নম্বরে বদলানোর চেষ্টা (অনুমতি না থাকলে চুপচাপ বাদ)
+                    try { const u = await sb.from('members').update({ member_no: data.member_no }).eq('id', m.id).select().maybeSingle(); if (!u.error && u.data) m = u.data; } catch (e) { /* ignore */ }
+                }
                 if (error) {
                     if (/register_member|PGRST202|schema cache|does not exist/i.test(error.message || '')) throw new Error('সার্ভারে সদস্য নিবন্ধন সেটআপ করা নেই — অ্যাডমিন supabase_setup.sql চালান');
                     throw error;
@@ -4757,7 +5063,25 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         window.showDownloadPreview = showDownloadPreview;
 
+        const AAF_RE = /^AAF[A-Z][0-9]{6}$/;
+        async function migrateMemberNos() {
+            if (migrateMemberNos.done) return; migrateMemberNos.done = true;
+            try {
+                const { data, error } = await sb.from('members').select('id,name,member_no').limit(2000);
+                if (error || !data) return;
+                const used = new Set(data.map(x => x.member_no).filter(Boolean));
+                let n = 0;
+                for (const m of data) {
+                    if (AAF_RE.test(String(m.member_no || ''))) continue;
+                    let no = genMemberNo(m.name); while (used.has(no)) no = genMemberNo(m.name);
+                    const r = await sb.from('members').update({ member_no: no }).eq('id', m.id);
+                    if (!r.error) { used.add(no); n++; } else break;
+                }
+                if (n) { showToast(`✅ ${toBn(n)} জন সদস্যের আইডি নম্বর নতুন এলোমেলো ফরম্যাটে (AAF...) হয়েছে`); }
+            } catch (e) { console.error(e); }
+        }
         async function loadAdminDashboard() {
+            migrateMemberNos();
             try {
                 const [members, activities, notices, contacts] = await Promise.all([
                     sb.from('members').select('*', { count: 'exact', head: true }),
@@ -4894,9 +5218,33 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }
         };
 
+        const TPL_SAMPLE = { name: 'মোঃ আব্দুল্লাহ', father_name: 'মোঃ আব্দুর রহমান', member_no: 'AAFA482915', phone: '01XXXXXXXXX', birth_date: '1995-05-14', blood_group: 'O+', occupation: 'ব্যবসায়ী', address: 'মদন, নেত্রকোনা', designation: 'সদস্য' };
+        async function renderTemplatesAdmin() {
+            const grid = $('tplGrid'); if (!grid) return;
+            await loadSettings();
+            const cur = getTplId(SETTINGS);
+            grid.innerHTML = CARD_TEMPLATES.map(t => `<div class="col-md-6 col-xl-4"><div class="admin-card p-2 h-100 tpl-box" data-tpl="${t.id}" style="${t.id === cur ? 'outline:3px solid #12803f;' : ''}">
+                <canvas class="card-canvas" id="tplCv-${t.id}" style="width:100%;height:auto;"></canvas>
+                <div class="d-flex justify-content-between align-items-center mt-2 px-1"><strong>${escHtml(t.name)}</strong>
+                <button type="button" class="btn btn-sm ${t.id === cur ? 'btn-success' : 'btn-outline-primary'}" data-use="${t.id}">${t.id === cur ? '✔ বর্তমান' : 'ব্যবহার করুন'}</button></div></div></div>`).join('');
+            grid.querySelectorAll('[data-use]').forEach(b => b.addEventListener('click', () => useTemplate(b.dataset.use)));
+            for (const t of CARD_TEMPLATES) { try { await drawCard($('tplCv-' + t.id), TPL_SAMPLE, { ...SETTINGS, card_template: t.id }); } catch (e) { console.error(e); } }
+        }
+        async function useTemplate(id) {
+            try {
+                let r = await sb.from('settings').update({ card_template: id }).eq('id', 1);
+                if (r.error) r = await sb.from('settings').upsert({ id: 1, card_template: id });
+                try { localStorage.setItem('card_tpl', id); } catch (e) { /* ignore */ }
+                if (r.error) showToast('⚠️ টেমপ্লেট শুধু এই ডিভাইসে সেভ হয়েছে — সবার জন্য সেভ করতে supabase_update_v2.sql চালান।', 'error');
+                else showToast('✅ টেমপ্লেট সেভ হয়েছে — এখন সবাই এই ডিজাইনে কার্ড দেখবে।');
+                SETTINGS.card_template = id;
+            } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+            renderTemplatesAdmin();
+        }
         async function loadAdminData(type) {
             if (type === 'settings') { await fillSettingsForm(); return; }
             if (type === 'mycard') { await loadAdminCard(); return; }
+            if (type === 'templates') { await renderTemplatesAdmin(); return; }
             if (type === 'offlineforms') { initOfflineForms(); return; }
             if (type === 'photouploads') { /* ADMIN_CFG দিয়ে লোড হবে */ }
             const cfg = ADMIN_CFG[type];
@@ -5155,6 +5503,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 };
                 const noVal = $('memNo').value.trim();
                 if (noVal) payload.member_no = noVal;
+                else if (!id) payload.member_no = genMemberNo(payload.name);
                 const fnVal = normFormNo($('memFormNo').value);
                 if (fnVal) payload.form_no = fnVal; else if (id) payload.form_no = null;
                 const issueVal = $('memIssue').value;
@@ -5289,7 +5638,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         // ================================================================
         //  LANGUAGE (বাংলা / English)
         // ================================================================
-        const I18N = {"হোম": "Home", "আমাদের সম্পর্কে": "About Us", "আমাদের কার্যক্রম": "Our Activities", "কার্যক্রম": "Activities", "নোটিশ": "Notices", "গ্যালারি": "Gallery", "ডাউনলোড": "Download", "যোগাযোগ": "Contact", "দান করুন": "Donate", "অ্যাকাউন্ট তৈরি করুন": "Create Account", "আমার অ্যাকাউন্ট": "My Account", "অ্যাডমিন প্যানেল": "Admin Panel", "অ্যাডমিন লগইন": "Admin Login", "সদস্য হোন": "Become a Member", "আল আকসা ফাউন্ডেশন": "Al Aqsa Foundation", "আল আকসা": "Al Aqsa", "ফাউন্ডেশন": "Foundation", "প্যানেল": "Panel", "মানবতার সেবায়, কল্যাণের প্রত্যয়ে": "In the service of humanity, with a pledge to welfare", "\"মানবতার সেবায়, কল্যাণের প্রত্যয়ে\"": "\"In the service of humanity, with a pledge to welfare\"", "মানবতার সেবায়,": "In the service of humanity,", "কল্যাণের প্রত্যয়ে": "with a pledge to welfare", "© ২০২৬ আল আকসা ফাউন্ডেশন। সর্বস্বত্ব সংরক্ষিত।": "© 2026 Al Aqsa Foundation. All rights reserved.", "মদন, নেত্রকোনা": "Madan, Netrokona", "অন্যান্য": "Others", "লিংক": "Links", "স্বাগতম": "Welcome", "আল আকসা ফাউন্ডেশন একটি অলাভজনক মানবিক সংস্থা যা সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া মানুষের পাশে দাঁড়াতে কাজ করে।": "Al Aqsa Foundation is a non-profit humanitarian organization working to stand beside the helpless, distressed and underprivileged people of society.", "আল আকসা ফাউন্ডেশন একটি অলাভজনক মানবিক সংস্থা, যা সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া মানুষের পাশে দাঁড়াতে কাজ করে।": "Al Aqsa Foundation is a non-profit humanitarian organization working to stand beside the helpless, distressed and underprivileged people of society.", "আরও জানুন": "Learn More", "যোগাযোগ করুন": "Contact Us", "মোট সদস্য": "Total Members", "মোট কার্যক্রম": "Total Activities", "মোট নোটিশ": "Total Notices", "মোট বার্তা": "Total Messages", "সাম্প্রতিক নোটিশ": "Recent Notices", "সব দেখুন →": "View all →", "সর্বশেষ কার্যক্রম": "Latest Activities", "আমাদের সদস্যবৃন্দ": "Our Members", "যাঁরা মানবতার সেবায় আমাদের সাথে আছেন": "Those who stand with us in the service of humanity", "গ্যালারি প্রিভিউ": "Gallery Preview", "আমাদের কার্যক্রমের কিছু মুহূর্ত": "Some moments of our activities", "সম্পূর্ণ গ্যালারি দেখুন": "View Full Gallery", "আমাদের সাথে যুক্ত হোন": "Join Us", "আল আকসা ফাউন্ডেশনের সদস্য হয়ে মানবতার সেবায় অংশ নিন।": "Become a member of Al Aqsa Foundation and take part in serving humanity.", "স্লাইডিং ব্যানার": "Sliding Banners", "আল আকসা ফাউন্ডেশনের যাত্রা ও দর্শন": "The Journey and Vision of Al Aqsa Foundation", "আল আকসা ফাউন্ডেশন ২০২৫ সালে প্রতিষ্ঠিত একটি স্বেচ্ছাসেবী মানবিক সংস্থা। আমাদের লক্ষ্য সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া জনগোষ্ঠীর জীবনমান উন্নয়নে কাজ করা। আমরা শিক্ষা, স্বাস্থ্য, খাদ্য সহায়তা ও সচেতনতা কার্যক্রমের মাধ্যমে সমাজের কল্যাণে নিবেদিত।": "Al Aqsa Foundation is a voluntary humanitarian organization established in 2025. Our goal is to work for improving the living standards of the helpless, distressed and underprivileged communities of society. We are dedicated to the welfare of society through education, health, food assistance and awareness programs.", "আমাদের যাত্রা": "Our Journey", "আল আকসা ফাউন্ডেশন ২০২৫ সালে কয়েকজন তরুণ স্বেচ্ছাসেবীর হাত ধরে যাত্রা শুরু করে। আমরা বিশ্বাস করি—প্রত্যেকটি মানুষই পরিবর্তনের অংশীদার। আমাদের লক্ষ্য সমাজের প্রান্তিক জনগোষ্ঠীর জীবনমান উন্নয়নে টেকসই কার্যক্রম পরিচালনা করা।": "Al Aqsa Foundation began its journey in 2025 through a few young volunteers. We believe every person is a partner in change. Our goal is to carry out sustainable programs to improve the living standards of the marginalized communities of society.", "আমাদের লক্ষ্য ও উদ্দেশ্য": "Our Aims and Objectives", "আমরা যে মূল্যবোধ ও লক্ষ্য নিয়ে কাজ করি": "The values and goals we work with", "আমাদের দর্শন": "Our Philosophy", "আমরা মানবতার সেবাকে আমাদের জীবনের মূল লক্ষ্য হিসেবে দেখি। আমাদের দর্শন হলো—": "We see the service of humanity as the main goal of our lives. Our philosophy is —", "মানবিক সহায়তা": "Humanitarian Aid", "মানবিকতা": "Humanity", "জবাবদিহিতা": "Accountability", "স্বচ্ছতা": "Transparency", "নিশ্চিত করা।": "to ensure.", "সবার জন্য সমান সুযোগ": "Equal opportunity for all", "টেকসই উন্নয়ন": "Sustainable Development", "শিক্ষা কার্যক্রম": "Education Programs", "শিক্ষার আলো": "Light of Education", "শিক্ষার প্রসার": "Spreading Education", "সবার জন্য মানসম্মত শিক্ষা নিশ্চিত করা এবং শিক্ষা উপকরণ সরবরাহ করা।": "Ensuring quality education for all and providing educational materials.", "স্বাস্থ্য সেবা": "Health Services", "স্বাস্থ্য সুরক্ষা": "Health Protection", "স্বাস্থ্য সচেতনতা": "Health Awareness", "স্বাস্থ্য সেবা প্রদান এবং স্বাস্থ্য সম্পর্কে সচেতনতা বৃদ্ধি করা।": "Providing health services and raising awareness about health.", "খাদ্য সহায়তা": "Food Assistance", "দুর্যোগ ব্যবস্থাপনা": "Disaster Management", "দুর্যোগ ও সংকটে অসহায় মানুষের পাশে দাঁড়ানো এবং সহায়তা করা।": "Standing beside and helping helpless people in disasters and crises.", "আমরা যে সকল মানবিক কার্যক্রম পরিচালনা করি": "The humanitarian activities we carry out", "আমাদের কিছু কার্যক্রমের ছবি": "Photos of some of our activities", "নোটিশ বোর্ড": "Notice Board", "সকল গুরুত্বপূর্ণ ঘোষণা ও নোটিশ": "All important announcements and notices", "আমাদের সাথে যোগাযোগ করতে নিচের ফর্মটি পূরণ করুন": "Fill out the form below to contact us", "বার্তা পাঠান": "Send Message", "আপনার নাম": "Your Name", "আপনার ইমেইল": "Your Email", "আপনার বার্তা লিখুন...": "Write your message...", "ইমেইল": "Email", "বার্তা": "Message", "ফোন": "Phone", "অ্যাডমিনের দেওয়া PDF ও ফাইল (শুধু লগইন করা সদস্যদের জন্য)": "PDF and files provided by the admin (for logged-in members only)", "সদস্য অ্যাকাউন্ট": "Member Account", "অ্যাকাউন্ট তৈরি করে নিজের সদস্য কার্ড ডাউনলোড করুন": "Create an account and download your member card", "লগইন": "Login", "লগআউট": "Logout", "নাম": "Name", "ফোন নাম্বার": "Phone Number", "পাসওয়ার্ড": "Password", "আমার তথ্য": "My Information", "আপনার সম্পূর্ণ নাম": "Your full name", "কমপক্ষে ৬ অক্ষর": "At least 6 characters", "ছবি": "Photo", "পিতার নাম": "Father's Name", "জন্ম তারিখ": "Date of Birth", "রক্তের গ্রুপ": "Blood Group", "পেশা": "Occupation", "ঠিকানা": "Address", "নির্বাচন করুন": "Select", "তথ্য সংরক্ষণ করুন": "Save Information", "সদস্য কার্ড": "Member Card", "ছবি ও তথ্য সংরক্ষণ করলে কার্ডে নিজে থেকেই আপডেট হবে।": "The card updates automatically when you save your photo and information.", "PNG ডাউনলোড": "Download PNG", "PDF ডাউনলোড": "Download PDF", "ড্যাশবোর্ড": "Dashboard", "আমার কার্ড": "My Card", "ব্যানার": "Banners", "নোটিশ ব্যবস্থাপনা": "Manage Notices", "কার্যক্রম ব্যবস্থাপনা": "Manage Activities", "গ্যালারি ব্যবস্থাপনা": "Manage Gallery", "সদস্য ব্যবস্থাপনা": "Manage Members", "বার্তা ব্যবস্থাপনা": "Manage Messages", "ডাউনলোড ফাইল": "Download Files", "ডাউনলোড ফাইল (PDF)": "Download Files (PDF)", "সাইন ও সেটিংস": "Signature & Settings", "নতুন ব্যানার": "New Banner", "নতুন নোটিশ": "New Notice", "নতুন কার্যক্রম": "New Activity", "নতুন ছবি": "New Photo", "নতুন ছবি যোগ করুন": "Add New Photo", "নতুন সদস্য": "New Member", "নতুন ফাইল": "New File", "নতুন ডাউনলোড ফাইল": "New Download File", "আমার অ্যাডমিন কার্ড": "My Admin Card", "ছবি (সিলেক্ট করলেই সেভ হবে)": "Photo (saves as soon as selected)", "পদবি": "Designation", "পদবি (কার্ডে দেখাবে)": "Designation (shown on card)", "নির্বাচন করুন বা নিজে লিখুন": "Select or type your own", "পদবি বদলে সংরক্ষণ করলে কার্ডে নতুন পদবি বসবে। অন্য সদস্যদের কার্ড \"সদস্য\" তালিকার": "After changing and saving the designation, the new one appears on the card. Cards of other members can be downloaded from the \"Members\" list using the", "বাটন থেকে ডাউনলোড করা যাবে।": "buttons.", "প্রতিষ্ঠান ও পরিচালকের সাইন": "Organization & Director's Signature", "প্রতিষ্ঠানের নাম": "Organization Name", "স্লোগান": "Slogan", "পরিচালকের নাম": "Director's Name", "পরিচালকের সাইন (ছবি)": "Director's Signature (image)", "প্রতিষ্ঠানের লোগো": "Organization Logo", "লোগো ওয়েবসাইট, ফেভিকন, সদস্য কার্ডের সামনে-পেছনে সব জায়গায় নিজে থেকে বসবে। বর্গাকার PNG সবচেয়ে ভালো।": "The logo is applied automatically everywhere: website, favicon and both sides of the member card. A square PNG works best.", "প্রতিষ্ঠান পরিচিতি (কার্ডের পেছনে দেখাবে)": "About the organization (shown on card back)", "ওয়েবসাইট": "Website", "সাদা/স্বচ্ছ (transparent) ব্যাকগ্রাউন্ডের PNG হলে কার্ডে সবচেয়ে সুন্দর দেখাবে। সাইনটি সব সদস্য কার্ডে নিজে থেকেই বসে যাবে।": "A PNG with a white/transparent background looks best on the card. The signature is applied to all member cards automatically.", "সংরক্ষণ করুন": "Save", "আপলোড করুন": "Upload", "আপডেট করুন": "Update", "বাতিল": "Cancel", "মুছে ফেলুন": "Delete", "আপনি কি নিশ্চিত?": "Are you sure?", "এই আইটেমটি স্থায়ীভাবে মুছে ফেলা হবে।": "This item will be permanently deleted.", "শিরোনাম": "Title", "শিরোনাম (ঐচ্ছিক)": "Title (optional)", "ছোট লেখা (ঐচ্ছিক)": "Subtitle (optional)", "ক্রম (ছোট সংখ্যা আগে দেখাবে)": "Order (smaller number shows first)", "ব্যানার ছবি": "Banner Image", "বিবরণ": "Description", "বিবরণ (ঐচ্ছিক)": "Description (optional)", "তারিখ": "Date", "ছবি (ঐচ্ছিক)": "Photo (optional)", "ছবি (ঐচ্ছিক — হোমপেজ স্লাইডারে দেখাবে)": "Photo (optional — shown in the home slider)", "ছবির শিরোনাম": "Photo title", "সদস্যরা এই ছবি ডাউনলোড করতে পারবে": "Members can download this photo", "সদস্যের নাম": "Member Name", "সদস্য বিস্তারিত (স্লাইডারে দেখাবে)": "Member details (shown in slider)", "যেমন: সভাপতি, সদস্য": "e.g. President, Member", "হোমপেজের সদস্য স্লাইডারে দেখান": "Show in the home page member slider", "ফাইল (PDF / Word)": "File (PDF / Word)", "সদস্য": "Member", "সদস্য নং": "Member No.", "পরিচালক": "Director", "আগের": "Previous", "পরের": "Next", "অ্যাকশন": "Action", "হোমে": "On Home", "সদস্যরা ডাউনলোড করতে পারবে": "Members can download", "ফাইল": "File", "সদস্যদের জন্য": "for members", "প্রতিষ্ঠানের তথ্য": "Organization Info", "আমাদের পরিচিতি": "About Us", "নির্দেশনা": "Instructions", "মোবাইল": "Mobile", "• এই কার্ডটি শুধুমাত্র কার্ডধারীর পরিচয়ের জন্য প্রযোজ্য।": "• This card is valid only as identification for the cardholder.", "• কার্ড হারিয়ে গেলে দ্রুত প্রতিষ্ঠানের সাথে যোগাযোগ করুন।": "• If the card is lost, please contact the organization immediately.", "• কার্ড কুড়িয়ে পেলে অনুগ্রহ করে উপরের ঠিকানায় ফেরত দিন।": "• If found, please return it to the address above.", "সভাপতি": "President", "সহ-সভাপতি": "Vice President", "সাধারণ সম্পাদক": "General Secretary", "সহ-সাধারণ সম্পাদক": "Joint General Secretary", "কোষাধ্যক্ষ": "Treasurer", "সাংগঠনিক সম্পাদক": "Organizing Secretary", "উপদেষ্টা": "Advisor", "নির্বাহী সদস্য": "Executive Member", "আল-আকসা ও কুববাতুস সাখরা": "Al-Aqsa and the Dome of the Rock", "ফিলিস্তিনের জলপাই গাছ": "Olive tree of Palestine", "ফিলিস্তিনের পতাকা": "Flag of Palestine", "কুফিয়া ও জলপাইয়ের শাখা": "Keffiyeh and olive branch", "কোনো নোটিশ পাওয়া যায়নি।": "No notices found.", "কোনো কার্যক্রম পাওয়া যায়নি।": "No activities found.", "শীঘ্রই সদস্যদের তথ্য যোগ করা হবে।": "Members' information will be added soon.", "ডেটা লোড করতে সমস্যা হয়েছে।": "Failed to load data.", "এখনো কোনো ফাইল দেওয়া হয়নি।": "No files have been provided yet.", "ফাইল ডাউনলোড করতে লগইন করুন।": "Please log in to download files.", "লগইন করুন": "Log In", "কোনো ব্যানার নেই। ব্যানার না থাকলে ডিফল্ট ছবি দেখাবে।": "No banners yet. A default image is shown when there are none.", "কোনো নোটিশ নেই।": "No notices.", "কোনো কার্যক্রম নেই।": "No activities.", "কোনো ছবি নেই।": "No photos.", "কোনো সদস্য নেই।": "No members.", "কোনো বার্তা নেই।": "No messages.", "কোনো ফাইল নেই।": "No files.", "হ্যাঁ": "Yes", "না": "No", "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে": "Incorrect email or password", "আপনার ইমেইল ভেরিফাই করা হয়নি — ইনবক্স চেক করুন": "Your email is not verified — check your inbox", "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে": "An account already exists with this email", "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে — লগইন করুন": "An account already exists with this email — please log in", "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে": "Password must be at least 6 characters", "অনেকবার চেষ্টা করা হয়েছে, কিছুক্ষণ পর আবার চেষ্টা করুন": "Too many attempts, please try again later", "এই অ্যাকাউন্টটি অ্যাডমিন নয়": "This account is not an admin", "ডাউনলোড করতে আগে লগইন করুন": "Please log in first to download", "লগআউট সম্পন্ন": "Logged out", "অ্যাকাউন্ট তৈরি হচ্ছে...": "Creating account...", "লগইন হচ্ছে...": "Logging in...", "লগইন...": "Logging in...", "পাঠানো হচ্ছে...": "Sending...", "সংরক্ষণ হচ্ছে...": "Saving...", "আপলোড হচ্ছে...": "Uploading...", "কার্ড তৈরি হচ্ছে...": "Preparing card...", "সব ক্ষেত্র পূরণ করুন": "Please fill in all fields", "একটি ছবি নির্বাচন করুন": "Please select a photo", "একটি ফাইল নির্বাচন করুন": "Please select a file", "একটি ব্যানার ছবি নির্বাচন করুন": "Please select a banner image", "সদস্যের নাম দিন": "Please enter the member's name", "নাম দিন": "Please enter a name", "ফাইল ২০ MB এর বেশি হতে পারবে না": "File cannot exceed 20 MB", "ব্যানার সম্পাদনা করুন": "Edit Banner", "নোটিশ সম্পাদনা করুন": "Edit Notice", "কার্যক্রম সম্পাদনা করুন": "Edit Activity", "সদস্য সম্পাদনা করুন": "Edit Member", "ডাউনলোড অনুমতি বন্ধ করা হয়েছে": "Download permission turned off", "✅ আইটেম মুছে ফেলা হয়েছে!": "✅ Item deleted!", "✅ আপনার বার্তা পাঠানো হয়েছে!": "✅ Your message has been sent!", "✅ কার্যক্রম আপডেট হয়েছে!": "✅ Activity updated!", "✅ ছবি আপলোড হয়েছে!": "✅ Photo uploaded!", "✅ নতুন কার্যক্রম যোগ হয়েছে!": "✅ New activity added!", "✅ নতুন নোটিশ যোগ হয়েছে!": "✅ New notice added!", "✅ নতুন ব্যানার যোগ হয়েছে!": "✅ New banner added!", "✅ নতুন সদস্য যোগ হয়েছে!": "✅ New member added!", "✅ নোটিশ আপডেট হয়েছে!": "✅ Notice updated!", "✅ ফাইল আপলোড হয়েছে!": "✅ File uploaded!", "✅ ব্যানার আপডেট হয়েছে!": "✅ Banner updated!", "✅ লগইন সফল!": "✅ Login successful!", "✅ অ্যাডমিন লগইন সফল!": "✅ Admin login successful!", "✅ সদস্য আপডেট হয়েছে!": "✅ Member updated!", "✅ সদস্যরা এখন এই ছবি ডাউনলোড করতে পারবে": "✅ Members can now download this photo", "✅ সেটিংস সংরক্ষণ হয়েছে! সাইন এখন সব সদস্য কার্ডে বসবে।": "✅ Settings saved! The signature will now appear on all member cards.", "✅ তথ্য সংরক্ষণ হয়েছে!": "✅ Information saved!", "✅ ছবি সংরক্ষণ হয়েছে!": "✅ Photo saved!", "✅ সংরক্ষণ হয়েছে!": "✅ Saved!", "✅ কার্ড ডাউনলোড হয়েছে!": "✅ Card downloaded!", "🎉 অ্যাকাউন্ট তৈরি হয়েছে! এবার লগইন করুন।": "🎉 Account created! Please log in now.", "🎉 অ্যাকাউন্ট তৈরি হয়েছে! এখন পাসওয়ার্ড দিয়ে লগইন করুন।": "🎉 Account created! Now log in with your password.", "(ইমেইল ভেরিফিকেশন চালু থাকলে আগে ইনবক্সের লিংকে ক্লিক করুন)": "(If email verification is on, click the link in your inbox first)", "ছবি সংরক্ষণ": "Save photo", "এবং": "and"};
+        const I18N = {"আইডি নং": "ID No.", "আপনার আইডি নম্বর": "Your ID Number", "কপি করুন": "Copy", "কপি হয়েছে": "Copied", "দিন": "Day", "মাস": "Month", "বছর": "Year", "জানুয়ারি": "January", "ফেব্রুয়ারি": "February", "মার্চ": "March", "এপ্রিল": "April", "মে": "May", "জুন": "June", "জুলাই": "July", "আগস্ট": "August", "সেপ্টেম্বর": "September", "অক্টোবর": "October", "নভেম্বর": "November", "ডিসেম্বর": "December", "হোম": "Home", "আমাদের সম্পর্কে": "About Us", "আমাদের কার্যক্রম": "Our Activities", "কার্যক্রম": "Activities", "নোটিশ": "Notices", "গ্যালারি": "Gallery", "ডাউনলোড": "Download", "যোগাযোগ": "Contact", "দান করুন": "Donate", "অ্যাকাউন্ট তৈরি করুন": "Create Account", "আমার অ্যাকাউন্ট": "My Account", "অ্যাডমিন প্যানেল": "Admin Panel", "অ্যাডমিন লগইন": "Admin Login", "সদস্য হোন": "Become a Member", "আল আকসা ফাউন্ডেশন": "Al Aqsa Foundation", "আল আকসা": "Al Aqsa", "ফাউন্ডেশন": "Foundation", "প্যানেল": "Panel", "মানবতার সেবায়, কল্যাণের প্রত্যয়ে": "In the service of humanity, with a pledge to welfare", "\"মানবতার সেবায়, কল্যাণের প্রত্যয়ে\"": "\"In the service of humanity, with a pledge to welfare\"", "মানবতার সেবায়,": "In the service of humanity,", "কল্যাণের প্রত্যয়ে": "with a pledge to welfare", "© ২০২৬ আল আকসা ফাউন্ডেশন। সর্বস্বত্ব সংরক্ষিত।": "© 2026 Al Aqsa Foundation. All rights reserved.", "মদন, নেত্রকোনা": "Madan, Netrokona", "অন্যান্য": "Others", "লিংক": "Links", "স্বাগতম": "Welcome", "আল আকসা ফাউন্ডেশন একটি অলাভজনক মানবিক সংস্থা যা সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া মানুষের পাশে দাঁড়াতে কাজ করে।": "Al Aqsa Foundation is a non-profit humanitarian organization working to stand beside the helpless, distressed and underprivileged people of society.", "আল আকসা ফাউন্ডেশন একটি অলাভজনক মানবিক সংস্থা, যা সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া মানুষের পাশে দাঁড়াতে কাজ করে।": "Al Aqsa Foundation is a non-profit humanitarian organization working to stand beside the helpless, distressed and underprivileged people of society.", "আরও জানুন": "Learn More", "যোগাযোগ করুন": "Contact Us", "মোট সদস্য": "Total Members", "মোট কার্যক্রম": "Total Activities", "মোট নোটিশ": "Total Notices", "মোট বার্তা": "Total Messages", "সাম্প্রতিক নোটিশ": "Recent Notices", "সব দেখুন →": "View all →", "সর্বশেষ কার্যক্রম": "Latest Activities", "আমাদের সদস্যবৃন্দ": "Our Members", "যাঁরা মানবতার সেবায় আমাদের সাথে আছেন": "Those who stand with us in the service of humanity", "গ্যালারি প্রিভিউ": "Gallery Preview", "আমাদের কার্যক্রমের কিছু মুহূর্ত": "Some moments of our activities", "সম্পূর্ণ গ্যালারি দেখুন": "View Full Gallery", "আমাদের সাথে যুক্ত হোন": "Join Us", "আল আকসা ফাউন্ডেশনের সদস্য হয়ে মানবতার সেবায় অংশ নিন।": "Become a member of Al Aqsa Foundation and take part in serving humanity.", "স্লাইডিং ব্যানার": "Sliding Banners", "আল আকসা ফাউন্ডেশনের যাত্রা ও দর্শন": "The Journey and Vision of Al Aqsa Foundation", "আল আকসা ফাউন্ডেশন ২০২৫ সালে প্রতিষ্ঠিত একটি স্বেচ্ছাসেবী মানবিক সংস্থা। আমাদের লক্ষ্য সমাজের অসহায়, দুস্থ ও পিছিয়ে পড়া জনগোষ্ঠীর জীবনমান উন্নয়নে কাজ করা। আমরা শিক্ষা, স্বাস্থ্য, খাদ্য সহায়তা ও সচেতনতা কার্যক্রমের মাধ্যমে সমাজের কল্যাণে নিবেদিত।": "Al Aqsa Foundation is a voluntary humanitarian organization established in 2025. Our goal is to work for improving the living standards of the helpless, distressed and underprivileged communities of society. We are dedicated to the welfare of society through education, health, food assistance and awareness programs.", "আমাদের যাত্রা": "Our Journey", "আল আকসা ফাউন্ডেশন ২০২৫ সালে কয়েকজন তরুণ স্বেচ্ছাসেবীর হাত ধরে যাত্রা শুরু করে। আমরা বিশ্বাস করি—প্রত্যেকটি মানুষই পরিবর্তনের অংশীদার। আমাদের লক্ষ্য সমাজের প্রান্তিক জনগোষ্ঠীর জীবনমান উন্নয়নে টেকসই কার্যক্রম পরিচালনা করা।": "Al Aqsa Foundation began its journey in 2025 through a few young volunteers. We believe every person is a partner in change. Our goal is to carry out sustainable programs to improve the living standards of the marginalized communities of society.", "আমাদের লক্ষ্য ও উদ্দেশ্য": "Our Aims and Objectives", "আমরা যে মূল্যবোধ ও লক্ষ্য নিয়ে কাজ করি": "The values and goals we work with", "আমাদের দর্শন": "Our Philosophy", "আমরা মানবতার সেবাকে আমাদের জীবনের মূল লক্ষ্য হিসেবে দেখি। আমাদের দর্শন হলো—": "We see the service of humanity as the main goal of our lives. Our philosophy is —", "মানবিক সহায়তা": "Humanitarian Aid", "মানবিকতা": "Humanity", "জবাবদিহিতা": "Accountability", "স্বচ্ছতা": "Transparency", "নিশ্চিত করা।": "to ensure.", "সবার জন্য সমান সুযোগ": "Equal opportunity for all", "টেকসই উন্নয়ন": "Sustainable Development", "শিক্ষা কার্যক্রম": "Education Programs", "শিক্ষার আলো": "Light of Education", "শিক্ষার প্রসার": "Spreading Education", "সবার জন্য মানসম্মত শিক্ষা নিশ্চিত করা এবং শিক্ষা উপকরণ সরবরাহ করা।": "Ensuring quality education for all and providing educational materials.", "স্বাস্থ্য সেবা": "Health Services", "স্বাস্থ্য সুরক্ষা": "Health Protection", "স্বাস্থ্য সচেতনতা": "Health Awareness", "স্বাস্থ্য সেবা প্রদান এবং স্বাস্থ্য সম্পর্কে সচেতনতা বৃদ্ধি করা।": "Providing health services and raising awareness about health.", "খাদ্য সহায়তা": "Food Assistance", "দুর্যোগ ব্যবস্থাপনা": "Disaster Management", "দুর্যোগ ও সংকটে অসহায় মানুষের পাশে দাঁড়ানো এবং সহায়তা করা।": "Standing beside and helping helpless people in disasters and crises.", "আমরা যে সকল মানবিক কার্যক্রম পরিচালনা করি": "The humanitarian activities we carry out", "আমাদের কিছু কার্যক্রমের ছবি": "Photos of some of our activities", "নোটিশ বোর্ড": "Notice Board", "সকল গুরুত্বপূর্ণ ঘোষণা ও নোটিশ": "All important announcements and notices", "আমাদের সাথে যোগাযোগ করতে নিচের ফর্মটি পূরণ করুন": "Fill out the form below to contact us", "বার্তা পাঠান": "Send Message", "আপনার নাম": "Your Name", "আপনার ইমেইল": "Your Email", "আপনার বার্তা লিখুন...": "Write your message...", "ইমেইল": "Email", "বার্তা": "Message", "ফোন": "Phone", "অ্যাডমিনের দেওয়া PDF ও ফাইল (শুধু লগইন করা সদস্যদের জন্য)": "PDF and files provided by the admin (for logged-in members only)", "সদস্য অ্যাকাউন্ট": "Member Account", "অ্যাকাউন্ট তৈরি করে নিজের সদস্য কার্ড ডাউনলোড করুন": "Create an account and download your member card", "লগইন": "Login", "লগআউট": "Logout", "নাম": "Name", "ফোন নাম্বার": "Phone Number", "পাসওয়ার্ড": "Password", "আমার তথ্য": "My Information", "আপনার সম্পূর্ণ নাম": "Your full name", "কমপক্ষে ৬ অক্ষর": "At least 6 characters", "ছবি": "Photo", "পিতার নাম": "Father's Name", "জন্ম তারিখ": "Date of Birth", "রক্তের গ্রুপ": "Blood Group", "পেশা": "Occupation", "ঠিকানা": "Address", "নির্বাচন করুন": "Select", "তথ্য সংরক্ষণ করুন": "Save Information", "সদস্য কার্ড": "Member Card", "ছবি ও তথ্য সংরক্ষণ করলে কার্ডে নিজে থেকেই আপডেট হবে।": "The card updates automatically when you save your photo and information.", "PNG ডাউনলোড": "Download PNG", "PDF ডাউনলোড": "Download PDF", "ড্যাশবোর্ড": "Dashboard", "আমার কার্ড": "My Card", "ব্যানার": "Banners", "নোটিশ ব্যবস্থাপনা": "Manage Notices", "কার্যক্রম ব্যবস্থাপনা": "Manage Activities", "গ্যালারি ব্যবস্থাপনা": "Manage Gallery", "সদস্য ব্যবস্থাপনা": "Manage Members", "বার্তা ব্যবস্থাপনা": "Manage Messages", "ডাউনলোড ফাইল": "Download Files", "ডাউনলোড ফাইল (PDF)": "Download Files (PDF)", "সাইন ও সেটিংস": "Signature & Settings", "নতুন ব্যানার": "New Banner", "নতুন নোটিশ": "New Notice", "নতুন কার্যক্রম": "New Activity", "নতুন ছবি": "New Photo", "নতুন ছবি যোগ করুন": "Add New Photo", "নতুন সদস্য": "New Member", "নতুন ফাইল": "New File", "নতুন ডাউনলোড ফাইল": "New Download File", "আমার অ্যাডমিন কার্ড": "My Admin Card", "ছবি (সিলেক্ট করলেই সেভ হবে)": "Photo (saves as soon as selected)", "পদবি": "Designation", "পদবি (কার্ডে দেখাবে)": "Designation (shown on card)", "নির্বাচন করুন বা নিজে লিখুন": "Select or type your own", "পদবি বদলে সংরক্ষণ করলে কার্ডে নতুন পদবি বসবে। অন্য সদস্যদের কার্ড \"সদস্য\" তালিকার": "After changing and saving the designation, the new one appears on the card. Cards of other members can be downloaded from the \"Members\" list using the", "বাটন থেকে ডাউনলোড করা যাবে।": "buttons.", "প্রতিষ্ঠান ও পরিচালকের সাইন": "Organization & Director's Signature", "প্রতিষ্ঠানের নাম": "Organization Name", "স্লোগান": "Slogan", "পরিচালকের নাম": "Director's Name", "পরিচালকের সাইন (ছবি)": "Director's Signature (image)", "প্রতিষ্ঠানের লোগো": "Organization Logo", "লোগো ওয়েবসাইট, ফেভিকন, সদস্য কার্ডের সামনে-পেছনে সব জায়গায় নিজে থেকে বসবে। বর্গাকার PNG সবচেয়ে ভালো।": "The logo is applied automatically everywhere: website, favicon and both sides of the member card. A square PNG works best.", "প্রতিষ্ঠান পরিচিতি (কার্ডের পেছনে দেখাবে)": "About the organization (shown on card back)", "ওয়েবসাইট": "Website", "সাদা/স্বচ্ছ (transparent) ব্যাকগ্রাউন্ডের PNG হলে কার্ডে সবচেয়ে সুন্দর দেখাবে। সাইনটি সব সদস্য কার্ডে নিজে থেকেই বসে যাবে।": "A PNG with a white/transparent background looks best on the card. The signature is applied to all member cards automatically.", "সংরক্ষণ করুন": "Save", "আপলোড করুন": "Upload", "আপডেট করুন": "Update", "বাতিল": "Cancel", "মুছে ফেলুন": "Delete", "আপনি কি নিশ্চিত?": "Are you sure?", "এই আইটেমটি স্থায়ীভাবে মুছে ফেলা হবে।": "This item will be permanently deleted.", "শিরোনাম": "Title", "শিরোনাম (ঐচ্ছিক)": "Title (optional)", "ছোট লেখা (ঐচ্ছিক)": "Subtitle (optional)", "ক্রম (ছোট সংখ্যা আগে দেখাবে)": "Order (smaller number shows first)", "ব্যানার ছবি": "Banner Image", "বিবরণ": "Description", "বিবরণ (ঐচ্ছিক)": "Description (optional)", "তারিখ": "Date", "ছবি (ঐচ্ছিক)": "Photo (optional)", "ছবি (ঐচ্ছিক — হোমপেজ স্লাইডারে দেখাবে)": "Photo (optional — shown in the home slider)", "ছবির শিরোনাম": "Photo title", "সদস্যরা এই ছবি ডাউনলোড করতে পারবে": "Members can download this photo", "সদস্যের নাম": "Member Name", "সদস্য বিস্তারিত (স্লাইডারে দেখাবে)": "Member details (shown in slider)", "যেমন: সভাপতি, সদস্য": "e.g. President, Member", "হোমপেজের সদস্য স্লাইডারে দেখান": "Show in the home page member slider", "ফাইল (PDF / Word)": "File (PDF / Word)", "সদস্য": "Member", "সদস্য নং": "Member No.", "পরিচালক": "Director", "আগের": "Previous", "পরের": "Next", "অ্যাকশন": "Action", "হোমে": "On Home", "সদস্যরা ডাউনলোড করতে পারবে": "Members can download", "ফাইল": "File", "সদস্যদের জন্য": "for members", "প্রতিষ্ঠানের তথ্য": "Organization Info", "আমাদের পরিচিতি": "About Us", "নির্দেশনা": "Instructions", "মোবাইল": "Mobile", "• এই কার্ডটি শুধুমাত্র কার্ডধারীর পরিচয়ের জন্য প্রযোজ্য।": "• This card is valid only as identification for the cardholder.", "• কার্ড হারিয়ে গেলে দ্রুত প্রতিষ্ঠানের সাথে যোগাযোগ করুন।": "• If the card is lost, please contact the organization immediately.", "• কার্ড কুড়িয়ে পেলে অনুগ্রহ করে উপরের ঠিকানায় ফেরত দিন।": "• If found, please return it to the address above.", "সভাপতি": "President", "সহ-সভাপতি": "Vice President", "সাধারণ সম্পাদক": "General Secretary", "সহ-সাধারণ সম্পাদক": "Joint General Secretary", "কোষাধ্যক্ষ": "Treasurer", "সাংগঠনিক সম্পাদক": "Organizing Secretary", "উপদেষ্টা": "Advisor", "নির্বাহী সদস্য": "Executive Member", "আল-আকসা ও কুববাতুস সাখরা": "Al-Aqsa and the Dome of the Rock", "ফিলিস্তিনের জলপাই গাছ": "Olive tree of Palestine", "ফিলিস্তিনের পতাকা": "Flag of Palestine", "কুফিয়া ও জলপাইয়ের শাখা": "Keffiyeh and olive branch", "কোনো নোটিশ পাওয়া যায়নি।": "No notices found.", "কোনো কার্যক্রম পাওয়া যায়নি।": "No activities found.", "শীঘ্রই সদস্যদের তথ্য যোগ করা হবে।": "Members' information will be added soon.", "ডেটা লোড করতে সমস্যা হয়েছে।": "Failed to load data.", "এখনো কোনো ফাইল দেওয়া হয়নি।": "No files have been provided yet.", "ফাইল ডাউনলোড করতে লগইন করুন।": "Please log in to download files.", "লগইন করুন": "Log In", "কোনো ব্যানার নেই। ব্যানার না থাকলে ডিফল্ট ছবি দেখাবে।": "No banners yet. A default image is shown when there are none.", "কোনো নোটিশ নেই।": "No notices.", "কোনো কার্যক্রম নেই।": "No activities.", "কোনো ছবি নেই।": "No photos.", "কোনো সদস্য নেই।": "No members.", "কোনো বার্তা নেই।": "No messages.", "কোনো ফাইল নেই।": "No files.", "হ্যাঁ": "Yes", "না": "No", "ইমেইল বা পাসওয়ার্ড ভুল হয়েছে": "Incorrect email or password", "আপনার ইমেইল ভেরিফাই করা হয়নি — ইনবক্স চেক করুন": "Your email is not verified — check your inbox", "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে": "An account already exists with this email", "এই ইমেইল দিয়ে আগেই অ্যাকাউন্ট খোলা হয়েছে — লগইন করুন": "An account already exists with this email — please log in", "পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে": "Password must be at least 6 characters", "অনেকবার চেষ্টা করা হয়েছে, কিছুক্ষণ পর আবার চেষ্টা করুন": "Too many attempts, please try again later", "এই অ্যাকাউন্টটি অ্যাডমিন নয়": "This account is not an admin", "ডাউনলোড করতে আগে লগইন করুন": "Please log in first to download", "লগআউট সম্পন্ন": "Logged out", "অ্যাকাউন্ট তৈরি হচ্ছে...": "Creating account...", "লগইন হচ্ছে...": "Logging in...", "লগইন...": "Logging in...", "পাঠানো হচ্ছে...": "Sending...", "সংরক্ষণ হচ্ছে...": "Saving...", "আপলোড হচ্ছে...": "Uploading...", "কার্ড তৈরি হচ্ছে...": "Preparing card...", "সব ক্ষেত্র পূরণ করুন": "Please fill in all fields", "একটি ছবি নির্বাচন করুন": "Please select a photo", "একটি ফাইল নির্বাচন করুন": "Please select a file", "একটি ব্যানার ছবি নির্বাচন করুন": "Please select a banner image", "সদস্যের নাম দিন": "Please enter the member's name", "নাম দিন": "Please enter a name", "ফাইল ২০ MB এর বেশি হতে পারবে না": "File cannot exceed 20 MB", "ব্যানার সম্পাদনা করুন": "Edit Banner", "নোটিশ সম্পাদনা করুন": "Edit Notice", "কার্যক্রম সম্পাদনা করুন": "Edit Activity", "সদস্য সম্পাদনা করুন": "Edit Member", "ডাউনলোড অনুমতি বন্ধ করা হয়েছে": "Download permission turned off", "✅ আইটেম মুছে ফেলা হয়েছে!": "✅ Item deleted!", "✅ আপনার বার্তা পাঠানো হয়েছে!": "✅ Your message has been sent!", "✅ কার্যক্রম আপডেট হয়েছে!": "✅ Activity updated!", "✅ ছবি আপলোড হয়েছে!": "✅ Photo uploaded!", "✅ নতুন কার্যক্রম যোগ হয়েছে!": "✅ New activity added!", "✅ নতুন নোটিশ যোগ হয়েছে!": "✅ New notice added!", "✅ নতুন ব্যানার যোগ হয়েছে!": "✅ New banner added!", "✅ নতুন সদস্য যোগ হয়েছে!": "✅ New member added!", "✅ নোটিশ আপডেট হয়েছে!": "✅ Notice updated!", "✅ ফাইল আপলোড হয়েছে!": "✅ File uploaded!", "✅ ব্যানার আপডেট হয়েছে!": "✅ Banner updated!", "✅ লগইন সফল!": "✅ Login successful!", "✅ অ্যাডমিন লগইন সফল!": "✅ Admin login successful!", "✅ সদস্য আপডেট হয়েছে!": "✅ Member updated!", "✅ সদস্যরা এখন এই ছবি ডাউনলোড করতে পারবে": "✅ Members can now download this photo", "✅ সেটিংস সংরক্ষণ হয়েছে! সাইন এখন সব সদস্য কার্ডে বসবে।": "✅ Settings saved! The signature will now appear on all member cards.", "✅ তথ্য সংরক্ষণ হয়েছে!": "✅ Information saved!", "✅ ছবি সংরক্ষণ হয়েছে!": "✅ Photo saved!", "✅ সংরক্ষণ হয়েছে!": "✅ Saved!", "✅ কার্ড ডাউনলোড হয়েছে!": "✅ Card downloaded!", "🎉 অ্যাকাউন্ট তৈরি হয়েছে! এবার লগইন করুন।": "🎉 Account created! Please log in now.", "🎉 অ্যাকাউন্ট তৈরি হয়েছে! এখন পাসওয়ার্ড দিয়ে লগইন করুন।": "🎉 Account created! Now log in with your password.", "(ইমেইল ভেরিফিকেশন চালু থাকলে আগে ইনবক্সের লিংকে ক্লিক করুন)": "(If email verification is on, click the link in your inbox first)", "ছবি সংরক্ষণ": "Save photo", "এবং": "and"};
         const I18N_RE = [[/^সদস্য নং (.+)$/, "Member No. $1"],[/^\(সদস্য নং (.+)\)$/, "(Member No. $1)"],[/^কার্ড ডাউনলোড করা যায়নি: (.*)$/, "Could not download card: $1"],[/^ছবি সংরক্ষণ হয়নি: (.*)$/, "Could not save photo: $1"],[/^ফাইল আপলোড ব্যর্থ: (.*)$/, "File upload failed: $1"],[/^ডেটা লোড করতে ব্যর্থ: (.*)$/, "Failed to load data: $1"],[/^ফাইল লোড করা যায়নি: (.*)$/, "Could not load files: $1"]];
         const EMOJI_LEAD = /^([\s\u2190-\u2BFF\uFE0F\u200D\u{1F000}-\u{1FAFF}]*)([\s\S]*)$/u;
         function trCore(k) {
@@ -5696,8 +6045,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             // কিউআর কোড স্ক্যান বা লিংকের মাধ্যমে কোনো সদস্য সার্চ করা হলে সরাসরি লোড
             try {
                 const sp = new URLSearchParams(window.location.search);
+                const noQ = sp.get('no');
                 const memQ = sp.get('form') || sp.get('info') || sp.get('member') || sp.get('id');
-                if (memQ) {
+                if (noQ) {
+                    navigateTo('memno');
+                    showMemberNo(noQ);
+                } else if (memQ) {
                     navigateTo('minfo');
                     showMemberInfo(memQ);
                 }
