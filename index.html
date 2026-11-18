@@ -3750,19 +3750,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             g.addColorStop(0, CARD.navy); g.addColorStop(0.5, CARD.blue); g.addColorStop(1, CARD.navy);
             c.fillStyle = g;
             c.beginPath(); c.rect(-2, -2, W + 4, H + 4); path(B, B, W - 2 * B, H - 2 * B, Math.max(8, R - B + 4)); c.fill('evenodd');
-            c.strokeStyle = CARD.mid; c.lineJoin = 'round'; c.lineCap = 'round';
-            if (fr === 'double') {
-                c.lineWidth = 2.5; c.beginPath(); path(B + 7, B + 7, W - 2 * (B + 7), H - 2 * (B + 7), Math.max(6, R - B - 3)); c.stroke();
-            } else if (fr === 'thick') {
-                c.lineWidth = 3; c.beginPath(); path(B, B, W - 2 * B, H - 2 * B, Math.max(8, R - B + 4)); c.stroke();
-            } else if (fr === 'corner') {
-                const dirs = [[1, 1], [-1, 1], [-1, -1], [1, -1]];
-                [[B + 16, B + 16], [W - B - 16, B + 16], [W - B - 16, H - B - 16], [B + 16, H - B - 16]].forEach(([x, y], k) => {
-                    const [dx, dy] = dirs[k];
-                    c.lineWidth = 4.5; c.beginPath(); c.moveTo(x, y + dy * 46); c.lineTo(x, y); c.lineTo(x + dx * 46, y); c.stroke();
-                    c.lineWidth = 2.2; c.beginPath(); c.moveTo(x + dx * 11, y + dy * 34); c.lineTo(x + dx * 11, y + dy * 11); c.lineTo(x + dx * 34, y + dy * 11); c.stroke();
-                });
-            }
+            // ভেতরে কোনো অতিরিক্ত নীল রেখা/দাগ আঁকা হয় না — শুধু পরিষ্কার বর্ডার
             c.restore();
         }
 
@@ -3793,7 +3781,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.fillText(tr('সদস্যের স্বাক্ষর'), (x0 + x1) / 2, yLine + 22); c.textAlign = 'left';
         }
         function photoBlock(c, photo, px, py, pw, ph, shp, ring) {
-            c.fillStyle = CARD.light; photoPath(c, px, py, pw, ph, shp, 8); c.fill();
+            c.save(); c.shadowColor = 'rgba(10,42,102,0.28)'; c.shadowBlur = 14; c.shadowOffsetY = 4;
+            c.fillStyle = CARD.light; photoPath(c, px, py, pw, ph, shp, 8); c.fill(); c.restore();
             c.save(); photoPath(c, px, py, pw, ph, shp, 0); c.clip();
             if (photo) { drawCover(c, photo, px, py, pw, ph); }
             else {
@@ -3805,6 +3794,34 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }
             c.restore();
             c.lineWidth = 4; c.strokeStyle = ring || CARD.blue; photoPath(c, px, py, pw, ph, shp, 0); c.stroke();
+        }
+        // নামের বক্স: লেখার দৈর্ঘ্য অনুযায়ী প্রস্থ ছোট/বড় হয় (maxW পর্যন্ত)
+        function nameBox(c, F, text, x, y, maxW, h, align, fs) {
+            c.font = `700 ${fs}px ${F}`;
+            const padX = 34, barW = 10;
+            const tw = c.measureText(text).width;
+            const w = Math.min(maxW, Math.max(200, tw + padX * 2 + barW));
+            const bx = align === 'center' ? x - w / 2 : x;
+            c.save();
+            c.shadowColor = 'rgba(10,42,102,0.30)'; c.shadowBlur = 14; c.shadowOffsetY = 4;
+            const g = c.createLinearGradient(bx, 0, bx + w, 0);
+            g.addColorStop(0, CARD.navy); g.addColorStop(0.6, CARD.blue); g.addColorStop(1, CARD.mid);
+            c.fillStyle = g; rr(c, bx, y, w, h, h / 2.6); c.fill();
+            c.restore();
+            // উপরের অংশে হালকা গ্লস
+            c.save(); rr(c, bx, y, w, h, h / 2.6); c.clip();
+            const gl = c.createLinearGradient(0, y, 0, y + h);
+            gl.addColorStop(0, 'rgba(255,255,255,0.22)'); gl.addColorStop(0.5, 'rgba(255,255,255,0.04)'); gl.addColorStop(1, 'rgba(255,255,255,0)');
+            c.fillStyle = gl; c.fillRect(bx, y, w, h);
+            // বাম পাশে উজ্জ্বল অ্যাকসেন্ট বার
+            c.fillStyle = 'rgba(255,255,255,0.85)'; c.fillRect(bx, y, barW - 3, h);
+            c.restore();
+            c.fillStyle = '#ffffff'; c.font = `700 ${fs}px ${F}`;
+            const t = fitText(c, text, w - padX * 2 - barW);
+            const by = y + h / 2 + fs * 0.33;
+            c.textAlign = 'center';
+            c.fillText(t, bx + barW / 2 + w / 2, by);
+            c.textAlign = 'left';
         }
         function desigPill(c, m, cx, y, w, h, F, fs) {
             const pg = c.createLinearGradient(cx - w / 2, 0, cx + w / 2, 0);
@@ -3870,7 +3887,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 c.fillStyle = CARD.muted; c.font = `400 22px ${F}`; c.fillText(fitText(c, tr(S.org_tagline), rw), x0, 102);
                 const dg = c.createLinearGradient(x0, 0, W - 40, 0); dg.addColorStop(0, CARD.navy); dg.addColorStop(1, CARD.mid);
                 c.fillStyle = dg; c.fillRect(x0, 114, rw, 4);
-                c.fillStyle = CARD.navy; c.font = `700 50px ${F}`; c.fillText(fitText(c, m.name || '—', rw), x0, 182);
+                nameBox(c, F, m.name || '—', x0, 132, rw, 66, 'left', 44);
                 const rows = [[tr('পিতার নাম'), m.father_name], [tr('জন্ম তারিখ'), m.birth_date ? fmtDate(m.birth_date) : ''], [tr('আইডি নং'), dgt(m.member_no || '')], [tr('মোবাইল'), m.phone], [tr('রক্তের গ্রুপ'), m.blood_group], [tr('পেশা'), m.occupation]];
                 let ry = 236;
                 rows.forEach(([l, v]) => { infoRow(c, F, l, v, x0, 556, ry, W - 40 - 556, true, W - 40); ry += 41; });
@@ -3886,8 +3903,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 photoBlock(c, photo, px, py, pw, ph, shp);
                 drawMemberSign(c, msig, 70, 360, 214, 262, 270, F);
                 drawSignBlock(c, sig, null, S, 700, 990, 214, 262, 270, F, 0.9);
-                c.textAlign = 'center'; c.fillStyle = CARD.navy; c.font = `700 48px ${F}`;
-                c.fillText(fitText(c, m.name || '—', W - 120), W / 2, 394);
+                nameBox(c, F, m.name || '—', W / 2, 354, W - 140, 54, 'center', 40);
                 desigPill(c, m, W / 2, 418, 280, 42, F, 24);
                 const L1 = [[tr('পিতার নাম'), m.father_name], [tr('জন্ম তারিখ'), m.birth_date ? fmtDate(m.birth_date) : ''], [tr('আইডি নং'), dgt(m.member_no || '')]];
                 const L2 = [[tr('মোবাইল'), m.phone], [tr('রক্তের গ্রুপ'), m.blood_group], [tr('পেশা'), m.occupation]];
@@ -3903,8 +3919,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 desigPill(c, m, px + pw / 2, 404, pw + 16, 46, F, 26);
                 drawMemberSign(c, msig, 46, 238, 478, 548, 556, F);
                 const dx = 268;
-                c.fillStyle = CARD.navy; c.font = `700 48px ${F}`; c.textAlign = 'left';
-                c.fillText(fitText(c, m.name || '—', W - 44 - dx), dx, 210);
+                nameBox(c, F, m.name || '—', dx, 158, W - 44 - dx, 62, 'left', 44);
                 const rows = [[tr('পিতার নাম'), m.father_name], [tr('জন্ম তারিখ'), m.birth_date ? fmtDate(m.birth_date) : ''], [tr('আইডি নং'), dgt(m.member_no || '')], [tr('মোবাইল'), m.phone], [tr('রক্তের গ্রুপ'), m.blood_group], [tr('পেশা'), m.occupation]];
                 let ry = 258;
                 rows.forEach(([l, v]) => { infoRow(c, F, l, v, dx, 456, ry, W - 44 - 456, true, W - 44); ry += 41; });
@@ -3914,7 +3929,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 drawSignBlock(c, sig, null, S, 790, 1030, 470, 568, 578, F, 1.05);
             }
 
-            cardFooter(c, W, [tr(S.org_address), S.org_phone, S.org_email].filter(Boolean).join('   •   '), F);
+            cardFooter(c, W, tr('ওয়েবসাইট') + ': ' + SITE_HOST, F);
             c.restore();
 
             drawCardFrame(c, W, H);
@@ -6589,11 +6604,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 test.getTracks().forEach(t => t.stop());
                 // ২) স্ক্যান শুরু — পেছনের ক্যামেরা, না পেলে অন্য ক্যামেরা
                 const cfg = {
-                    fps: 10,
-                    qrbox: (w, h) => ({ width: Math.max(160, Math.floor(w * 0.8)), height: Math.max(160, Math.floor(Math.min(h * 0.85, w * 0.7))) }),
+                    fps: 15,
                     disableFlip: false
                 };
-                const mk = bd => new Html5Qrcode('scReader', { formatsToSupport: [Html5QrcodeSupportedFormats.QR_CODE, Html5QrcodeSupportedFormats.CODE_128], experimentalFeatures: { useBarCodeDetectorIfSupported: bd }, verbose: false });
+                const mk = bd => new Html5Qrcode('scReader', { experimentalFeatures: { useBarCodeDetectorIfSupported: bd }, verbose: false });
                 const camSources = [
                     async () => ({ facingMode: 'environment' }),
                     async () => { const cams = await Html5Qrcode.getCameras(); if (!cams || !cams.length) throw { name: 'NotFoundError' }; const back = cams.find(c => /back|rear|environment|পিছ/i.test(c.label || '')) || cams[cams.length - 1]; return back.id; },
@@ -6621,7 +6635,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 $('scStartBtn').style.display = 'none'; $('scStopBtn').style.display = '';
                 scSetBtn(false);
                 try { $('scReader').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) { /* ignore */ }
-                showToast('📷 ক্যামেরা চালু — কার্ডের কিউআর/বারকোড ফ্রেমের ভেতরে ধরুন');
+                showToast('📷 ক্যামেরা চালু — কার্ডের কিউআর/বারকোড ক্যামেরার সামনে ধরুন, নিজে থেকেই ধরবে');
             } catch (e) {
                 console.error(e);
                 scSetBtn(false);
@@ -6633,16 +6647,29 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if ($('scStartBtn')) { scSetBtn(false); $('scStartBtn').style.display = ''; $('scStopBtn').style.display = 'none'; }
         }
         // ---- বিকল্প: ফোনের নিজস্ব ক্যামেরা অ্যাপে ছবি তুলে স্ক্যান (সব ব্রাউজার/WebView-এ চলে) ----
+        async function scDetectNative(file) {
+            if (!('BarcodeDetector' in window)) return null;
+            try {
+                const bmp = await createImageBitmap(file);
+                const r = await new BarcodeDetector().detect(bmp);
+                return (r && r[0] && r[0].rawValue) || null;
+            } catch (e) { return null; }
+        }
         async function scanFromFile(file) {
             if (!file) return;
-            if (!(await scEnsureLib())) { scCamMsg(scCamErrorText({ name: 'LibLoad' })); return; }
             scEnsureEvent();
-            const h = new Html5Qrcode('scFileTmp', { verbose: false });
-            try {
-                const txt = await h.scanFile(file, false);
-                await processScan(txt, { force: true });
-            } catch (e) { showToast('ছবিতে কিউআর/বারকোড পাওয়া যায়নি — কোডটি কাছ থেকে স্পষ্ট করে ছবি তুলুন', 'error'); }
-            try { h.clear(); } catch (e) { /* ignore */ }
+            let txt = await scDetectNative(file);          // ১) ব্রাউজারের নিজস্ব ডিটেক্টর (সব ধরনের বারকোড/কিউআর)
+            if (!txt) {
+                if (!(await scEnsureLib())) { scCamMsg(scCamErrorText({ name: 'LibLoad' })); return; }
+                for (const bd of [true, false]) {          // ২) লাইব্রেরি দিয়ে (সব ফরম্যাট)
+                    const h = new Html5Qrcode('scFileTmp', { experimentalFeatures: { useBarCodeDetectorIfSupported: bd }, verbose: false });
+                    try { txt = await h.scanFile(file, false); } catch (e) { txt = null; }
+                    try { h.clear(); } catch (e) { /* ignore */ }
+                    if (txt) break;
+                }
+            }
+            if (txt) await processScan(txt, { force: true });
+            else showToast('ছবিতে কিউআর/বারকোড পাওয়া যায়নি — কোডটি কাছ থেকে স্পষ্ট করে ছবি তুলুন', 'error');
         }
         async function loadScanLog() {
             const box = $('scLog'); if (!box) return;
