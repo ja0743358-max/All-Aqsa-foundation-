@@ -1200,6 +1200,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     </button>
                 </div>
             </div>
+            <div id="contestHome"></div>
 
             <!-- Hero -->
             <div class="hero">
@@ -1752,7 +1753,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         </section>
 
         <!-- CONTACT PAGE -->
-        <section class="page-section section-padding" id="page-contact" style="padding-top:120px;">
+        <section class="page-section section-padding" id="page-sirat" style="padding-top:120px;"><div class="container" style="max-width:760px"><div id="siratBox"></div></div></section>
+
+    <section class="page-section section-padding" id="page-contact" style="padding-top:120px;">
             <div class="container">
                 <div class="text-center mb-5">
                     <h2 class="section-title text-center">যোগাযোগ করুন</h2>
@@ -1846,6 +1849,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="photouploads"><i class="fas fa-camera"></i> ছবি আপলোড <span class="sb-badge" id="sbPhotoBadge" style="display:none;"></span></a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="scanner"><i class="fas fa-qrcode"></i> স্ক্যানার / উপস্থিতি <span class="sb-badge" id="sbScanBadge" style="display:none;">0</span></a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="mycard"><i class="fas fa-id-card"></i> আমার কার্ড</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="contest"><i class="fas fa-trophy"></i> সিরাত প্রতিযোগিতা</a></li>
                                 <li class="nav-section">ওয়েবসাইট কনটেন্ট</li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="banners"><i class="fas fa-image"></i> ব্যানার</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="notices"><i class="fas fa-bullhorn"></i> নোটিশ</a></li>
@@ -1938,6 +1942,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 </div>
                                 <div class="admin-card"><div id="adminGalleryList"><div class="page-loader"><div class="loader"></div></div></div></div>
                             </div>
+                            <div class="admin-page" id="admin-contest"><div id="ctAdminBox"></div></div>
                             <div class="admin-page" id="admin-scanner">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h4 class="fw-bold text-primary-dark"><i class="fas fa-qrcode me-2"></i> সদস্য স্ক্যানার ও উপস্থিতি</h4>
@@ -5579,6 +5584,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if (type === 'mycard') { await loadAdminCard(); return; }
             if (type === 'templates') { await renderTemplatesAdmin(); return; }
             if (type === 'offlineforms') { initOfflineForms(); return; }
+            if (type === 'contest') { contestAdminInit(); return; }
             if (type === 'photouploads') { /* ADMIN_CFG দিয়ে লোড হবে */ }
             const cfg = ADMIN_CFG[type];
             if (!cfg) return;
@@ -6415,8 +6421,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             try {
                 const sp = new URLSearchParams(window.location.search);
                 const noQ = sp.get('no');
+                const sfQ = sp.get('sf');
                 const memQ = sp.get('form') || sp.get('info') || sp.get('member') || sp.get('id');
-                if (noQ) {
+                if (sfQ) {
+                    navigateTo('sirat'); siratView('form', sfQ);
+                } else if (noQ) {
                     navigateTo('memno');
                     showMemberNo(noQ);
                 } else if (memQ) {
@@ -6736,6 +6745,337 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         window.editActivity = editActivity;
         window.editMember = editMember;
         window.viewImage = viewImage;
+        // ================================================================
+        //  সিরাত প্রতিযোগিতা (প্রশ্ন, ফরম PDF, আপলোড, রেজাল্ট)
+        // ================================================================
+        const CTG = '#1b6e2f', ctmm = v => v * 1240 / 210;
+        const CT = { cfg: null };
+        const CT_DEF = { enabled: false, results_open: false, hours: 24, comp: 'সিরাত প্রতিযোগিতা', poster: '', clogo: '', about_org: '', about_comp: '', phone: '', email: '', seed: 7, questions: [] };
+        const ctBn = s => String(s).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
+        const CTL = ['ক', 'খ', 'গ', 'ঘ'];
+        const ctNormQ = a => { a = Array.isArray(a) ? a.slice(0, 40) : []; while (a.length < 40) a.push({ q: '', o: ['', '', '', ''] }); return a.map(x => ({ q: x.q || '', o: [0, 1, 2, 3].map(i => (x.o && x.o[i]) || '') })); };
+        async function ctLoad(force) {
+            if (CT.cfg && !force) return CT.cfg;
+            let d = {};
+            try { const r = await sb.from('contest_cfg').select('data').eq('id', 1).maybeSingle(); d = (r.data && r.data.data) || {}; } catch (e) { /* ignore */ }
+            CT.cfg = { ...CT_DEF, ...d }; CT.cfg.questions = ctNormQ(CT.cfg.questions);
+            return CT.cfg;
+        }
+        let _ctT = null;
+        function ctAutoSave() {
+            ['ctSaved', 'ctSaved2'].forEach(i => { if ($(i)) $(i).textContent = 'সেভ হচ্ছে...'; });
+            clearTimeout(_ctT);
+            _ctT = setTimeout(async () => {
+                const r = await sb.from('contest_cfg').upsert({ id: 1, data: CT.cfg });
+                if (r.error) showToast('⚠️ সেভ হয়নি — supabase_contest.sql চালান', 'error');
+                ['ctSaved', 'ctSaved2'].forEach(i => { if ($(i)) $(i).textContent = r.error ? '' : '✓ অটো সেভ হয়েছে'; });
+            }, 700);
+        }
+
+        // ---------- ক্যানভাসে ফরম আঁকা ----------
+        const CX0 = ctmm(4), CY0 = ctmm(4), CW = ctmm(202), CH = ctmm(289), CX1 = CX0 + CW, CSL = ctmm(50.8), CCUT = CY0 + CH - CSL;
+        function ctT(c, t, x, y, px, w, al, col, maxW) {
+            c.textAlign = al || 'left'; c.fillStyle = col || CTG;
+            c.font = `${w || 400} ${px}px ${CARD_FONT}`;
+            while (maxW && px > 12 && c.measureText(t).width > maxW) { px -= 1; c.font = `${w || 400} ${px}px ${CARD_FONT}`; }
+            c.fillText(t, x, y);
+        }
+        function ctWrap(c, t, mw, ml) {
+            const out = []; let line = '';
+            String(t || '').split(/\s+/).filter(Boolean).forEach(w => {
+                const tt = line ? line + ' ' + w : w;
+                if (c.measureText(tt).width > mw && line) { out.push(line); line = w; } else line = tt;
+            });
+            if (line) out.push(line);
+            if (out.length > ml) { out.length = ml; out[ml - 1] = out[ml - 1].replace(/.{0,2}$/, '…'); }
+            return out;
+        }
+        function ctImg(c, im, x, y, bw, bh, al) {
+            if (!im) return;
+            const r = Math.min(bw / im.width, bh / im.height), w = im.width * r, h = im.height * r;
+            c.globalAlpha = al || 1; c.drawImage(im, x + (bw - w) / 2, y + (bh - h) / 2, w, h); c.globalAlpha = 1;
+        }
+        function ctTitle(c, t, x, y, px, maxW) {
+            c.font = `700 ${px}px ${CARD_FONT}`;
+            while (px > 20 && c.measureText(t).width > maxW) { px -= 2; c.font = `700 ${px}px ${CARD_FONT}`; }
+            const w = c.measureText(t).width; c.textAlign = 'center';
+            c.fillStyle = '#b9dcc3'; c.fillText(t, x + 3, y + 3);
+            const g = c.createLinearGradient(0, y - px, 0, y); g.addColorStop(0, '#2e9a4f'); g.addColorStop(1, '#0b4d20');
+            c.fillStyle = g; c.fillText(t, x, y);
+            return w;
+        }
+        function ctOrn(c, x, y, w) {
+            c.save(); c.strokeStyle = CTG; c.fillStyle = CTG; c.lineWidth = 2;
+            const dia = (cx, r) => { c.beginPath(); c.moveTo(cx, y - r); c.lineTo(cx + r, y); c.lineTo(cx, y + r); c.lineTo(cx - r, y); c.closePath(); c.fill(); };
+            [-1, 1].forEach(d => { c.beginPath(); c.moveTo(x + d * 20, y); c.lineTo(x + d * w, y); c.stroke(); dia(x + d * (w + 8), 7); });
+            dia(x, 8); c.restore();
+        }
+        function ctBase() {
+            const cv = document.createElement('canvas'); cv.width = 1240; cv.height = 1754;
+            const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 1240, 1754);
+            c.strokeStyle = CTG; c.lineWidth = 2; c.strokeRect(CX0, CY0, CW, CH);
+            return [cv, c];
+        }
+        function ctCut(c) {
+            c.save(); c.strokeStyle = CTG; c.lineWidth = 2; c.setLineDash([10, 7]);
+            const g = ctmm(7); c.beginPath(); c.moveTo(CX0, CCUT); c.lineTo(620 - g, CCUT); c.moveTo(620 + g, CCUT); c.lineTo(CX1, CCUT); c.stroke(); c.restore();
+            ctT(c, '✂', 620, CCUT + 12, 34, 400, 'center');
+        }
+        function ctGrid(c, list, off, top, rows) {
+            const rh = (CCUT - top) / rows, cw = CW / 2;
+            list.forEach((x, i) => {
+                const col = Math.floor(i / rows), r = i % rows, px = CX0 + col * cw, py = top + r * rh;
+                c.save(); c.beginPath(); c.rect(px + 2, py, cw - 4, rh); c.clip();
+                c.strokeStyle = CTG; c.lineWidth = 1; c.setLineDash([3, 4]); c.beginPath(); c.moveTo(px + 6, py); c.lineTo(px + cw - 6, py); c.stroke(); c.setLineDash([]);
+                c.font = `700 21px ${CARD_FONT}`;
+                const ls = ctWrap(c, ctBn(off + i + 1) + '. ' + x.q, cw - 28, 2);
+                ls.forEach((l, k) => ctT(c, l, px + 14, py + 26 + k * 26, 21, 700));
+                const oy = py + 26 + (ls.length - 1) * 26 + 32, ow = (cw - 28) / 2;
+                x.o.forEach((o, k) => {
+                    const ox = px + 14 + (k % 2) * ow, yy = oy + Math.floor(k / 2) * 28;
+                    c.strokeStyle = CTG; c.lineWidth = 1.6; c.strokeRect(ox, yy - 17, 19, 19);
+                    c.font = `400 20px ${CARD_FONT}`;
+                    ctT(c, ctWrap(c, CTL[k] + ') ' + o, ow - 34, 1)[0] || CTL[k] + ')', ox + 27, yy, 20, 400);
+                });
+                c.restore();
+            });
+            c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(620, top); c.lineTo(620, CCUT); c.stroke();
+        }
+        function ctFront(serial, a) {
+            const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(25.4);
+            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CCUT - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
+            // হেডার (১ ইঞ্চি)
+            ctImg(c, a.logo, CX0 + ctmm(3), CY0 + ctmm(2.2), ctmm(21), ctmm(21));
+            ctT(c, org, 620, CY0 + 36, 27, 600, 'center', '#3d7d50', 720);
+            const tw = ctTitle(c, cf.comp, 620, CY0 + 108, 70, 780);
+            ctOrn(c, 620, CY0 + 128, Math.min(tw / 2 + 10, 360));
+            drawQrOnCanvas(c, `${siteBase()}?sf=${serial}`, CX1 - ctmm(23), CY0 + ctmm(1.6), ctmm(18.5));
+            ctT(c, serial, CX1 - ctmm(23) + ctmm(9.25), CY0 + hh - 6, 22, 700, 'center');
+            c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(CX0, CY0 + hh); c.lineTo(CX1, CY0 + hh); c.stroke();
+            ctT(c, 'সঠিক উত্তরের পাশের বাক্সে টিক (✓) দিন', 620, CY0 + hh + 28, 20, 400, 'center');
+            ctGrid(c, cf.questions.slice(0, 18), 0, CY0 + hh + ctmm(6), 9);
+            ctCut(c);
+            // স্লিপ
+            ctImg(c, a.clogo, 620 - ctmm(24), CCUT + ctmm(5), ctmm(48), ctmm(42), .09);
+            const lx = CX0 + ctmm(6);
+            let sp = 66; c.font = `700 ${sp}px ${CARD_FONT}`;
+            while (sp > 30 && Math.max(c.measureText(org).width, c.measureText(cf.comp).width) > 900) { sp -= 2; c.font = `700 ${sp}px ${CARD_FONT}`; }
+            ctT(c, org, lx + 450, CCUT + 84, sp, 700, 'center', CTG);
+            ctTitle(c, cf.comp, lx + 450, CCUT + 158, sp, 900);
+            ctT(c, 'ফরম নম্বর: ' + serial, lx + 450, CCUT + 204, 30, 700, 'center');
+            c.lineWidth = 1.5;
+            const ln = (t, x, y, x2) => { ctT(c, t, x, y, 24, 400); c.beginPath(); c.moveTo(x + c.measureText(t).width + 8, y + 4); c.lineTo(x2, y + 4); c.stroke(); };
+            ln('নাম:', lx, CCUT + 244, CX1 - ctmm(42));
+            ln('ঠিকানা:', lx, CCUT + 284, lx + 560); ln('মোবাইল:', lx + 600, CCUT + 284, CX1 - ctmm(42));
+            drawQrOnCanvas(c, `${siteBase()}?sf=${serial}`, CX1 - ctmm(37), CCUT + (CSL - ctmm(30)) / 2, ctmm(30));
+            return cv;
+        }
+        function ctBack(a) {
+            const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(11);
+            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CCUT - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
+            ctImg(c, a.clogo, CX0 + ctmm(3), CY0 + ctmm(1.5), ctmm(8), ctmm(8)); ctImg(c, a.clogo, CX1 - ctmm(11), CY0 + ctmm(1.5), ctmm(8), ctmm(8));
+            ctT(c, org + ' — ' + cf.comp, 620, CY0 + 50, 34, 700, 'center', CTG, 900);
+            c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(CX0, CY0 + hh); c.lineTo(CX1, CY0 + hh); c.stroke();
+            ctT(c, 'সঠিক উত্তরের পাশের বাক্সে টিক (✓) দিন', 620, CY0 + hh + 28, 20, 400, 'center');
+            ctGrid(c, cf.questions.slice(18, 40), 18, CY0 + hh + ctmm(6), 11);
+            ctCut(c);
+            ctImg(c, a.clogo, 620 - ctmm(24), CCUT + ctmm(5), ctmm(48), ctmm(42), .08);
+            const lx = CX0 + ctmm(6), mw = CW - ctmm(46);
+            ctT(c, org, lx, CCUT + 46, 42, 700, 'left', CTG, mw);
+            ctT(c, cf.comp, lx, CCUT + 82, 30, 700, 'left', CTG, mw);
+            c.font = `400 20px ${CARD_FONT}`; let y = CCUT + 114;
+            [cf.about_org || SETTINGS.org_about, cf.about_comp].forEach(t => ctWrap(c, t, mw, 3).forEach(l => { ctT(c, l, lx, y, 20, 400); y += 26; }));
+            ctT(c, 'যোগাযোগ: ' + [cf.phone, cf.email].filter(Boolean).join('  |  '), lx, CCUT + CSL - 14, 22, 700, 'left', CTG, mw);
+            drawQrOnCanvas(c, siteBase(), CX1 - ctmm(37), CCUT + ctmm(6), ctmm(28));
+            ctT(c, 'ওয়েবসাইট', CX1 - ctmm(37) + ctmm(14), CCUT + ctmm(6) + ctmm(28) + 26, 20, 700, 'center');
+            return cv;
+        }
+        async function ctPdf(serials, withBack, fname, backN, onProg) {
+            await loadSettings(); await cardFontsReady();
+            const a = { logo: await loadImg(SETTINGS.logo_url), clogo: await loadImg(CT.cfg.clogo) };
+            const PW = 595.28, PH = 841.89;
+            const it = cv => canvasToJpeg(cv).then(j => ({ jpeg: j, w: cv.width, h: cv.height, x: 0, y: 0, dw: PW, dh: PH }));
+            const bk = (withBack || backN) ? await it(ctBack(a)) : null, pages = [];
+            if (backN) for (let i = 0; i < backN; i++) pages.push({ items: [bk], extra: '' });
+            else for (let i = 0; i < serials.length; i++) { if (onProg) onProg(i + 1, serials.length); await new Promise(r => setTimeout(r, 0)); pages.push({ items: [await it(ctFront(serials[i], a))], extra: '' }); if (withBack) pages.push({ items: [bk], extra: '' }); }
+            triggerDownload(buildPdfPages(PW, PH, pages), fname);
+        }
+
+        // ---------- হোম: ব্যানারের নিচে ----------
+        async function ctRenderHome() {
+            const el = $('contestHome'); if (!el) return;
+            const c = await ctLoad();
+            if (!c.enabled) { el.innerHTML = ''; return; }
+            el.innerHTML = `<div class="container py-4"><div class="text-center"><div class="d-flex flex-wrap justify-content-center gap-2"><button class="btn btn-success btn-lg" id="ctJoinBtn">🏆 প্রতিযোগিতায় অংশগ্রহণ করুন</button><button class="btn btn-outline-success btn-lg" onclick="ctGo('result')">আপনার রেজাল্ট দেখুন</button><button class="btn btn-outline-success btn-lg" onclick="ctGo('upload')">ফরম আপলোড করুন</button></div>${c.poster ? `<img src="${escAttr(c.poster)}" alt="" style="width:100%;max-width:900px;max-height:640px;object-fit:contain;border-radius:16px;box-shadow:0 8px 30px rgba(0,0,0,.15);margin-top:18px">` : ''}</div></div>`;
+            $('ctJoinBtn').onclick = function () { ctParticipate(this); };
+        }
+        function ctGo(mode) { navigateTo('sirat'); siratView(mode, ''); }
+        async function ctParticipate(btn) {
+            setBusy(btn, true, 'ফরম তৈরি হচ্ছে...');
+            try {
+                await ctLoad(true);
+                const r = await sb.rpc('contest_claim');
+                if (r.error) throw r.error;
+                if (!r.data) { showToast('❌ এখন কোনো ফরম নেই বা প্রতিযোগিতা বন্ধ', 'error'); return; }
+                await ctPdf([r.data], true, `sirat-form-${r.data}.pdf`);
+                showToast('✅ ফরম ডাউনলোড হয়েছে — প্রিন্ট করে পূরণ করুন');
+                navigateTo('sirat'); siratView('upload', r.data);
+            } catch (e) { console.error(e); showToast('❌ ফরম তৈরি হয়নি: ' + errMsg(e), 'error'); }
+            finally { setBusy(btn, false); }
+        }
+
+        // ---------- অংশগ্রহণকারীর পাতা ----------
+        async function siratView(mode, serial) {
+            await ctLoad();
+            const title = mode === 'result' ? 'আপনার রেজাল্ট দেখুন' : mode === 'upload' ? 'পূরণ করা ফরম আপলোড করুন' : 'আপনার ফরম';
+            $('siratBox').innerHTML = `<div style="background:#fff;border-radius:16px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,.08)"><h4 class="fw-bold text-success mb-3">🏆 ${title}</h4><div class="input-group mb-3"><input id="ctSerial" class="form-control form-control-lg" placeholder="ফরম নম্বর (যেমন aa01f054)" value="${escAttr(serial || '')}" autocapitalize="off"><button class="btn btn-success" id="ctFind">খুঁজুন</button></div><div id="ctInfo"></div></div>`;
+            $('ctFind').onclick = () => ctFind(mode);
+            if (serial) ctFind(mode);
+        }
+        async function ctFind(mode) {
+            const s = $('ctSerial').value.trim().toLowerCase(), box = $('ctInfo'); if (!s) return;
+            box.innerHTML = '<div class="page-loader"><div class="loader"></div></div>';
+            const r = await sb.rpc('contest_form', { p_serial: s }), f = r.data;
+            if (r.error || !f) { box.innerHTML = '<p class="text-danger">❌ এই নম্বরে কোনো ফরম পাওয়া যায়নি।</p>'; return; }
+            const dt = x => new Date(x).toLocaleString('bn-BD');
+            let h = `<div class="p-3 rounded" style="background:#f0f9f3"><div>ফরম নম্বর: <b>${escHtml(f.serial)}</b></div>`;
+            h += f.claimed ? `<div>ডাউনলোডের সময়: ${dt(f.claimed)}</div><div>জমার শেষ সময়: <b>${dt(f.deadline)}</b></div>` : '<div class="text-warning">এই ফরমটি এখনো ডাউনলোড হয়নি।</div>';
+            if (f.submitted) h += `<div class="text-success">✅ ফরম জমা হয়েছে${f.name ? ' (' + escHtml(f.name) + ')' : ''}</div>`;
+            h += f.open ? (f.result ? `<div class="mt-2 fs-5">🏅 রেজাল্ট: <b>${escHtml(f.result)}</b></div>` : '<div>রেজাল্ট এখনো দেওয়া হয়নি।</div>') : '<div class="text-muted">রেজাল্ট এখনো প্রকাশিত হয়নি।</div>';
+            h += '</div>';
+            if (mode !== 'result' && f.claimed && !f.submitted) {
+                h += f.late ? '<p class="text-danger mt-3">⏰ জমার সময় শেষ, এখন আর আপলোড করা যাবে না।</p>' :
+                    `<div class="mt-3"><label class="small text-muted">আপনার নাম</label><input id="ctName" class="form-control mb-2"><label class="small text-muted">ফোন নম্বর</label><input id="ctPhone" class="form-control mb-2" inputmode="tel"><label class="small text-muted">পূরণ করা ফরমের স্পষ্ট ছবি (সামনে ও পেছনে, সর্বোচ্চ ৪টি)</label><input id="ctPics" type="file" accept="image/*" multiple class="form-control mb-3"><button class="btn btn-success w-100" id="ctSend">জমা দিন</button></div>`;
+            }
+            box.innerHTML = h;
+            if ($('ctSend')) $('ctSend').onclick = function () { ctSubmit(this, f.serial); };
+        }
+        async function ctSubmit(btn, serial) {
+            const name = $('ctName').value.trim(), phone = $('ctPhone').value.trim(), files = [...$('ctPics').files].slice(0, 4);
+            if (name.length < 2 || phone.length < 6 || !files.length) { showToast('❌ নাম, ফোন নম্বর ও অন্তত একটি ছবি দিন', 'error'); return; }
+            setBusy(btn, true, 'আপলোড হচ্ছে...');
+            try {
+                for (const f of files) {
+                    const bm = await createImageBitmap(f);
+                    if (Math.min(bm.width, bm.height) < 800 || f.size < 60000) throw new Error('ছবি স্পষ্ট নয় — ভালো আলোয় কাছ থেকে আবার তুলুন');
+                }
+                const urls = [];
+                for (const f of files) urls.push(await uploadMedia(f, 'sirat', { max: 2400 }));
+                const r = await sb.rpc('contest_submit', { p_serial: serial, p_name: name, p_phone: phone, p_photos: urls });
+                if (r.error) throw r.error;
+                const m = { ok: '✅ ফরম জমা হয়েছে', late: '⏰ সময় শেষ', done: 'ফরম আগেই জমা হয়েছে', notclaimed: 'ফরমটি ডাউনলোড হয়নি', invalid: 'তথ্য সঠিক নয়', notfound: 'ফরম পাওয়া যায়নি' };
+                showToast(m[r.data] || String(r.data), r.data === 'ok' ? 'success' : 'error');
+                ctFind('upload');
+            } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+            finally { setBusy(btn, false); }
+        }
+
+        // ---------- অ্যাডমিন ----------
+        function ctGenId(seq, tries, sd) {
+            const rng = s => { let a = s >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ t >>> 15, t | 1); t ^= t + Math.imul(t ^ t >>> 7, t | 61); return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
+            const r = rng(Math.imul(seq, 2654435761) ^ Math.imul(sd + 1, 40503) ^ Math.imul(tries, 977));
+            const A = () => String.fromCharCode(97 + Math.floor(r() * 26)), G = () => Math.floor(r() * 10);
+            return A() + A() + G() + G() + A() + G() + G() + G();
+        }
+        async function ctMake(n, src) {
+            const ex = await sb.from('contest_forms').select('serial,seq').order('seq', { ascending: false }).limit(20000);
+            if (ex.error) throw ex.error;
+            const have = new Set((ex.data || []).map(x => x.serial)); let seq = ((ex.data && ex.data[0]) ? ex.data[0].seq : 0) + 1;
+            const rows = [], now = new Date().toISOString();
+            for (let i = 0; i < n; i++, seq++) {
+                let t = 0, id; do { id = ctGenId(seq, t++, +CT.cfg.seed || 7); } while (have.has(id));
+                have.add(id); rows.push({ serial: id, seq, src, claimed_at: src === 'print' ? now : null });
+            }
+            for (let i = 0; i < rows.length; i += 500) { const r = await sb.from('contest_forms').insert(rows.slice(i, i + 500)); if (r.error) throw r.error; }
+            return rows.map(x => x.serial);
+        }
+        function ctAdminHtml() {
+            const c = CT.cfg, ck = v => v ? 'checked' : '';
+            const inp = (k, l, t) => `<div class="col-md-6"><label class="small text-muted">${l}</label><input class="form-control" data-ct="${k}" type="${t || 'text'}" value="${escAttr(c[k])}"></div>`;
+            return `<div class="d-flex justify-content-between align-items-center mb-3"><h4 class="fw-bold text-primary-dark"><i class="fas fa-trophy me-2"></i> সিরাত প্রতিযোগিতা</h4><span id="ctSaved" class="small text-success"></span></div>
+<div class="admin-card mb-3"><h6 class="fw-bold">সেটিংস (অটো সেভ)</h6><div class="row g-2">
+<div class="col-12"><label class="me-4"><input type="checkbox" data-ct="enabled" ${ck(c.enabled)}> প্রতিযোগিতা চালু (হোমে ব্যানারের নিচে দেখাবে)</label><label><input type="checkbox" data-ct="results_open" ${ck(c.results_open)}> রেজাল্ট প্রকাশ</label></div>
+${inp('hours', 'ফরম ডাউনলোডের কত ঘণ্টার মধ্যে আপলোড করতে হবে', 'number')}${inp('comp', 'প্রতিযোগিতার নাম')}${inp('phone', 'যোগাযোগের নম্বর')}${inp('email', 'ইমেইল', 'email')}${inp('seed', 'সিরিয়াল সিড (সংখ্যা)', 'number')}
+<div class="col-12"><label class="small text-muted">প্রতিষ্ঠানের ব্যাপারে লেখা (ফরমের পেছনে)</label><textarea class="form-control" rows="2" data-ct="about_org">${escHtml(c.about_org)}</textarea></div>
+<div class="col-12"><label class="small text-muted">প্রতিযোগিতার ব্যাপারে লেখা (ফরমের পেছনে)</label><textarea class="form-control" rows="2" data-ct="about_comp">${escHtml(c.about_comp)}</textarea></div>
+<div class="col-md-6"><label class="small text-muted">পোস্টার (হোমে বড় করে দেখাবে)</label><input type="file" accept="image/*" class="form-control" id="ctPoster">${c.poster ? `<img id="ctPosterPv" src="${escAttr(c.poster)}" style="max-width:100%;max-height:120px;margin-top:6px">` : ''}</div>
+<div class="col-md-6"><label class="small text-muted">প্রতিযোগিতার লোগো (ব্যাকগ্রাউন্ডে বসবে)</label><input type="file" accept="image/*" class="form-control" id="ctLogo">${c.clogo ? `<img id="ctLogoPv" src="${escAttr(c.clogo)}" style="max-height:80px;margin-top:6px">` : ''}</div>
+</div><p class="hint small text-muted mt-2 mb-0">প্রতিষ্ঠানের লোগো ও নাম সাইট সেটিংস থেকে আসে।</p></div>
+<div class="admin-card mb-3"><h6 class="fw-bold">ফরম তৈরি ও ডাউনলোড (সামনে ও পেছনে আলাদা)</h6>
+<div id="ctStats" class="small text-muted mb-2"></div>
+<div class="row g-2 align-items-end mb-3"><div class="col-6 col-md-3"><label class="small text-muted">অনলাইনে ডাউনলোডের ফরম সংখ্যা</label><input type="number" min="1" max="5000" value="100" class="form-control" id="ctOnN"></div><div class="col-auto"><button class="btn btn-success" id="ctOnBtn">অনলাইন ফরম যোগ করুন</button></div></div>
+<div class="row g-2 align-items-end mb-3"><div class="col-6 col-md-3"><label class="small text-muted">সামনের অংশ কতগুলো (সর্বোচ্চ ১৫০)</label><input type="number" min="1" max="150" value="50" class="form-control" id="ctPrN"></div>
+<div class="col-auto"><button class="btn btn-success" id="ctPrBtn">সামনের PDF ডাউনলোড</button></div></div>
+<div class="row g-2 align-items-end"><div class="col-6 col-md-3"><label class="small text-muted">পেছনের অংশ কতগুলো (সর্বোচ্চ ৩০০)</label><input type="number" min="1" max="300" value="100" class="form-control" id="ctBkN"></div><div class="col-auto"><button class="btn btn-outline-success" id="ctBkBtn">পেছনের PDF ডাউনলোড</button></div></div></div>
+<div class="admin-card mb-3 text-center"><button class="btn btn-success btn-lg" id="ctQOpen">✏️ প্রশ্ন সেট করুন</button><div class="small text-muted mt-2" id="ctQCount"></div></div>
+<div class="admin-card"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold mb-0">জমা পড়া ফরম</h6><button class="btn btn-sm btn-outline-success" id="ctCsv">সব ডিটেলস ডাউনলোড (CSV)</button></div><div id="ctSubs"></div></div>`;
+        }
+        function ctQEditorHtml() {
+            return `<div id="ctQEd" style="display:none"><div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><button class="btn btn-outline-success" id="ctQBack">← ফিরে যান</button><h5 class="fw-bold text-primary-dark mb-0">প্রশ্ন সেট করুন</h5><span id="ctSaved2" class="small text-success"></span></div><div class="admin-card"><p class="small text-muted">মোট ৪০টি: ১–১৮ সামনের পাতায়, ১৯–৪০ পেছনের পাতায় যাবে। লেখা নিজে থেকেই সেভ হয়, পরে বদলানো যাবে।</p>${CT.cfg.questions.map((x, i) => `<div class="border rounded p-2 mb-2"><b>${ctBn(i + 1)}.</b><input class="form-control mb-1" data-qi="${i}" data-qk="q" value="${escAttr(x.q)}" placeholder="প্রশ্ন"><div class="row g-1">${x.o.map((o, k) => `<div class="col-6"><input class="form-control form-control-sm" data-qi="${i}" data-qk="${k}" value="${escAttr(o)}" placeholder="${CTL[k]})"></div>`).join('')}</div></div>`).join('')}</div></div>`;
+        }
+        function ctQCount() { const n = CT.cfg.questions.filter(x => x.q.trim()).length; if ($('ctQCount')) $('ctQCount').textContent = `৪০টির মধ্যে ${ctBn(n)}টি প্রশ্ন লেখা হয়েছে`; }
+        function ctCsvDownload(rows, name) {
+            const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+            const lines = [['ফরম নম্বর', 'নাম', 'ফোন', 'ডাউনলোডের সময়', 'জমার সময়', 'রেজাল্ট', 'ছবি'].map(q).join(',')].concat(rows.map(r => [r.serial, r.name, r.phone, r.claimed_at, r.submitted_at, r.result, (r.photos || []).join(' ; ')].map(q).join(',')));
+            triggerDownload(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }), name);
+        }
+        async function ctStats() {
+            const n = (f) => f(sb.from('contest_forms').select('*', { count: 'exact', head: true }));
+            const [a, b, c2] = await Promise.all([n(q => q.eq('src', 'online')), n(q => q.eq('src', 'online').not('claimed_at', 'is', null)), n(q => q.not('submitted_at', 'is', null))]);
+            if ($('ctStats')) $('ctStats').innerHTML = `অনলাইন ফরম: মোট <b>${ctBn(a.count || 0)}</b> · ডাউনলোড হয়েছে <b>${ctBn(b.count || 0)}</b> · বাকি <b>${ctBn((a.count || 0) - (b.count || 0))}</b> · জমা পড়েছে <b>${ctBn(c2.count || 0)}</b>`;
+        }
+        async function ctLoadSubs() {
+            const r = await sb.from('contest_forms').select('*').not('submitted_at', 'is', null).order('submitted_at', { ascending: false }).limit(500);
+            window._ctRows = r.data || [];
+            $('ctSubs').innerHTML = !window._ctRows.length ? noData('এখনো কোনো ফরম জমা পড়েনি') : window._ctRows.map((x, i) => `<div class="border rounded p-2 mb-2"><div class="d-flex justify-content-between flex-wrap gap-1"><div><b>${escHtml(x.serial)}</b> · ${escHtml(x.name)} · ${escHtml(x.phone)}<div class="small text-muted">জমা: ${new Date(x.submitted_at).toLocaleString('bn-BD')}</div></div><button class="btn btn-sm btn-outline-success" onclick="ctCsvDownload([window._ctRows[${i}]],'sirat-${escAttr(x.serial)}.csv')">ডিটেলস ডাউনলোড</button></div><div class="my-1">${(x.photos || []).map(u => `<a href="${escAttr(u)}" target="_blank"><img src="${escAttr(u)}" style="height:64px;border-radius:6px;margin-right:4px"></a>`).join('')}</div><div class="input-group input-group-sm"><span class="input-group-text">রেজাল্ট</span><input class="form-control" value="${escAttr(x.result)}" onchange="ctSetResult('${escAttr(x.serial)}',this.value)"></div></div>`).join('');
+        }
+        async function ctSetResult(s, v) {
+            const r = await sb.from('contest_forms').update({ result: v }).eq('serial', s);
+            showToast(r.error ? '❌ সেভ হয়নি' : '✅ রেজাল্ট সেভ হয়েছে', r.error ? 'error' : 'success');
+        }
+        async function contestAdminInit() {
+            await ctLoad(true);
+            const box = $('ctAdminBox'); box.innerHTML = ctAdminHtml();
+            const main = document.createElement('div'); main.id = 'ctMain'; while (box.firstChild) main.appendChild(box.firstChild); box.appendChild(main);
+            box.insertAdjacentHTML('beforeend', ctQEditorHtml());
+            $('ctQOpen').onclick = () => { main.style.display = 'none'; $('ctQEd').style.display = 'block'; window.scrollTo(0, 0); };
+            $('ctQBack').onclick = () => { $('ctQEd').style.display = 'none'; main.style.display = 'block'; ctQCount(); window.scrollTo(0, 0); };
+            ctQCount();
+            box.querySelectorAll('[data-ct]').forEach(el => el.addEventListener('input', () => {
+                const k = el.dataset.ct; CT.cfg[k] = el.type === 'checkbox' ? el.checked : el.type === 'number' ? (+el.value || 0) : el.value; ctAutoSave();
+            }));
+            box.querySelectorAll('[data-qi]').forEach(el => el.addEventListener('input', () => {
+                const x = CT.cfg.questions[+el.dataset.qi], k = el.dataset.qk; if (k === 'q') x.q = el.value; else x.o[+k] = el.value; ctAutoSave();
+            }));
+            const up = (id, key, png) => $(id).addEventListener('change', async function () {
+                if (!this.files[0]) return;
+                try { CT.cfg[key] = await uploadMedia(this.files[0], 'sirat', { max: 1600, png }); await sb.from('contest_cfg').upsert({ id: 1, data: CT.cfg }); showToast('✅ আপলোড হয়েছে'); contestAdminInit(); } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+            });
+            up('ctPoster', 'poster', false); up('ctLogo', 'clogo', true);
+            const num = (id, mx) => Math.min(mx, Math.max(1, parseInt($(id).value, 10) || 1));
+            $('ctOnBtn').onclick = async function () { setBusy(this, true, 'তৈরি হচ্ছে...'); try { const n = num('ctOnN', 5000); await ctMake(n, 'online'); showToast(`✅ ${ctBn(n)}টি অনলাইন ফরম যোগ হয়েছে`); ctStats(); } catch (e) { showToast('❌ ' + errMsg(e) + ' (supabase_contest.sql চালিয়েছেন?)', 'error'); } finally { setBusy(this, false); } };
+            $('ctPrBtn').onclick = async function () {
+                const btn = this; let stage = 'সেটিংস সেভ';
+                setBusy(btn, true, 'শুরু হচ্ছে...');
+                try {
+                    await ctAutoSaveNow();
+                    const n = num('ctPrN', 150), both = false;
+                    stage = 'ফরম নম্বর নিবন্ধন (ডাটাবেস)'; btn.innerHTML = SPIN + ' ফরম নম্বর তৈরি হচ্ছে...';
+                    const ids = await ctMake(n, 'print');
+                    stage = 'PDF তৈরি';
+                    await ctPdf(ids, both, `sirat-forms-${ids[0]}-${ids[ids.length - 1]}.pdf`, 0, (i, t) => { btn.innerHTML = SPIN + ' PDF আঁকা হচ্ছে ' + ctBn(i) + '/' + ctBn(t); });
+                    showToast(`✅ ${ctBn(n)}টি ফরমের PDF ডাউনলোড হয়েছে`);
+                } catch (e) { console.error(e); alert('ধাপ: ' + stage + '\n' + ((e && e.message) || errMsg(e))); }
+                finally { setBusy(btn, false); }
+            };
+            $('ctBkBtn').onclick = async function () { setBusy(this, true, 'PDF তৈরি হচ্ছে...'); try { await ctAutoSaveNow(); await ctPdf([], true, 'sirat-back.pdf', num('ctBkN', 300)); } catch (e) { showToast('❌ ' + errMsg(e), 'error'); } finally { setBusy(this, false); } };
+            $('ctCsv').onclick = () => ctCsvDownload(window._ctRows || [], 'sirat-all-details.csv');
+            ctStats(); ctLoadSubs();
+        }
+        async function ctAutoSaveNow() { clearTimeout(_ctT); await sb.from('contest_cfg').upsert({ id: 1, data: CT.cfg }); }
+        document.addEventListener('DOMContentLoaded', () => { ctRenderHome(); });
+        window.ctGo = ctGo; window.siratView = siratView; window.ctCsvDownload = ctCsvDownload; window.ctSetResult = ctSetResult;
+
         window.downloadUrl = downloadUrl;
         window.toggleGalleryDl = toggleGalleryDl;
         window.downloadMemberCard = downloadMemberCard;
