@@ -6750,7 +6750,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         // ================================================================
         const CTG = '#1b6e2f', ctmm = v => v * 1240 / 210;
         const CT = { cfg: null };
-        const CT_DEF = { enabled: false, results_open: false, hours: 24, comp: 'সিরাত প্রতিযোগিতা', poster: '', clogo: '', about_org: '', about_comp: '', phone: '', email: '', seed: 7, questions: [] };
+        const CT_DEF = { enabled: false, results_open: false, hours: 24, comp: 'সিরাত প্রতিযোগিতা', poster: '', clogo: '', about_org: '', about_comp: '', phone: '', email: '', seed: 7, prizes: [], questions: [] };
         const ctBn = s => String(s).replace(/\d/g, d => '০১২৩৪৫৬৭৮৯'[d]);
         const CTL = ['ক', 'খ', 'গ', 'ঘ'];
         const ctNormQ = a => { a = Array.isArray(a) ? a.slice(0, 40) : []; while (a.length < 40) a.push({ q: '', o: ['', '', '', ''] }); return a.map(x => ({ q: x.q || '', o: [0, 1, 2, 3].map(i => (x.o && x.o[i]) || '') })); };
@@ -6759,6 +6759,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             let d = {};
             try { const r = await sb.from('contest_cfg').select('data').eq('id', 1).maybeSingle(); d = (r.data && r.data.data) || {}; } catch (e) { /* ignore */ }
             CT.cfg = { ...CT_DEF, ...d }; CT.cfg.questions = ctNormQ(CT.cfg.questions);
+            CT.cfg.prizes = (Array.isArray(CT.cfg.prizes) ? CT.cfg.prizes : []).map(p => ({ prize: (p && p.prize) || '', serial: (p && p.serial) || '', name: (p && p.name) || '' }));
             return CT.cfg;
         }
         let _ctT = null;
@@ -6841,7 +6842,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             });
             c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(620, top); c.lineTo(620, CCUT); c.stroke();
         }
-        function ctFront(serial, a) {
+        function ctFront(serial, a, info) {
             const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(25.4);
             ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CCUT - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
             // হেডার (১ ইঞ্চি)
@@ -6855,19 +6856,51 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             ctT(c, 'সঠিক উত্তরের পাশের বাক্সে টিক (✓) দিন', 620, CY0 + hh + 28, 20, 400, 'center');
             ctGrid(c, cf.questions.slice(0, 18), 0, CY0 + hh + ctmm(6), 9);
             ctCut(c);
-            // স্লিপ
-            ctImg(c, a.clogo, 620 - ctmm(24), CCUT + ctmm(5), ctmm(48), ctmm(42), .09);
-            const lx = CX0 + ctmm(6);
-            let sp = 66; c.font = `700 ${sp}px ${CARD_FONT}`;
-            while (sp > 30 && Math.max(c.measureText(org).width, c.measureText(cf.comp).width) > 900) { sp -= 2; c.font = `700 ${sp}px ${CARD_FONT}`; }
-            ctT(c, org, lx + 450, CCUT + 84, sp, 700, 'center', CTG);
-            ctTitle(c, cf.comp, lx + 450, CCUT + 158, sp, 900);
-            ctT(c, 'ফরম নম্বর: ' + serial, lx + 450, CCUT + 204, 30, 700, 'center');
-            c.lineWidth = 1.5;
-            const ln = (t, x, y, x2) => { ctT(c, t, x, y, 24, 400); c.beginPath(); c.moveTo(x + c.measureText(t).width + 8, y + 4); c.lineTo(x2, y + 4); c.stroke(); };
-            ln('নাম:', lx, CCUT + 244, CX1 - ctmm(42));
-            ln('ঠিকানা:', lx, CCUT + 284, lx + 560); ln('মোবাইল:', lx + 600, CCUT + 284, CX1 - ctmm(42));
-            drawQrOnCanvas(c, `${siteBase()}?sf=${serial}`, CX1 - ctmm(37), CCUT + (CSL - ctmm(30)) / 2, ctmm(30));
+            // স্লিপ (ডিজাইনার)
+            info = info || {};
+            const sx = CX0 + 14, sy = CCUT + 16, sw = CW - 28, sh = CSL - 28, bw = 168, GOLD = '#d4a93a';
+            const rr = (x, y, w, h, r) => { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); };
+            const star = (cx0, cy0, R, r0) => { c.beginPath(); for (let i = 0; i < 10; i++) { const ang = -Math.PI / 2 + i * Math.PI / 5, rad = i % 2 ? r0 : R; c.lineTo(cx0 + Math.cos(ang) * rad, cy0 + Math.sin(ang) * rad); } c.closePath(); c.fill(); };
+            // পটভূমি + বর্ডার
+            c.save();
+            rr(sx, sy, sw, sh, 18);
+            const bgG = c.createLinearGradient(sx, sy, sx + sw, sy + sh); bgG.addColorStop(0, '#eef8f1'); bgG.addColorStop(.5, '#ffffff'); bgG.addColorStop(1, '#e6f3ea');
+            c.fillStyle = bgG; c.fill(); c.strokeStyle = CTG; c.lineWidth = 3; c.stroke();
+            c.restore();
+            ctImg(c, a.clogo, sx + bw + (sw - bw) / 2 - ctmm(22), sy + sh / 2 - ctmm(19), ctmm(44), ctmm(38), .08);
+            // বাঁ পাশের সবুজ ব্যাজ
+            c.save(); rr(sx, sy, sw, sh, 18); c.clip();
+            const bdG = c.createLinearGradient(sx, sy, sx, sy + sh); bdG.addColorStop(0, '#2e9a4f'); bdG.addColorStop(1, '#0b4d20');
+            c.fillStyle = bdG; c.fillRect(sx, sy, bw, sh);
+            c.fillStyle = 'rgba(255,255,255,.07)';
+            for (let i = 0; i < 6; i++) { c.beginPath(); c.arc(sx + bw * (i % 2 ? .78 : .22), sy + 24 + i * 50, 24, 0, 7); c.fill(); }
+            c.restore();
+            c.save(); c.strokeStyle = GOLD; c.lineWidth = 3; c.beginPath(); c.moveTo(sx + bw, sy + 6); c.lineTo(sx + bw, sy + sh - 6); c.stroke();
+            c.fillStyle = GOLD; star(sx + bw / 2, sy + 66, 30, 13);
+            c.restore();
+            ctT(c, 'ফরম নং', sx + bw / 2, sy + 134, 24, 600, 'center', '#e8f6ec');
+            ctT(c, serial, sx + bw / 2, sy + 186, 36, 700, 'center', '#ffffff', bw - 24);
+            c.save(); c.strokeStyle = 'rgba(212,169,58,.65)'; c.lineWidth = 1.4; rr(sx + 6, sy + 6, sw - 12, sh - 12, 13); c.stroke(); c.restore();
+            // নাম (একটু ছোট) + প্রতিযোগিতা
+            const tx0 = sx + bw + 26, tx1 = CX1 - 252, tcx = (tx0 + tx1) / 2;
+            ctT(c, org, tcx, sy + 44, 34, 700, 'center', '#3d7d50', tx1 - tx0 - 10);
+            const tw2 = ctTitle(c, cf.comp, tcx, sy + 100, 50, tx1 - tx0 - 10);
+            ctOrn(c, tcx, sy + 120, Math.min(tw2 / 2 + 6, 300));
+            // লেখার জায়গা (বড়)
+            const fld = (lab, val, x, y, x2) => {
+                ctT(c, lab, x, y, 26, 700, 'left', CTG);
+                const lx2 = x + c.measureText(lab).width + 10;
+                c.save(); c.strokeStyle = '#6fae85'; c.lineWidth = 1.6; c.beginPath(); c.moveTo(lx2, y + 8); c.lineTo(x2, y + 8); c.stroke(); c.restore();
+                if (val) ctT(c, val, lx2 + 8, y - 1, 30, 600, 'left', '#10331a', x2 - lx2 - 14);
+            };
+            fld('নাম:', info.name, tx0, sy + 180, tx1);
+            fld('ঠিকানা:', info.address, tx0, sy + 246, tx0 + 440);
+            fld('মোবাইল:', info.phone, tx0 + 462, sy + 246, tx1);
+            // কিউআর বক্স
+            const qs = ctmm(30), qx = CX1 - ctmm(37), qy = sy + 26;
+            c.save(); rr(qx - 9, qy - 9, qs + 18, qs + 18, 12); c.fillStyle = '#fff'; c.fill(); c.strokeStyle = CTG; c.lineWidth = 2.2; c.stroke(); c.restore();
+            drawQrOnCanvas(c, `${siteBase()}?sf=${serial}`, qx, qy, qs);
+            ctT(c, 'স্ক্যান করুন', qx + qs / 2, qy + qs + 38, 20, 700, 'center', CTG);
             return cv;
         }
         function ctBack(a) {
@@ -6890,14 +6923,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             ctT(c, 'ওয়েবসাইট', CX1 - ctmm(37) + ctmm(14), CCUT + ctmm(6) + ctmm(28) + 26, 20, 700, 'center');
             return cv;
         }
-        async function ctPdf(serials, withBack, fname, backN, onProg) {
+        async function ctPdf(serials, withBack, fname, backN, onProg, info) {
             await loadSettings(); await cardFontsReady();
             const a = { logo: await loadImg(SETTINGS.logo_url), clogo: await loadImg(CT.cfg.clogo) };
             const PW = 595.28, PH = 841.89;
             const it = cv => canvasToJpeg(cv).then(j => ({ jpeg: j, w: cv.width, h: cv.height, x: 0, y: 0, dw: PW, dh: PH }));
             const bk = (withBack || backN) ? await it(ctBack(a)) : null, pages = [];
             if (backN) for (let i = 0; i < backN; i++) pages.push({ items: [bk], extra: '' });
-            else for (let i = 0; i < serials.length; i++) { if (onProg) onProg(i + 1, serials.length); await new Promise(r => setTimeout(r, 0)); pages.push({ items: [await it(ctFront(serials[i], a))], extra: '' }); if (withBack) pages.push({ items: [bk], extra: '' }); }
+            else for (let i = 0; i < serials.length; i++) { if (onProg) onProg(i + 1, serials.length); await new Promise(r => setTimeout(r, 0)); pages.push({ items: [await it(ctFront(serials[i], a, info))], extra: '' }); if (withBack) pages.push({ items: [bk], extra: '' }); }
             triggerDownload(buildPdfPages(PW, PH, pages), fname);
         }
 
@@ -6910,18 +6943,49 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             $('ctJoinBtn').onclick = function () { ctParticipate(this); };
         }
         function ctGo(mode) { navigateTo('sirat'); siratView(mode, ''); }
-        async function ctParticipate(btn) {
-            setBusy(btn, true, 'ফরম তৈরি হচ্ছে...');
-            try {
-                await ctLoad(true);
-                const r = await sb.rpc('contest_claim');
-                if (r.error) throw r.error;
-                if (!r.data) { showToast('❌ এখন কোনো ফরম নেই বা প্রতিযোগিতা বন্ধ', 'error'); return; }
-                await ctPdf([r.data], true, `sirat-form-${r.data}.pdf`);
-                showToast('✅ ফরম ডাউনলোড হয়েছে — প্রিন্ট করে পূরণ করুন');
-                navigateTo('sirat'); siratView('upload', r.data);
-            } catch (e) { console.error(e); showToast('❌ ফরম তৈরি হয়নি: ' + errMsg(e), 'error'); }
-            finally { setBusy(btn, false); }
+        function ctParticipate() {
+            const old = document.getElementById('ctJoinModal'); if (old) old.remove();
+            const ov = document.createElement('div'); ov.id = 'ctJoinModal';
+            ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20000;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto';
+            ov.innerHTML = `<div style="background:#fff;border-radius:18px;max-width:460px;width:100%;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.3)">
+<div class="d-flex justify-content-between align-items-start mb-2"><h5 class="fw-bold text-success mb-0">🏆 ${escHtml(CT.cfg.comp || 'প্রতিযোগিতা')}</h5><button type="button" class="btn-close" id="ctjX" aria-label="বন্ধ"></button></div>
+<div id="ctjStep1"><p class="small text-muted">আবেদন ফরমে বসানোর জন্য আপনার তথ্য দিন</p>
+<label class="small text-muted">আপনার নাম</label><input id="ctjName" class="form-control mb-2" autocomplete="name">
+<label class="small text-muted">ঠিকানা</label><input id="ctjAddr" class="form-control mb-2" autocomplete="street-address">
+<label class="small text-muted">ফোন নম্বর</label><input id="ctjPhone" class="form-control mb-3" inputmode="tel" autocomplete="tel">
+<button type="button" class="btn btn-success w-100 btn-lg" id="ctjGo">এগিয়ে যান</button></div>
+<div id="ctjStep2" style="display:none"><div class="p-3 rounded mb-3" style="background:#f0f9f3"><div>নাম: <b id="ctjvN"></b></div><div>ঠিকানা: <b id="ctjvA"></b></div><div>ফোন: <b id="ctjvP"></b></div></div>
+<button type="button" class="btn btn-success w-100 btn-lg" id="ctjDl">📥 আবেদন ফরম ডাউনলোড করুন</button>
+<div id="ctjDone" class="small text-success mt-2 text-center"></div>
+<button type="button" class="btn btn-link w-100 mt-1" id="ctjBack">← তথ্য বদলান</button></div></div>`;
+            document.body.appendChild(ov);
+            const g = id => document.getElementById(id); let serial = null;
+            const close = () => ov.remove();
+            g('ctjX').onclick = close; ov.addEventListener('mousedown', e => { if (e.target === ov) close(); });
+            g('ctjGo').onclick = () => {
+                const name = g('ctjName').value.trim(), addr = g('ctjAddr').value.trim(), phone = g('ctjPhone').value.trim();
+                if (name.length < 2 || addr.length < 2 || phone.length < 6) { showToast('❌ নাম, ঠিকানা ও ফোন নম্বর সঠিকভাবে দিন', 'error'); return; }
+                g('ctjvN').textContent = name; g('ctjvA').textContent = addr; g('ctjvP').textContent = phone;
+                g('ctjStep1').style.display = 'none'; g('ctjStep2').style.display = 'block';
+            };
+            g('ctjBack').onclick = () => { if (serial) { showToast('ফরম আগেই তৈরি হয়েছে, তথ্য বদলাতে নতুন করে শুরু করুন', 'error'); } g('ctjStep2').style.display = 'none'; g('ctjStep1').style.display = 'block'; };
+            g('ctjDl').onclick = async function () {
+                const btn = this, info = { name: g('ctjvN').textContent, address: g('ctjvA').textContent, phone: g('ctjvP').textContent };
+                setBusy(btn, true, 'ফরম তৈরি হচ্ছে...');
+                try {
+                    await ctLoad(true);
+                    if (!serial) {
+                        const r = await sb.rpc('contest_claim');
+                        if (r.error) throw r.error;
+                        if (!r.data) { showToast('❌ এখন কোনো ফরম নেই বা প্রতিযোগিতা বন্ধ', 'error'); return; }
+                        serial = r.data;
+                    }
+                    await ctPdf([serial], true, `sirat-form-${serial}.pdf`, 0, null, info);
+                    g('ctjDone').innerHTML = `✅ ফরম ডাউনলোড হয়েছে — ফরম নম্বর: <b>${escHtml(serial)}</b>`;
+                    showToast('✅ ফরম ডাউনলোড হয়েছে');
+                } catch (e) { console.error(e); showToast('❌ ফরম তৈরি হয়নি: ' + errMsg(e), 'error'); }
+                finally { setBusy(btn, false); btn.innerHTML = serial ? '📥 আবার ডাউনলোড করুন' : '📥 আবেদন ফরম ডাউনলোড করুন'; }
+            };
         }
 
         // ---------- অংশগ্রহণকারীর পাতা ----------
@@ -6935,6 +6999,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         async function ctFind(mode) {
             const s = $('ctSerial').value.trim().toLowerCase(), box = $('ctInfo'); if (!s) return;
             box.innerHTML = '<div class="page-loader"><div class="loader"></div></div>';
+            if (mode === 'result') return ctResultShow(s, box);
             const r = await sb.rpc('contest_form', { p_serial: s }), f = r.data;
             if (r.error || !f) { box.innerHTML = '<p class="text-danger">❌ এই নম্বরে কোনো ফরম পাওয়া যায়নি।</p>'; return; }
             const dt = x => new Date(x).toLocaleString('bn-BD');
@@ -6949,6 +7014,22 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             }
             box.innerHTML = h;
             if ($('ctSend')) $('ctSend').onclick = function () { ctSubmit(this, f.serial); };
+        }
+        function ctOrd(n) { const m = { 1: '১ম', 2: '২য়', 3: '৩য়', 4: '৪র্থ', 5: '৫ম', 6: '৬ষ্ঠ', 7: '৭ম', 8: '৮ম', 9: '৯ম', 10: '১০ম' }; return m[n] || ctBn(n) + 'তম'; }
+        async function ctResultShow(s, box) {
+            const c = await ctLoad(true);
+            if (!c.results_open) { box.innerHTML = '<div class="p-3 rounded text-center" style="background:#f6f6f6">রেজাল্ট এখনো প্রকাশিত হয়নি। প্রকাশের পর এখানে দেখতে পারবেন।</div>'; return; }
+            const pz = (c.prizes || []).map((p, i) => ({ ...p, rank: i + 1 })), win = pz.find(p => (p.serial || '').trim().toLowerCase() === s);
+            let h = '';
+            if (win) {
+                h = `<div class="text-center p-4 rounded" style="background:linear-gradient(135deg,#fff8de,#ffe9a6);border:2px solid #d4a93a"><div style="font-size:46px">🏆</div><h4 class="fw-bold" style="color:#8a6300">অভিনন্দন! আপনি উইনার হয়েছেন</h4><div class="fs-5 mt-2">আপনি <b>${ctOrd(win.rank)} উইনার</b></div><div class="fs-5">পুরস্কার: <b>${escHtml(win.prize || '—')}</b></div><div class="small text-muted mt-2">ফরম নম্বর: ${escHtml(win.serial)}${win.name ? ' · ' + escHtml(win.name) : ''}</div></div>`;
+            } else {
+                const r = await sb.rpc('contest_form', { p_serial: s });
+                h = (r.error || !r.data) ? '<p class="text-danger">❌ এই নম্বরে কোনো ফরম পাওয়া যায়নি।</p>' : '<div class="text-center p-4 rounded" style="background:#fdf1f1;border:1px solid #f0c9c9"><div style="font-size:40px">😔</div><h5 class="fw-bold text-danger mb-1">দুঃখিত, আপনার সিরিয়ালটি উইনার হয়নি</h5><div class="small text-muted">অংশগ্রহণের জন্য ধন্যবাদ।</div></div>';
+            }
+            const lst = pz.filter(p => (p.serial || '').trim());
+            if (lst.length) h += `<div class="mt-3"><h6 class="fw-bold text-success">🏅 উইনারদের তালিকা</h6>${lst.map(p => `<div class="d-flex flex-wrap justify-content-between border-bottom py-1 small"><span><b>${ctOrd(p.rank)}</b> · ${escHtml(p.prize || '')}</span><span>${escHtml(p.serial)}${p.name ? ' · ' + escHtml(p.name) : ''}</span></div>`).join('')}</div>`;
+            box.innerHTML = h;
         }
         async function ctSubmit(btn, serial) {
             const name = $('ctName').value.trim(), phone = $('ctPhone').value.trim(), files = [...$('ctPics').files].slice(0, 4);
@@ -6989,6 +7070,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             for (let i = 0; i < rows.length; i += 500) { const r = await sb.from('contest_forms').insert(rows.slice(i, i + 500)); if (r.error) throw r.error; }
             return rows.map(x => x.serial);
         }
+        function ctPzListHtml() {
+            const P = CT.cfg.prizes;
+            if (!P.length) return '<div class="small text-muted">সংখ্যা দিলে প্রতিটি উইনারের ঘর আসবে।</div>';
+            const f = (i, k, v, ph) => `<input class="form-control form-control-sm" data-pi="${i}" data-pk="${k}" value="${escAttr(v)}" placeholder="${ph}">`;
+            return P.map((p, i) => `<div class="border rounded p-2 mb-2" style="background:#fffdf3"><div class="fw-bold mb-1">🏆 ${ctOrd(i + 1)} উইনার</div><div class="row g-1"><div class="col-md-4">${f(i, 'prize', p.prize, 'পুরস্কার কী (যেমন: সাইকেল)')}</div><div class="col-6 col-md-3">${f(i, 'serial', p.serial, 'উইনারের সিরিয়াল')}</div><div class="col-6 col-md-5">${f(i, 'name', p.name, 'উইনারের নাম')}</div></div></div>`).join('');
+        }
         function ctAdminHtml() {
             const c = CT.cfg, ck = v => v ? 'checked' : '';
             const inp = (k, l, t) => `<div class="col-md-6"><label class="small text-muted">${l}</label><input class="form-control" data-ct="${k}" type="${t || 'text'}" value="${escAttr(c[k])}"></div>`;
@@ -7001,6 +7088,7 @@ ${inp('hours', 'ফরম ডাউনলোডের কত ঘণ্টার 
 <div class="col-md-6"><label class="small text-muted">পোস্টার (হোমে বড় করে দেখাবে)</label><input type="file" accept="image/*" class="form-control" id="ctPoster">${c.poster ? `<img id="ctPosterPv" src="${escAttr(c.poster)}" style="max-width:100%;max-height:120px;margin-top:6px">` : ''}</div>
 <div class="col-md-6"><label class="small text-muted">প্রতিযোগিতার লোগো (ব্যাকগ্রাউন্ডে বসবে)</label><input type="file" accept="image/*" class="form-control" id="ctLogo">${c.clogo ? `<img id="ctLogoPv" src="${escAttr(c.clogo)}" style="max-height:80px;margin-top:6px">` : ''}</div>
 </div><p class="hint small text-muted mt-2 mb-0">প্রতিষ্ঠানের লোগো ও নাম সাইট সেটিংস থেকে আসে।</p></div>
+<div class="admin-card mb-3"><h6 class="fw-bold">🏆 পুরস্কার ও উইনার (অটো সেভ)</h6><p class="small text-muted mb-2">কতজন পুরস্কার পাবে, কে কী পাবে এবং উইনারের সিরিয়াল ও নাম এখানে দিন। উপরে "রেজাল্ট প্রকাশ" টিক দিলে তবেই ব্যবহারকারীরা দেখতে পাবে।</p><div class="row g-2 align-items-end mb-2"><div class="col-6 col-md-3"><label class="small text-muted">কতজন পুরস্কার পাবে</label><input type="number" min="0" max="100" class="form-control" id="ctPzN" value="${c.prizes.length}"></div></div><div id="ctPzList">${ctPzListHtml()}</div></div>
 <div class="admin-card mb-3"><h6 class="fw-bold">ফরম তৈরি ও ডাউনলোড (সামনে ও পেছনে আলাদা)</h6>
 <div id="ctStats" class="small text-muted mb-2"></div>
 <div class="row g-2 align-items-end mb-3"><div class="col-6 col-md-3"><label class="small text-muted">অনলাইনে ডাউনলোডের ফরম সংখ্যা</label><input type="number" min="1" max="5000" value="100" class="form-control" id="ctOnN"></div><div class="col-auto"><button class="btn btn-success" id="ctOnBtn">অনলাইন ফরম যোগ করুন</button></div></div>
@@ -7047,6 +7135,20 @@ ${inp('hours', 'ফরম ডাউনলোডের কত ঘণ্টার 
             box.querySelectorAll('[data-qi]').forEach(el => el.addEventListener('input', () => {
                 const x = CT.cfg.questions[+el.dataset.qi], k = el.dataset.qk; if (k === 'q') x.q = el.value; else x.o[+k] = el.value; ctAutoSave();
             }));
+            const pzBox = $('ctPzList');
+            $('ctPzN').addEventListener('input', function () {
+                if (this.value === '') return;
+                const n = Math.min(100, Math.max(0, parseInt(this.value, 10) || 0)), P = CT.cfg.prizes;
+                if (n < P.length && P.slice(n).some(p => p.prize || p.serial || p.name) && !confirm('সংখ্যা কমালে শেষের উইনারদের তথ্য মুছে যাবে। ঠিক আছে?')) { this.value = P.length; return; }
+                while (P.length < n) P.push({ prize: '', serial: '', name: '' }); P.length = n;
+                pzBox.innerHTML = ctPzListHtml(); ctAutoSave();
+            });
+            pzBox.addEventListener('input', e => { const el = e.target; if (el.dataset.pi == null) return; CT.cfg.prizes[+el.dataset.pi][el.dataset.pk] = el.value; ctAutoSave(); });
+            pzBox.addEventListener('change', e => {
+                const el = e.target; if (el.dataset.pk !== 'serial') return;
+                const p = CT.cfg.prizes[+el.dataset.pi], sv = el.value.trim().toLowerCase(), row = (window._ctRows || []).find(x => (x.serial || '').toLowerCase() === sv);
+                if (row && row.name && !p.name) { p.name = row.name; pzBox.innerHTML = ctPzListHtml(); ctAutoSave(); }
+            });
             const up = (id, key, png) => $(id).addEventListener('change', async function () {
                 if (!this.files[0]) return;
                 try { CT.cfg[key] = await uploadMedia(this.files[0], 'sirat', { max: 1600, png }); await sb.from('contest_cfg').upsert({ id: 1, data: CT.cfg }); showToast('✅ আপলোড হয়েছে'); contestAdminInit(); } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
