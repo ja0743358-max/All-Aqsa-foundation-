@@ -1975,7 +1975,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <div class="admin-card mt-3">
                                     <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
                                         <h5 class="fw-bold mb-0">উপস্থিতির তালিকা</h5>
-                                        <div class="d-flex gap-2"><button type="button" class="btn btn-sm btn-outline-primary" id="scReload"><i class="fas fa-rotate"></i></button><button type="button" class="btn btn-sm btn-outline-success" id="scCsv"><i class="fas fa-file-csv me-1"></i> CSV</button></div>
+                                        <div class="d-flex gap-2"><button type="button" class="btn btn-sm btn-outline-primary" id="scReload"><i class="fas fa-rotate"></i></button><button type="button" class="btn btn-sm btn-outline-success" id="scCsv"><i class="fas fa-file-pdf me-1"></i> PDF</button></div>
                                     </div>
                                     <div id="scStats" class="mb-2 small"></div>
                                     <div id="scLog"></div>
@@ -5233,12 +5233,25 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             adminCache.members = adminCache.members || [];
             if (!adminCache.members.find(x => x.id === id)) adminCache.members.push(m);
             const issue = m.issue_date || m.created_at;
-            const items = [
-                ['সদস্য নম্বর', m.member_no], ['আবেদন ফরম নম্বর', m.form_no], ['মোবাইল', m.phone], ['ইমেইল', m.email],
-                ['পিতার নাম', m.father_name], ['জন্ম তারিখ', m.birth_date ? fmtDate(m.birth_date) : ''],
-                ['রক্তের গ্রুপ', m.blood_group], ['পেশা', m.occupation], ['কার্ড প্রদানের তারিখ', issue ? fmtDate(issue) : ''],
-                ['কার্ডের মেয়াদ', tr('২০৩০ সাল পর্যন্ত')]
-            ].filter(r => r[1]);
+            const KNOWN = {
+                member_no: 'সদস্য নম্বর', form_no: 'আবেদন ফরম নম্বর', phone: 'মোবাইল নাম্বার', email: 'ইমেইল',
+                father_name: 'পিতার নাম', birth_date: 'জন্ম তারিখ', blood_group: 'রক্তের গ্রুপ', occupation: 'পেশা',
+                issue_date: 'কার্ড প্রদানের তারিখ', created_at: 'আবেদনের তারিখ', updated_at: 'সর্বশেষ আপডেট'
+            };
+            const SKIP_KEYS = ['id', 'user_id', 'name', 'photo_url', 'designation', 'show_on_home', 'address', 'details', 'card_no_cache'];
+            const fmtVal = (k, v) => {
+                if (v === null || v === undefined || v === '' || v === false) return '';
+                if (k === 'birth_date' || k === 'issue_date' || k === 'created_at' || k === 'updated_at') return fmtDate(v);
+                if (typeof v === 'object') return JSON.stringify(v);
+                return String(v);
+            };
+            const ordered = ['member_no', 'form_no', 'phone', 'email', 'father_name', 'birth_date', 'blood_group', 'occupation', 'issue_date', 'created_at', 'updated_at'];
+            const extraKeys = Object.keys(m).filter(k => !SKIP_KEYS.includes(k) && !ordered.includes(k) && !k.endsWith('_url'));
+            const items = [...ordered, ...extraKeys]
+                .map(k => [KNOWN[k] || k, fmtVal(k, m[k])])
+                .filter(r => r[1]);
+            if (!m.issue_date && !m.created_at) items.push(['কার্ড প্রদানের তারিখ', '']);
+            items.push(['কার্ডের মেয়াদ', tr('২০৩০ সাল পর্যন্ত')]);
             $('memberViewBody').innerHTML = `
                 <div class="mv-head">
                     ${m.photo_url ? `<img src="${escAttr(m.photo_url)}" alt="" />` : '<div class="mv-ph"><i class="fas fa-user"></i></div>'}
@@ -6702,9 +6715,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         function scCsv() {
             if (!scRows.length) { showToast('কোনো ডেটা নেই', 'error'); return; }
-            const esc = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
-            const csv = '\ufeff' + ['সময়,নাম,সদস্য নং,অনুষ্ঠান,ফলাফল'].concat(scRows.map(r => [new Date(r.created_at).toLocaleString('bn-BD'), r.member_name, r.member_no, r.event_name, r.result].map(esc).join(','))).join('\n');
-            const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'upostithi.csv'; document.body.appendChild(a); a.click(); a.remove();
+            ctTablePdf('উপস্থিতি লগ', [
+                ['সময়', 300, r => new Date(r.created_at).toLocaleString('bn-BD')], ['নাম', 350, r => r.member_name],
+                ['সদস্য নং', 250, r => r.member_no], ['অনুষ্ঠান', 400, r => r.event_name], ['ফলাফল', 374, r => r.result]
+            ], scRows, 'upostithi.pdf');
         }
         function initScannerPage() {
             if (!initScannerPage.done) {
@@ -6774,7 +6788,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         // ---------- ক্যানভাসে ফরম আঁকা ----------
-        const CX0 = ctmm(4), CY0 = ctmm(4), CW = ctmm(202), CH = ctmm(289), CX1 = CX0 + CW, CSL = ctmm(50.8), CCUT = CY0 + CH - CSL;
+        const CX0 = ctmm(4), CY0 = ctmm(4), CW = ctmm(202), CH = ctmm(289), CX1 = CX0 + CW, CSL = ctmm(50.8), CCUT = CY0 + CH - CSL, CFB = CCUT - ctmm(6), CSC = CCUT - ctmm(3);
         function ctT(c, t, x, y, px, w, al, col, maxW) {
             c.textAlign = al || 'left'; c.fillStyle = col || CTG;
             c.font = `${w || 400} ${px}px ${CARD_FONT}`;
@@ -6814,16 +6828,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         function ctBase() {
             const cv = document.createElement('canvas'); cv.width = 1240; cv.height = 1754;
             const c = cv.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, 1240, 1754);
-            c.strokeStyle = CTG; c.lineWidth = 2; c.strokeRect(CX0, CY0, CW, CH);
+            c.strokeStyle = CTG; c.lineWidth = 2.5; c.strokeRect(CX0, CY0, CW, CFB - CY0); c.strokeRect(CX0, CCUT, CW, CY0 + CH - CCUT);
             return [cv, c];
         }
         function ctCut(c) {
             c.save(); c.strokeStyle = CTG; c.lineWidth = 2; c.setLineDash([10, 7]);
-            const g = ctmm(7); c.beginPath(); c.moveTo(CX0, CCUT); c.lineTo(620 - g, CCUT); c.moveTo(620 + g, CCUT); c.lineTo(CX1, CCUT); c.stroke(); c.restore();
-            ctT(c, '✂', 620, CCUT + 12, 34, 400, 'center');
+            const g = ctmm(7); c.beginPath(); c.moveTo(CX0, CSC); c.lineTo(620 - g, CSC); c.moveTo(620 + g, CSC); c.lineTo(CX1, CSC); c.stroke(); c.restore();
+            ctT(c, '✂', 620, CSC + 14, 38, 400, 'center');
         }
         function ctGrid(c, list, off, top, rows) {
-            const rh = (CCUT - top) / rows, cw = CW / 2;
+            const rh = (CFB - top) / rows, cw = CW / 2;
             list.forEach((x, i) => {
                 const col = Math.floor(i / rows), r = i % rows, px = CX0 + col * cw, py = top + r * rh;
                 c.save(); c.beginPath(); c.rect(px + 2, py, cw - 4, rh); c.clip();
@@ -6840,11 +6854,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 });
                 c.restore();
             });
-            c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(620, top); c.lineTo(620, CCUT); c.stroke();
+            c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(620, top); c.lineTo(620, CFB); c.stroke();
         }
         function ctFront(serial, a, info) {
             const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(25.4);
-            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CCUT - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
+            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CFB - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
             // হেডার (১ ইঞ্চি)
             ctImg(c, a.logo, CX0 + ctmm(3), CY0 + ctmm(2.2), ctmm(21), ctmm(21));
             ctT(c, org, 620, CY0 + 36, 27, 600, 'center', '#3d7d50', 720);
@@ -6905,7 +6919,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         function ctBack(a) {
             const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(11);
-            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CCUT - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
+            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CFB - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
             ctImg(c, a.clogo, CX0 + ctmm(3), CY0 + ctmm(1.5), ctmm(8), ctmm(8)); ctImg(c, a.clogo, CX1 - ctmm(11), CY0 + ctmm(1.5), ctmm(8), ctmm(8));
             ctT(c, org + ' — ' + cf.comp, 620, CY0 + 50, 34, 700, 'center', CTG, 900);
             c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(CX0, CY0 + hh); c.lineTo(CX1, CY0 + hh); c.stroke();
@@ -6949,23 +6963,24 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:20000;display:flex;align-items:center;justify-content:center;padding:14px;overflow:auto';
             ov.innerHTML = `<div style="background:#fff;border-radius:18px;max-width:460px;width:100%;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.3)">
 <div class="d-flex justify-content-between align-items-start mb-2"><h5 class="fw-bold text-success mb-0">🏆 ${escHtml(CT.cfg.comp || 'প্রতিযোগিতা')}</h5><button type="button" class="btn-close" id="ctjX" aria-label="বন্ধ"></button></div>
-<div id="ctjStep1"><p class="small text-muted">আবেদন ফরমে বসানোর জন্য আপনার তথ্য দিন</p>
+<div id="ctjStep1"><div class="text-center p-3 rounded mb-3" style="background:#fff4f8;border:2px solid #e2136e"><div class="fw-bold mb-1" style="color:#b00f55">💳 বিকাশে ৫০ টাকা পাঠান</div><div class="small mb-2">এই নাম্বারে বিকাশে <b>৫০ টাকা</b> পাঠিয়ে নিচে ট্রানজেকশন আইডি দিন। ফরম ফ্রি, পরে যাচাই করা হবে। একটি সঠিক ফোন নাম্বার দিবেন।</div><div style="font-size:30px;font-weight:800;color:#e2136e;letter-spacing:1px">${CT_BKASH}</div></div><p class="small text-muted">আবেদন ফরমে বসানোর জন্য আপনার তথ্য দিন</p>
 <label class="small text-muted">আপনার নাম</label><input id="ctjName" class="form-control mb-2" autocomplete="name">
 <label class="small text-muted">ঠিকানা</label><input id="ctjAddr" class="form-control mb-2" autocomplete="street-address">
-<label class="small text-muted">ফোন নম্বর</label><input id="ctjPhone" class="form-control mb-3" inputmode="tel" autocomplete="tel">
+<label class="small text-muted">ফোন নম্বর</label><input id="ctjPhone" class="form-control mb-2" inputmode="tel" autocomplete="tel">
+<label class="small text-muted">বিকাশ ট্রানজেকশন আইডি (TrxID) <small>(টাকা পাঠানোর পর এখানে দিন)</small></label><input id="ctjTrx" class="form-control mb-3" autocomplete="off">
 <button type="button" class="btn btn-success w-100 btn-lg" id="ctjGo">এগিয়ে যান</button></div>
-<div id="ctjStep2" style="display:none"><div class="p-3 rounded mb-3" style="background:#f0f9f3"><div>নাম: <b id="ctjvN"></b></div><div>ঠিকানা: <b id="ctjvA"></b></div><div>ফোন: <b id="ctjvP"></b></div></div>
-<button type="button" class="btn btn-success w-100 btn-lg" id="ctjDl">📥 আবেদন ফরম ডাউনলোড করুন</button>
+<div id="ctjStep2" style="display:none"><div class="p-3 rounded mb-3" style="background:#f0f9f3"><div>নাম: <b id="ctjvN"></b></div><div>ঠিকানা: <b id="ctjvA"></b></div><div>ফোন: <b id="ctjvP"></b></div><div>পেমেন্ট তথ্য: <b id="ctjvT"></b></div></div>
+<div class="small text-center mb-2">বিকাশে <b>৫০ টাকা</b> পাঠাবেন এই নাম্বারে: <b style="color:#e2136e">${CT_BKASH}</b></div><button type="button" class="btn btn-success w-100 btn-lg" id="ctjDl">📥 আবেদন ফরম ডাউনলোড করুন</button>
 <div id="ctjDone" class="small text-success mt-2 text-center"></div>
 <button type="button" class="btn btn-link w-100 mt-1" id="ctjBack">← তথ্য বদলান</button></div></div>`;
             document.body.appendChild(ov);
-            const g = id => document.getElementById(id); let serial = null;
+            const g = id => document.getElementById(id); let serial = null, infoSaved = false;
             const close = () => ov.remove();
             g('ctjX').onclick = close; ov.addEventListener('mousedown', e => { if (e.target === ov) close(); });
             g('ctjGo').onclick = () => {
-                const name = g('ctjName').value.trim(), addr = g('ctjAddr').value.trim(), phone = g('ctjPhone').value.trim();
+                const name = g('ctjName').value.trim(), addr = g('ctjAddr').value.trim(), phone = g('ctjPhone').value.trim(), trx = g('ctjTrx').value.trim();
                 if (name.length < 2 || addr.length < 2 || phone.length < 6) { showToast('❌ নাম, ঠিকানা ও ফোন নম্বর সঠিকভাবে দিন', 'error'); return; }
-                g('ctjvN').textContent = name; g('ctjvA').textContent = addr; g('ctjvP').textContent = phone;
+                g('ctjvN').textContent = name; g('ctjvA').textContent = addr; g('ctjvP').textContent = phone; g('ctjvT').textContent = trx || '—';
                 g('ctjStep1').style.display = 'none'; g('ctjStep2').style.display = 'block';
             };
             g('ctjBack').onclick = () => { if (serial) { showToast('ফরম আগেই তৈরি হয়েছে, তথ্য বদলাতে নতুন করে শুরু করুন', 'error'); } g('ctjStep2').style.display = 'none'; g('ctjStep1').style.display = 'block'; };
@@ -6979,6 +6994,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         if (r.error) throw r.error;
                         if (!r.data) { showToast('❌ এখন কোনো ফরম নেই বা প্রতিযোগিতা বন্ধ', 'error'); return; }
                         serial = r.data;
+                    }
+                    if (!infoSaved) {
+                        const t = g('ctjvT').textContent, ri = await sb.rpc('contest_set_info', { p_serial: serial, p_name: info.name, p_addr: info.address, p_phone: info.phone, p_trx: t === '—' ? '' : t });
+                        if (ri.error) { console.error(ri.error); showToast('⚠️ অ্যাডমিনের জন্য তথ্য সেভ হয়নি — supabase_contest_payment.sql চালান', 'error'); }
+                        else infoSaved = true;
                     }
                     await ctPdf([serial], true, `sirat-form-${serial}.pdf`, 0, null, info);
                     g('ctjDone').innerHTML = `✅ ফরম ডাউনলোড হয়েছে — ফরম নম্বর: <b>${escHtml(serial)}</b>`;
@@ -7096,31 +7116,155 @@ ${inp('hours', 'ফরম ডাউনলোডের কত ঘণ্টার 
 <div class="col-auto"><button class="btn btn-success" id="ctPrBtn">সামনের PDF ডাউনলোড</button></div></div>
 <div class="row g-2 align-items-end"><div class="col-6 col-md-3"><label class="small text-muted">পেছনের অংশ কতগুলো (সর্বোচ্চ ৩০০)</label><input type="number" min="1" max="300" value="100" class="form-control" id="ctBkN"></div><div class="col-auto"><button class="btn btn-outline-success" id="ctBkBtn">পেছনের PDF ডাউনলোড</button></div></div></div>
 <div class="admin-card mb-3 text-center"><button class="btn btn-success btn-lg" id="ctQOpen">✏️ প্রশ্ন সেট করুন</button><div class="small text-muted mt-2" id="ctQCount"></div></div>
-<div class="admin-card"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold mb-0">জমা পড়া ফরম</h6><button class="btn btn-sm btn-outline-success" id="ctCsv">সব ডিটেলস ডাউনলোড (CSV)</button></div><div id="ctSubs"></div></div>`;
+<div class="admin-card mb-3"><div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2"><h6 class="fw-bold mb-0">📥 ফরম ডাউনলোডকারী ও পেমেন্ট যাচাই</h6><button class="btn btn-sm btn-outline-success" id="ctDlCsv"><i class="fas fa-file-pdf me-1"></i>PDF ডাউনলোড</button></div><div class="d-flex flex-wrap gap-2 mb-2"><select class="form-select form-select-sm" id="ctDlFilter" style="max-width:210px"><option value="all">সব</option><option value="pending">পেমেন্ট যাচাই বাকি</option><option value="confirmed">পেমেন্ট কনফার্ম</option><option value="rejected">বাতিল</option></select><input type="search" class="form-control form-control-sm" id="ctDlSearch" placeholder="🔍 নাম, ফোন বা ফরম নম্বর" style="max-width:280px"></div><div id="ctDlSum" class="small text-muted mb-2"></div><div id="ctDlList"></div></div>
+<div class="admin-card"><div class="d-flex justify-content-between align-items-center mb-2"><h6 class="fw-bold mb-0">জমা পড়া ফরম</h6><button class="btn btn-sm btn-outline-success" id="ctCsv">সব ডিটেলস ডাউনলোড (PDF)</button></div><div id="ctSubs"></div></div>`;
         }
         function ctQEditorHtml() {
             return `<div id="ctQEd" style="display:none"><div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><button class="btn btn-outline-success" id="ctQBack">← ফিরে যান</button><h5 class="fw-bold text-primary-dark mb-0">প্রশ্ন সেট করুন</h5><span id="ctSaved2" class="small text-success"></span></div><div class="admin-card"><p class="small text-muted">মোট ৪০টি: ১–১৮ সামনের পাতায়, ১৯–৪০ পেছনের পাতায় যাবে। লেখা নিজে থেকেই সেভ হয়, পরে বদলানো যাবে।</p>${CT.cfg.questions.map((x, i) => `<div class="border rounded p-2 mb-2"><b>${ctBn(i + 1)}.</b><input class="form-control mb-1" data-qi="${i}" data-qk="q" value="${escAttr(x.q)}" placeholder="প্রশ্ন"><div class="row g-1">${x.o.map((o, k) => `<div class="col-6"><input class="form-control form-control-sm" data-qi="${i}" data-qk="${k}" value="${escAttr(o)}" placeholder="${CTL[k]})"></div>`).join('')}</div></div>`).join('')}</div></div>`;
         }
         function ctQCount() { const n = CT.cfg.questions.filter(x => x.q.trim()).length; if ($('ctQCount')) $('ctQCount').textContent = `৪০টির মধ্যে ${ctBn(n)}টি প্রশ্ন লেখা হয়েছে`; }
-        function ctCsvDownload(rows, name) {
-            const q = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
-            const lines = [['ফরম নম্বর', 'নাম', 'ফোন', 'ডাউনলোডের সময়', 'জমার সময়', 'রেজাল্ট', 'ছবি'].map(q).join(',')].concat(rows.map(r => [r.serial, r.name, r.phone, r.claimed_at, r.submitted_at, r.result, (r.photos || []).join(' ; ')].map(q).join(',')));
-            triggerDownload(new Blob(['\ufeff' + lines.join('\n')], { type: 'text/csv;charset=utf-8' }), name);
+        const CT_BKASH = '+8801939334926';
+        const CT_PAY_TXT = { pending: 'যাচাই বাকি', confirmed: 'কনফার্ম', rejected: 'বাতিল' };
+        const CT_LABELS = { serial: 'ফরম নম্বর', seq: 'ক্রম', src: 'উৎস', dl_name: 'ডাউনলোডের নাম', dl_phone: 'ডাউনলোডের ফোন', dl_address: 'ডাউনলোডের ঠিকানা', pay_trx: 'পেমেন্ট তথ্য (TrxID)', pay_status: 'পেমেন্ট স্ট্যাটাস', paid_at: 'পেমেন্ট কনফার্মের সময়', claimed_at: 'ফরম ডাউনলোডের সময়', submitted_at: 'ফরম জমার সময়', name: 'জমাকারীর নাম', phone: 'জমাকারীর ফোন', result: 'রেজাল্ট', photos: 'ফরমের ছবি', deadline: 'জমার শেষ সময়', id: 'আইডি' };
+        const CT_TS = /(_at|deadline)$/;
+        // একটি ফরমের সব ফিল্ড [লেবেল, মান]
+        function ctRowDetails(x) {
+            return Object.keys(x).map(k => {
+                let v = x[k];
+                if (k === 'photos') v = (v || []).length ? (v || []).length + 'টি' : '—';
+                else if (k === 'pay_status') v = CT_PAY_TXT[ctPayOf(x)] || '—';
+                else if (CT_TS.test(k)) v = v ? new Date(v).toLocaleString('bn-BD') : '—';
+                else if (v && typeof v === 'object') v = JSON.stringify(v);
+                return [CT_LABELS[k] || k, (v === null || v === undefined || v === '') ? '—' : String(v)];
+            });
         }
+        // অ্যাডমিন তালিকায় "সব ডিটেইলস" খোলা অংশ
+        function ctDetailsHtml(x) {
+            const rows = ctRowDetails(x).map(([k, v]) => `<tr><td class="text-muted small pe-2" style="white-space:nowrap;vertical-align:top">${escHtml(k)}</td><td class="small" style="word-break:break-word">${escHtml(v)}</td></tr>`).join('');
+            const photos = (x.photos || []).map(u => `<a href="${escAttr(u)}" target="_blank"><img src="${escAttr(u)}" style="height:72px;border-radius:6px;margin:0 4px 4px 0"></a>`).join('');
+            return `<details class="mt-2"><summary class="small text-success" style="cursor:pointer">📋 সব ডিটেইলস দেখুন</summary><table class="table table-sm mb-1 mt-1"><tbody>${rows}</tbody></table>${photos}<div><button class="btn btn-sm btn-outline-success mt-1" onclick="ctDetailPdfBySerial('${escAttr(x.serial)}')"><i class="fas fa-file-pdf me-1"></i> এই ফরমের ডিটেইলস PDF</button></div></details>`;
+        }
+        // PDF টেবিল জেনারেটর (A4 landscape, লম্বা ঘর স্বয়ংক্রিয়ভাবে একাধিক লাইনে ভাঙে)
+        async function ctTablePdf(title, cols, rows, fname) {
+            if (!rows.length) { showToast('কোনো ডেটা নেই', 'error'); return; }
+            await cardFontsReady();
+            const F = CARD_FONT, W = 1754, H = 1240, LH = 26, PAD = 10, HEAD_H = 44, TOP = 150, BOT = H - 44;
+            const mc = document.createElement('canvas').getContext('2d');
+            mc.font = `400 19px ${F}`;
+            const wrap = (text, maxW) => {
+                const out = [];
+                String(text ?? '—').split('\n').forEach(par => {
+                    let line = '';
+                    for (const ch of par) { const t = line + ch; if (line && mc.measureText(t).width > maxW) { out.push(line); line = ch; } else line = t; }
+                    out.push(line);
+                });
+                return out.length ? out : ['—'];
+            };
+            const cvs = []; let c, y;
+            const newPage = () => {
+                const cv = document.createElement('canvas'); cv.width = W; cv.height = H; c = cv.getContext('2d');
+                c.fillStyle = '#fff'; c.fillRect(0, 0, W, H);
+                const g = c.createLinearGradient(0, 0, W, 0); g.addColorStop(0, '#1a6b3c'); g.addColorStop(1, '#2f7de1');
+                c.fillStyle = g; c.fillRect(0, 0, W, 90);
+                c.fillStyle = '#fff'; c.font = `700 36px ${F}`; c.textAlign = 'left';
+                c.fillText(fitText(c, title, W - 120), 40, 58);
+                let x = 40; y = TOP - HEAD_H;
+                c.fillStyle = '#0f4a2a'; c.fillRect(40, y, W - 80, HEAD_H);
+                c.fillStyle = '#fff'; c.font = `700 20px ${F}`;
+                cols.forEach(([h, w]) => { c.fillText(fitText(c, h, w - 16), x + 8, y + 29); x += w; });
+                y = TOP; cvs.push(cv);
+            };
+            newPage();
+            rows.forEach((r, idx) => {
+                const cells = cols.map(([h, w, fn]) => wrap(fn(r, idx + 1), w - PAD * 2));
+                const rh = Math.max(HEAD_H, Math.max(...cells.map(l => l.length)) * LH + PAD * 2);
+                if (y + rh > BOT) newPage();
+                let x = 40;
+                c.fillStyle = idx % 2 ? '#fff' : '#f0f9f3'; c.fillRect(40, y, W - 80, rh);
+                cols.forEach(([h, w], ci) => {
+                    c.strokeStyle = '#dbe3ee'; c.lineWidth = 1; c.strokeRect(x, y, w, rh);
+                    c.fillStyle = '#1f2937'; c.font = `400 19px ${F}`; c.textAlign = 'left';
+                    cells[ci].forEach((ln, li) => c.fillText(ln, x + PAD, y + PAD + LH * (li + 1) - 7));
+                    x += w;
+                });
+                y += rh;
+            });
+            const pages = [];
+            for (let i = 0; i < cvs.length; i++) {
+                const cc = cvs[i].getContext('2d');
+                cc.fillStyle = '#6b7280'; cc.font = `400 18px ${F}`; cc.textAlign = 'center';
+                cc.fillText(`পৃষ্ঠা ${i + 1} / ${cvs.length}  •  ${new Date().toLocaleString('bn-BD')}`, W / 2, H - 14);
+                pages.push({ items: [{ jpeg: await canvasToJpeg(cvs[i]), w: W, h: H, x: 0, y: 0, dw: 841.89, dh: 595.28 }], extra: '' });
+            }
+            triggerDownload(buildPdfPages(841.89, 595.28, pages), fname);
+        }
+        const CT_SUB_COLS = [['ফরম নম্বর', 130, r => r.serial], ['নাম', 220, r => r.name], ['ফোন', 170, r => r.phone], ['ঠিকানা (ডাউনলোডের সময়)', 530, r => r.dl_address],
+            ['জমার সময়', 230, r => r.submitted_at ? new Date(r.submitted_at).toLocaleString('bn-BD') : '—'], ['রেজাল্ট', 210, r => r.result], ['ছবি', 184, r => (r.photos || []).length + 'টি']];
+        // "জমা পড়া ফরম" তালিকার PDF
+        function ctCsvDownload(rows, name) { return ctTablePdf('জমা পড়া ফরম', CT_SUB_COLS, rows, (name || 'sirat-submissions').replace(/\.csv$/i, '') + '.pdf'); }
+        // একজনের সব ডিটেইলস PDF
+        function ctDetailPdf(x) {
+            if (!x) return;
+            return ctTablePdf('ফরমের সব ডিটেইলস — ' + (x.serial || ''), [['বিষয়', 420, r => r[0]], ['তথ্য', 1254, r => r[1]]], ctRowDetails(x), `sirat-${x.serial || 'form'}-details.pdf`);
+        }
+        function ctDetailPdfBySerial(serial) {
+            const x = (window._ctDl || []).find(r => r.serial === serial) || (window._ctRows || []).find(r => r.serial === serial);
+            return ctDetailPdf(x);
+        }
+        window.ctDetailPdf = ctDetailPdf; window.ctDetailPdfBySerial = ctDetailPdfBySerial;
         async function ctStats() {
             const n = (f) => f(sb.from('contest_forms').select('*', { count: 'exact', head: true }));
-            const [a, b, c2] = await Promise.all([n(q => q.eq('src', 'online')), n(q => q.eq('src', 'online').not('claimed_at', 'is', null)), n(q => q.not('submitted_at', 'is', null))]);
-            if ($('ctStats')) $('ctStats').innerHTML = `অনলাইন ফরম: মোট <b>${ctBn(a.count || 0)}</b> · ডাউনলোড হয়েছে <b>${ctBn(b.count || 0)}</b> · বাকি <b>${ctBn((a.count || 0) - (b.count || 0))}</b> · জমা পড়েছে <b>${ctBn(c2.count || 0)}</b>`;
+            const [a, b, c2, d2] = await Promise.all([n(q => q.eq('src', 'online')), n(q => q.eq('src', 'online').not('claimed_at', 'is', null)), n(q => q.not('submitted_at', 'is', null)), n(q => q.eq('src', 'online').eq('pay_status', 'confirmed'))]);
+            if ($('ctStats')) $('ctStats').innerHTML = `অনলাইন ফরম: মোট <b>${ctBn(a.count || 0)}</b> · ডাউনলোড হয়েছে <b>${ctBn(b.count || 0)}</b> · বাকি <b>${ctBn((a.count || 0) - (b.count || 0))}</b> · জমা পড়েছে <b>${ctBn(c2.count || 0)}</b> · পেমেন্ট কনফার্ম <b>${ctBn(d2.count || 0)}</b>`;
         }
         async function ctLoadSubs() {
             const r = await sb.from('contest_forms').select('*').not('submitted_at', 'is', null).order('submitted_at', { ascending: false }).limit(500);
             window._ctRows = r.data || [];
-            $('ctSubs').innerHTML = !window._ctRows.length ? noData('এখনো কোনো ফরম জমা পড়েনি') : window._ctRows.map((x, i) => `<div class="border rounded p-2 mb-2"><div class="d-flex justify-content-between flex-wrap gap-1"><div><b>${escHtml(x.serial)}</b> · ${escHtml(x.name)} · ${escHtml(x.phone)}<div class="small text-muted">জমা: ${new Date(x.submitted_at).toLocaleString('bn-BD')}</div></div><button class="btn btn-sm btn-outline-success" onclick="ctCsvDownload([window._ctRows[${i}]],'sirat-${escAttr(x.serial)}.csv')">ডিটেলস ডাউনলোড</button></div><div class="my-1">${(x.photos || []).map(u => `<a href="${escAttr(u)}" target="_blank"><img src="${escAttr(u)}" style="height:64px;border-radius:6px;margin-right:4px"></a>`).join('')}</div><div class="input-group input-group-sm"><span class="input-group-text">রেজাল্ট</span><input class="form-control" value="${escAttr(x.result)}" onchange="ctSetResult('${escAttr(x.serial)}',this.value)"></div></div>`).join('');
+            $('ctSubs').innerHTML = !window._ctRows.length ? noData('এখনো কোনো ফরম জমা পড়েনি') : window._ctRows.map((x, i) => `<div class="border rounded p-2 mb-2"><div class="d-flex justify-content-between flex-wrap gap-1"><div><b>${escHtml(x.serial)}</b> · ${escHtml(x.name)} · ${escHtml(x.phone)}<div class="small text-muted">জমা: ${new Date(x.submitted_at).toLocaleString('bn-BD')}</div></div><button class="btn btn-sm btn-outline-success" onclick="ctDetailPdf(window._ctRows[${i}])"><i class="fas fa-file-pdf me-1"></i>ডিটেলস PDF</button></div><div class="my-1">${(x.photos || []).map(u => `<a href="${escAttr(u)}" target="_blank"><img src="${escAttr(u)}" style="height:64px;border-radius:6px;margin-right:4px"></a>`).join('')}</div><div class="input-group input-group-sm"><span class="input-group-text">রেজাল্ট</span><input class="form-control" value="${escAttr(x.result)}" onchange="ctSetResult('${escAttr(x.serial)}',this.value)"></div></div>`).join('');
         }
         async function ctSetResult(s, v) {
             const r = await sb.from('contest_forms').update({ result: v }).eq('serial', s);
             showToast(r.error ? '❌ সেভ হয়নি' : '✅ রেজাল্ট সেভ হয়েছে', r.error ? 'error' : 'success');
         }
+
+        // ---------- অ্যাডমিন: ডাউনলোডকারী ও পেমেন্ট যাচাই ----------
+        const CT_PAY = { pending: ['⏳ যাচাই বাকি', 'warning text-dark'], confirmed: ['✅ পেমেন্ট কনফার্ম', 'success'], rejected: ['❌ বাতিল', 'danger'] };
+        const ctPayOf = x => (x && x.pay_status) || 'pending';
+        async function ctLoadDl() {
+            const el = $('ctDlList'); if (!el) return;
+            const r = await sb.from('contest_forms').select('*').eq('src', 'online').not('claimed_at', 'is', null).order('claimed_at', { ascending: false }).limit(2000);
+            if (r.error) { el.innerHTML = `<div class="text-danger small">❌ ${escHtml(errMsg(r.error))}</div>`; return; }
+            window._ctDl = r.data || []; ctRenderDl();
+        }
+        function ctRenderDl() {
+            const el = $('ctDlList'); if (!el) return;
+            const f = $('ctDlFilter').value, q = $('ctDlSearch').value.trim().toLowerCase(), all = window._ctDl || [];
+            const cnt = k => all.filter(x => ctPayOf(x) === k).length;
+            $('ctDlSum').innerHTML = `মোট ডাউনলোড <b>${ctBn(all.length)}</b> · যাচাই বাকি <b>${ctBn(cnt('pending'))}</b> · কনফার্ম <b>${ctBn(cnt('confirmed'))}</b> · বাতিল <b>${ctBn(cnt('rejected'))}</b>`;
+            const rows = all.filter(x => (f === 'all' || ctPayOf(x) === f) && (!q || [x.serial, x.dl_name, x.dl_phone, x.dl_address, x.pay_trx].some(v => String(v || '').toLowerCase().includes(q))));
+            if (!rows.length) { el.innerHTML = noData('কোনো ডাউনলোডকারী পাওয়া যায়নি'); return; }
+            el.innerHTML = rows.slice(0, 300).map(x => {
+                const st = ctPayOf(x), b = CT_PAY[st] || CT_PAY.pending, sr = escAttr(x.serial);
+                return `<div class="border rounded p-2 mb-2"><div class="d-flex justify-content-between flex-wrap gap-1"><div><b>${escHtml(x.serial)}</b> · ${escHtml(x.dl_name || '—')}<div class="small">📞 ${x.dl_phone ? `<a href="tel:${escAttr(x.dl_phone)}">${escHtml(x.dl_phone)}</a>` : '—'} · 📍 ${escHtml(x.dl_address || '—')}</div><div class="small">💳 পেমেন্ট তথ্য: <b>${escHtml(x.pay_trx || '—')}</b></div><div class="small text-muted">ডাউনলোড: ${new Date(x.claimed_at).toLocaleString('bn-BD')}${x.submitted_at ? ' · <span class="text-success">ফরম জমা দিয়েছে</span>' : ' · এখনো জমা দেয়নি'}${x.paid_at && st === 'confirmed' ? ' · কনফার্ম: ' + new Date(x.paid_at).toLocaleString('bn-BD') : ''}</div></div><span class="badge bg-${b[1]} align-self-start">${b[0]}</span></div>${ctDetailsHtml(x)}<div class="d-flex flex-wrap gap-1 mt-2">${st !== 'confirmed' ? `<button class="btn btn-sm btn-success" onclick="ctSetPay('${sr}','confirmed')">✅ পেমেন্ট কনফার্ম</button>` : ''}${st !== 'rejected' ? `<button class="btn btn-sm btn-outline-danger" onclick="ctSetPay('${sr}','rejected')">❌ বাতিল</button>` : ''}${st !== 'pending' ? `<button class="btn btn-sm btn-outline-secondary" onclick="ctSetPay('${sr}','pending')">↩ যাচাই বাকি</button>` : ''}</div></div>`;
+            }).join('') + (rows.length > 300 ? `<div class="small text-muted text-center">প্রথম ৩০০টি দেখানো হচ্ছে — সার্চ বা ফিল্টার ব্যবহার করুন</div>` : '');
+        }
+        async function ctSetPay(serial, v) {
+            const upd = { pay_status: v, paid_at: v === 'confirmed' ? new Date().toISOString() : null };
+            const r = await sb.from('contest_forms').update(upd).eq('serial', serial);
+            if (r.error) { showToast('❌ সেভ হয়নি — supabase_contest_payment.sql চালিয়েছেন? ' + errMsg(r.error), 'error'); return; }
+            const row = (window._ctDl || []).find(x => x.serial === serial); if (row) Object.assign(row, upd);
+            showToast(v === 'confirmed' ? '✅ পেমেন্ট কনফার্ম হয়েছে' : v === 'rejected' ? 'বাতিল করা হয়েছে' : 'যাচাই বাকি করা হয়েছে');
+            ctRenderDl(); ctStats();
+        }
+        function ctDlPdf() {
+            const dt = d => d ? new Date(d).toLocaleString('bn-BD') : '—';
+            return ctTablePdf('ফরম ডাউনলোডকারী ও পেমেন্ট যাচাই', [
+                ['ফরম নম্বর', 130, r => r.serial], ['নাম', 200, r => r.dl_name], ['ফোন', 150, r => r.dl_phone], ['ঠিকানা', 330, r => r.dl_address],
+                ['পেমেন্ট তথ্য (TrxID)', 190, r => r.pay_trx], ['পেমেন্ট স্ট্যাটাস', 160, r => CT_PAY_TXT[ctPayOf(r)] || '—'],
+                ['ডাউনলোডের সময়', 220, r => dt(r.claimed_at)], ['ফরম জমা', 110, r => r.submitted_at ? 'হ্যাঁ' : 'না'], ['রেজাল্ট', 184, r => r.result || '—']
+            ], window._ctDl || [], 'sirat-downloaders.pdf');
+        }
+        window.ctSetPay = ctSetPay;
         async function contestAdminInit() {
             await ctLoad(true);
             const box = $('ctAdminBox'); box.innerHTML = ctAdminHtml();
@@ -7172,7 +7316,8 @@ ${inp('hours', 'ফরম ডাউনলোডের কত ঘণ্টার 
             };
             $('ctBkBtn').onclick = async function () { setBusy(this, true, 'PDF তৈরি হচ্ছে...'); try { await ctAutoSaveNow(); await ctPdf([], true, 'sirat-back.pdf', num('ctBkN', 300)); } catch (e) { showToast('❌ ' + errMsg(e), 'error'); } finally { setBusy(this, false); } };
             $('ctCsv').onclick = () => ctCsvDownload(window._ctRows || [], 'sirat-all-details.csv');
-            ctStats(); ctLoadSubs();
+            ctStats(); ctLoadSubs(); ctLoadDl();
+            $('ctDlFilter').onchange = ctRenderDl; $('ctDlSearch').addEventListener('input', ctRenderDl); $('ctDlCsv').onclick = ctDlPdf;
         }
         async function ctAutoSaveNow() { clearTimeout(_ctT); await sb.from('contest_cfg').upsert({ id: 1, data: CT.cfg }); }
         document.addEventListener('DOMContentLoaded', () => { ctRenderHome(); });
