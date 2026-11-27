@@ -1133,7 +1133,46 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .pend-item small{color:#64748b}
         .nav-section{list-style:none;font-size:.74rem;letter-spacing:.06em;color:rgba(255,255,255,.55);padding:16px 20px 4px;font-weight:600}
         .sb-badge{background:#f5a524;color:#222;border-radius:20px;padding:0 8px;font-size:.75rem;font-weight:700;margin-left:6px}
+
+        /* ===== ডেক্সটপ: অ্যাডমিন ড্যাশবোর্ড ও পুরো ওয়েবসাইট ===== */
+        @media (min-width: 992px) {
+            #adminDashboard { padding-top: 74px; background: #f1f6f3; }
+            #adminDashboard .row.g-0 { align-items: flex-start; }
+            #adminDashboard .admin-sidebar { position: sticky; top: 74px; height: calc(100vh - 74px); min-height: 0; overflow-y: auto; border-radius: 0; padding: 1.1rem 0 2rem; box-shadow: 6px 0 28px rgba(10, 40, 25, .10); scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.25) transparent; }
+            #adminDashboard .admin-sidebar .nav-link { padding: 11px 20px !important; font-size: .98rem; }
+            #adminDashboard .admin-content { padding: 2rem 2.6rem 3.5rem; min-height: calc(100vh - 74px); background: #f1f6f3; }
+            #adminDashboard .admin-content > .admin-page { max-width: 1560px; margin: 0 auto; }
+            #adminDashboard .admin-card { padding: 1.7rem 2rem; border: 1px solid #e3ece6; box-shadow: 0 8px 28px rgba(15, 60, 35, .06); border-radius: 18px; }
+            #adminDashboard .admin-content h4 { font-size: 1.65rem; }
+            #adminDashboard .dash-hero { padding: 30px 34px; border-radius: 22px; }
+            #adminDashboard .dash-hero h4 { font-size: 1.9rem; }
+            #adminDashboard .dash-stats { grid-template-columns: repeat(5, 1fr) !important; gap: 20px; }
+            #adminDashboard .dash-stat { padding: 26px 22px; }
+            #adminDashboard .dash-cols { grid-template-columns: 1.8fr 1fr; gap: 22px; }
+            #adminDashboard .dash-actions { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+            #adminDashboard .mem-grid { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; }
+            #adminDashboard .admin-table { font-size: 1rem; }
+            #adminDashboard .admin-table thead th { background: #eef6f1; color: #14532d; position: sticky; top: 0; }
+            #adminDashboard .admin-table tbody tr:hover { background: #f7fbf8; }
+            #adminDashboard .form-control, #adminDashboard .form-select { min-height: 46px; }
+            #adminDashboard .modal-dialog { max-width: 900px; }
+
+            /* সাধারণ ওয়েবসাইট — কম্পিউটারে সুন্দর ও পরিপাটি */
+            .page-section > .container { max-width: 1240px; }
+            .section-title { font-size: 2.2rem; }
+            .membership-form { padding: 2rem 2.2rem; border-radius: 20px; }
+            #page-idcard .idc-box { padding: 2rem; }
+            #page-idcard #idcResult .card-canvas { width: 100%; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,.12); border-radius: 14px; }
+            #page-minfo .col-lg-7 { max-width: 760px; flex: 0 0 auto; width: 100%; }
+            #page-join .container, #page-account .container { max-width: 1100px; }
+        }
+        @media (min-width: 1400px) { #adminDashboard .admin-content { padding: 2.2rem 3.2rem 4rem; } }
+        .idc-status { border-radius: 18px; padding: 18px 22px; display: flex; align-items: center; gap: 16px; border: 1px solid; }
+        .idc-status i { font-size: 2.2rem; flex: none; }
+        .idc-status h5 { margin: 0 0 2px; font-weight: 700; }
+        .idc-status p { margin: 0; font-size: .92rem; opacity: .85; }
     </style>
+    <script src="config.js"></script>
 </head>
 <body>
 
@@ -1584,7 +1623,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 </div>
                                 <canvas id="memberCardCanvas" class="card-canvas" width="1060" height="670"></canvas>
                                 <canvas id="memberCardBackCanvas" class="card-canvas mt-3" width="1060" height="670"></canvas>
-                                <div class="row g-2 mt-2">
+                                <div class="row g-2 mt-2" id="profileCardBtns" style="display:none;">
                                     <div class="col-6"><button type="button" class="btn btn-primary-custom w-100" id="downloadCardBtn"><i class="fas fa-image me-1"></i> PNG ডাউনলোড</button></div>
                                     <div class="col-6"><button type="button" class="btn btn-outline-danger w-100 rounded-pill fw-semibold" id="downloadCardPdfBtn"><i class="fas fa-file-pdf me-1"></i> PDF ডাউনলোড</button></div>
                                 </div>
@@ -1642,7 +1681,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <div class="container">
                 <div class="text-center mb-4">
                     <h2 class="section-title text-center">সদস্য আইডি কার্ড</h2>
-                    <p class="section-subtitle">আপনার ফরম নম্বর বা সদস্য নম্বর দিয়ে খুঁজুন — নিজের তথ্য দেখুন এবং কার্ড ডাউনলোড করুন।</p>
+                    <p class="section-subtitle">আপনার ফরম নম্বর বা সদস্য নম্বর দিয়ে খুঁজুন — নিজের তথ্য ও আবেদনের অবস্থা দেখুন এবং ডাউনলোড করুন।</p>
                 </div>
 
                 <div class="row justify-content-center">
@@ -1688,7 +1727,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
                     <div class="row justify-content-center mb-4"><div class="col-12 col-xl-11"><div id="idcInfo"></div></div></div>
 
-                    <div class="row g-4 justify-content-center">
+                    <!-- সাধারণ ব্যবহারকারী: শুধু ডিটেলস ও আবেদনের অবস্থা -->
+                    <div class="row justify-content-center mb-4" id="idcPublicBox" style="display:none;">
+                        <div class="col-12 col-xl-11">
+                            <div id="idcStatusBox" class="mb-3"></div>
+                            <div class="row g-2 justify-content-center">
+                                <div class="col-sm-8 col-lg-5"><button type="button" class="btn btn-primary-custom idc-btn w-100" id="idcDetailsBtn"><i class="fas fa-file-lines me-1"></i> আমার ডিটেলস ও আবেদনের অবস্থা — প্রিভিউ ও ডাউনলোড</button></div>
+                            </div>
+                            <p class="text-center text-muted small mt-3 mb-0"><i class="fas fa-circle-info me-1"></i> আইডি কার্ড প্রস্তুত হলে অ্যাডমিন আপনাকে সরাসরি প্রদান করবেন। ওয়েবসাইট থেকে কার্ড ডাউনলোড করা যায় না।</p>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 justify-content-center" id="idcCardsRow" style="display:none;">
                         <div class="col-md-6 col-xl-6">
                             <div class="idc-label">সামনের অংশ</div>
                             <canvas id="idcFront" class="card-canvas" width="1060" height="670"></canvas>
@@ -1698,12 +1748,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             <canvas id="idcBack" class="card-canvas" width="1060" height="670"></canvas>
                         </div>
                     </div>
-                    <div class="row g-2 justify-content-center mt-4">
+                    <div class="row g-2 justify-content-center mt-4" id="idcBtnRow" style="display:none;">
                         <div class="col-sm-5 col-lg-3"><button type="button" class="btn btn-primary-custom idc-btn w-100" id="idcPdfBtn"><i class="fas fa-file-pdf me-1"></i> PDF ডাউনলোড (A4)</button></div>
                         <div class="col-sm-5 col-lg-3"><button type="button" class="btn btn-outline-custom idc-outline w-100" id="idcPngBtn"><i class="fas fa-image me-1"></i> PNG ডাউনলোড</button></div>
                     </div>
                     <div class="text-center mt-3"><button type="button" class="btn btn-outline-custom" onclick="downloadAwareness(this)"><i class="fas fa-file-pdf me-1"></i> ফিলিস্তিন তথ্যপত্র ডাউনলোড</button></div>
-                    <p class="text-center text-muted small mt-2 mb-0">PDF-এ কার্ড আসল আইডি কার্ড সাইজে (৯০ × ৫৬.৯ মিমি) A4 পেজে পাশাপাশি আসবে — প্রিন্ট করে কেটে নিন।</p>
+                    <p class="text-center text-muted small mt-2 mb-0" id="idcPrintNote" style="display:none;">PDF-এ কার্ড আসল আইডি কার্ড সাইজে (৯০ × ৫৬.৯ মিমি) A4 পেজে পাশাপাশি আসবে — প্রিন্ট করে কেটে নিন।</p>
                 </div>
 
                 <div class="text-center mt-5">
@@ -2477,8 +2527,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         // ================================================================
         //  SUPABASE CONFIG
         // ================================================================
-        const SUPABASE_URL = 'https://mujevoezmxwusjfamwtf.supabase.co';
-        const SUPABASE_ANON_KEY = 'sb_publishable_6msCTcwfwgfRRzJlqvm-_g_Py5RDou-';
+        // প্রজেক্ট URL ও পাবলিশেবল কি এখন আলাদা ফাইল config.js থেকে আসে
+        const _CFG = window.APP_CONFIG || {};
+        const SUPABASE_URL = _CFG.SUPABASE_URL || '';
+        const SUPABASE_ANON_KEY = _CFG.SUPABASE_ANON_KEY || '';
+        if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+            document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;z-index:99999;top:0;left:0;right:0;background:#b91c1c;color:#fff;padding:12px;text-align:center;font-weight:600">config.js ফাইল পাওয়া যায়নি বা তাতে SUPABASE_URL / SUPABASE_ANON_KEY নেই — index.html-এর পাশে config.js আপলোড করুন।</div>');
+        }
         if (!window.supabase || !window.supabase.createClient) {
             document.body.insertAdjacentHTML('afterbegin', '<div style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#b71c1c;color:#fff;padding:12px;text-align:center;font-family:sans-serif;">Supabase লাইব্রেরি লোড হয়নি — ইন্টারনেট সংযোগ দেখুন বা পেজ রিফ্রেশ করুন।</div>');
             throw new Error('supabase library not loaded');
@@ -4139,6 +4194,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             c.fillStyle = CARD.ink; c.font = `400 21px ${F}`;
             addrL.forEach((ln, i) => c.fillText(ln, tx0 + 235, yy + 29 + i * 28));
 
+            // আবেদনের অবস্থা
+            const ast = appStatusInfo(m);
+            const sbY = Math.max(yy + ah, qBoxY + 214) + 26;
+            c.fillStyle = ast.bg; rr(c, tx0, sbY, W - 200, 78, 14); c.fill();
+            c.lineWidth = 2; c.strokeStyle = ast.bd; rr(c, tx0, sbY, W - 200, 78, 14); c.stroke();
+            c.textAlign = 'left'; c.fillStyle = ast.c; c.font = `700 24px ${F}`;
+            c.fillText(`${tr('আবেদনের অবস্থা')}: ${tr(ast.t)}`, tx0 + 26, sbY + 34);
+            c.font = `400 18px ${F}`; c.fillText(fitText(c, tr(ast.d), W - 260), tx0 + 26, sbY + 62);
+
             // প্রতিষ্ঠানের সিল, সাইন ও তারিখ — পেজের নিচে
             const sy = H - 52 - 270;
             drawSignBlock(c, sig, seal, S, W - 100 - 260, W - 100, sy, sy + 80, sy + 92, F, 1.1);
@@ -4198,7 +4262,30 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         // A4 পেজে আইডি কার্ডের সাইজে (৯০ × ৫৬.৯ মিমি) সামনে-পেছনে পাশাপাশি
+
+        // ---------- আবেদনের অবস্থা ----------
+        function appStatusInfo(m) {
+            const st = String((m && (m.status || m.application_status)) || '').toLowerCase();
+            if (/reject|cancel|বাতিল/.test(st)) return { key: 'rejected', t: 'আবেদন বাতিল', d: 'বিস্তারিত জানতে প্রতিষ্ঠানের সাথে যোগাযোগ করুন।', c: '#991b1b', bg: '#fee2e2', bd: '#fecaca', ic: 'fa-circle-xmark' };
+            if (/pend|review|অপেক্ষ|যাচাই/.test(st)) return { key: 'pending', t: 'আবেদন যাচাই চলছে', d: 'আপনার আবেদনটি যাচাই করা হচ্ছে, কিছুদিন অপেক্ষা করুন।', c: '#92400e', bg: '#fef3c7', bd: '#fde68a', ic: 'fa-hourglass-half' };
+            return { key: 'approved', t: 'আবেদন এন্ট্রি সম্পন্ন ও অনুমোদিত', d: 'আপনার সদস্যপদ অনুমোদিত। কার্ডের মেয়াদ ২০৩০ সাল পর্যন্ত।', c: '#166534', bg: '#dcfce7', bd: '#bbf7d0', ic: 'fa-circle-check' };
+        }
+        function applyIdcAccess(m) {
+            const adm = isAdmin === true;
+            const show = (id, on) => { const e = $(id); if (e) e.style.display = on ? '' : 'none'; };
+            show('idcCardsRow', adm); show('idcBtnRow', adm); show('idcPrintNote', adm); show('idcPublicBox', !adm);
+            if (!adm) {
+                const a = appStatusInfo(m);
+                $('idcStatusBox').innerHTML = `<div class="idc-status" style="background:${a.bg};border-color:${a.bd};color:${a.c};"><i class="fas ${a.ic}"></i><div><h5>আবেদনের অবস্থা: ${escHtml(a.t)}</h5><p>${escHtml(a.d)}</p></div></div>`;
+                const b = $('idcDetailsBtn'); if (b) b.onclick = () => showDownloadPreview(m, 'info');
+            }
+        }
+        // আইডি কার্ড — শুধু অ্যাডমিন ডাউনলোড করতে পারবে
         async function downloadCardFiles(m, kind) {
+            if (isAdmin !== true) throw new Error('আইডি কার্ড শুধু অ্যাডমিন ডাউনলোড করতে পারবেন');
+            return downloadCardFilesAdmin(m, kind);
+        }
+        async function downloadCardFilesAdmin(m, kind) {
             await loadSettings();
             const f = document.createElement('canvas');
             const b = document.createElement('canvas');
@@ -4327,21 +4414,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <div class="d-flex align-items-center gap-3 mb-3">
                         ${m.photo_url ? `<img src="${escAttr(m.photo_url)}" alt="" style="width:96px;height:123px;object-fit:cover;border-radius:10px;border:2px solid #1558b0;" />` : `<div style="width:96px;height:123px;border-radius:10px;background:#dbe9ff;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#7aa6e6;"><i class="fas fa-user"></i></div>`}
                         <div>
-                            <span class="badge mb-2" style="background:#1558b0;font-weight:400;"><i class="fas fa-check-circle me-1"></i> আবেদন এন্ট্রি সম্পন্ন</span>
+                            <span class="badge mb-2" style="background:${appStatusInfo(m).c};font-weight:400;"><i class="fas ${appStatusInfo(m).ic} me-1"></i> ${escHtml(appStatusInfo(m).t)}</span>
                             <h4 class="fw-bold mb-0" style="font-size:1.25rem;">${escHtml(m.name)}</h4>
                         </div>
                     </div>
                     <div>${rows.map(([k, v]) => `<div class="d-flex py-2 border-top" style="font-size:.92rem;"><div class="text-muted" style="width:42%;">${escHtml(k)}</div><div style="width:58%;">${escHtml(String(v))}</div></div>`).join('')}</div>
                     <div class="row g-2 mt-3">
-                        <div class="col-12"><button type="button" class="btn btn-primary-custom w-100" id="minfoDetBtn"><i class="fas fa-file-lines me-1"></i> আমার ডিটেলস — প্রিভিউ ও ডাউনলোড</button></div>
-                        <div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPdfBtn"><i class="fas fa-id-card me-1"></i> কার্ড PDF</button></div>
-                        <div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPngBtn"><i class="fas fa-image me-1"></i> কার্ড PNG</button></div>
+                        <div class="col-12"><button type="button" class="btn btn-primary-custom w-100" id="minfoDetBtn"><i class="fas fa-file-lines me-1"></i> আমার ডিটেলস ও আবেদনের অবস্থা — প্রিভিউ ও ডাউনলোড</button></div>
+                        ${isAdmin === true ? `<div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPdfBtn"><i class="fas fa-id-card me-1"></i> কার্ড PDF (অ্যাডমিন)</button></div>
+                        <div class="col-6"><button type="button" class="btn btn-outline-custom w-100" id="minfoCardPngBtn"><i class="fas fa-image me-1"></i> কার্ড PNG (অ্যাডমিন)</button></div>` : ''}
                         <div class="col-12 text-center"><small class="text-muted">বোতামে ক্লিক করলে আগে প্রিভিউ দেখাবে, তারপর ডাউনলোড করতে পারবেন।</small></div>
                     </div>
                 </div>`;
                 $('minfoDetBtn').onclick = () => showDownloadPreview(m, 'info');
-                $('minfoCardPdfBtn').onclick = () => showDownloadPreview(m, 'pdf');
-                $('minfoCardPngBtn').onclick = () => showDownloadPreview(m, 'png');
+                if ($('minfoCardPdfBtn')) $('minfoCardPdfBtn').onclick = () => showDownloadPreview(m, 'pdf');
+                if ($('minfoCardPngBtn')) $('minfoCardPngBtn').onclick = () => showDownloadPreview(m, 'png');
             } catch (e) {
                 console.error(e);
                 box.innerHTML = '<div class="alert alert-danger">❌ ' + escHtml(errMsg(e)) + '</div>';
@@ -4887,6 +4974,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         cardBtnHandler('downloadCardBtn', () => myMember, 'png');
         cardBtnHandler('downloadCardPdfBtn', () => myMember, 'pdf');
+        setInterval(() => { const e = $('profileCardBtns'); if (e) e.style.display = isAdmin === true ? '' : 'none'; }, 800);
 
         // ---------- লগইন ছাড়া আইডি কার্ড (সদস্য নম্বর দিয়ে) ----------
         let idcMember = null;
@@ -4908,7 +4996,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             return { list: [] };
         }
         async function renderIdcCard() {
-            if (!idcMember) return;
+            if (!idcMember || isAdmin !== true) return;
             try {
                 await loadSettings();
                 await drawCard($('idcFront'), idcMember, SETTINGS);
@@ -4944,6 +5032,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 const rows = [['ফরম নং', m.form_no], ['সদস্য নং', dgt(m.member_no)], ['পদ', m.designation || 'সদস্য'], ['পিতার নাম', m.father_name], ['মোবাইল', m.phone], ['জন্ম তারিখ', m.birth_date ? fmtDate(m.birth_date) : ''], ['রক্তের গ্রুপ', m.blood_group], ['পেশা', m.occupation], ['ঠিকানা', m.address], ['মেয়াদ', tr('২০৩০ সাল পর্যন্ত')]].filter(r => r[1]);
                 $('idcInfo').innerHTML = `<div class="membership-form" style="padding:18px 20px;"><div class="d-flex align-items-center gap-3 mb-2">${m.photo_url ? `<img src="${escAttr(m.photo_url)}" alt="" style="width:64px;height:80px;object-fit:cover;border-radius:10px;border:2px solid #1558b0;" />` : ''}<div><div class="fw-bold fs-5">${escHtml(m.name || '')}</div><small class="text-muted">আবেদনের তথ্য</small></div></div><div class="row g-2">${rows.map(r => `<div class="col-sm-6"><div class="small text-muted">${escHtml(r[0])}</div><div class="fw-semibold">${escHtml(String(r[1]))}</div></div>`).join('')}</div></div>`;
             } catch (e) { console.error(e); }
+            applyIdcAccess(m);
             await renderIdcCard();
             $('idcResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -5345,7 +5434,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 // ---------- ডাউনলোডের আগে প্রিভিউ ----------
         async function showDownloadPreview(m, kind) {
             const body = $('dlPreviewBody'), foot = $('dlPreviewFoot');
-            $('dlPreviewTitle').textContent = kind === 'info' ? 'Member Information — Preview' : 'আইডি কার্ড — প্রিভিউ';
+            $('dlPreviewTitle').textContent = kind === 'info' ? 'Member Information & Application Status — Preview' : 'আইডি কার্ড — প্রিভিউ';
             body.innerHTML = '<div class="page-loader"><div class="loader"></div></div>'; foot.innerHTML = '';
             bootstrap.Modal.getOrCreateInstance($('dlPreviewModal')).show();
             try {
@@ -6878,23 +6967,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             // পটভূমি + বর্ডার
             c.save();
             rr(sx, sy, sw, sh, 18);
-            const bgG = c.createLinearGradient(sx, sy, sx + sw, sy + sh); bgG.addColorStop(0, '#eef8f1'); bgG.addColorStop(.5, '#ffffff'); bgG.addColorStop(1, '#e6f3ea');
-            c.fillStyle = bgG; c.fill(); c.strokeStyle = CTG; c.lineWidth = 3; c.stroke();
+            c.fillStyle = '#ffffff'; c.fill(); c.strokeStyle = CTG; c.lineWidth = 3; c.stroke();
             c.restore();
-            ctImg(c, a.clogo, sx + bw + (sw - bw) / 2 - ctmm(22), sy + sh / 2 - ctmm(19), ctmm(44), ctmm(38), .08);
-            // বাঁ পাশের সবুজ ব্যাজ
-            c.save(); rr(sx, sy, sw, sh, 18); c.clip();
-            const bdG = c.createLinearGradient(sx, sy, sx, sy + sh); bdG.addColorStop(0, '#2e9a4f'); bdG.addColorStop(1, '#0b4d20');
-            c.fillStyle = bdG; c.fillRect(sx, sy, bw, sh);
-            c.fillStyle = 'rgba(255,255,255,.07)';
-            for (let i = 0; i < 6; i++) { c.beginPath(); c.arc(sx + bw * (i % 2 ? .78 : .22), sy + 24 + i * 50, 24, 0, 7); c.fill(); }
-            c.restore();
-            c.save(); c.strokeStyle = GOLD; c.lineWidth = 3; c.beginPath(); c.moveTo(sx + bw, sy + 6); c.lineTo(sx + bw, sy + sh - 6); c.stroke();
-            c.fillStyle = GOLD; star(sx + bw / 2, sy + 66, 30, 13);
-            c.restore();
-            ctT(c, 'ফরম নং', sx + bw / 2, sy + 134, 24, 600, 'center', '#e8f6ec');
-            ctT(c, serial, sx + bw / 2, sy + 186, 36, 700, 'center', '#ffffff', bw - 24);
-            c.save(); c.strokeStyle = 'rgba(212,169,58,.65)'; c.lineWidth = 1.4; rr(sx + 6, sy + 6, sw - 12, sh - 12, 13); c.stroke(); c.restore();
+            ctImg(c, a.logo || a.clogo, sx + bw + (sw - bw) / 2 - ctmm(30), sy + sh / 2 - ctmm(27), ctmm(60), ctmm(54), .17);
+            // বাঁ পাশের ব্যাজ — সাদা বক্স, সবুজ লেখা (কালি সাশ্রয়)
+            c.save(); c.strokeStyle = CTG; c.lineWidth = 2.5; c.beginPath(); c.moveTo(sx + bw, sy + 10); c.lineTo(sx + bw, sy + sh - 10); c.stroke(); c.restore();
+            if (a.logo) { ctImg(c, a.logo, sx + 14, sy + 14, bw - 28, 112, 1); }
+            else { c.save(); c.fillStyle = CTG; star(sx + bw / 2, sy + 66, 30, 13); c.restore(); }
+            ctT(c, 'ফরম নং', sx + bw / 2, sy + 160, 24, 600, 'center', CTG);
+            c.save(); c.strokeStyle = CTG; c.lineWidth = 2; rr(c, sx + 14, sy + 176, bw - 28, 62, 10); c.stroke(); c.restore();
+            ctT(c, serial, sx + bw / 2, sy + 218, 34, 700, 'center', CTG, bw - 44);
+            c.save(); c.strokeStyle = 'rgba(27,110,47,.40)'; c.lineWidth = 1.4; rr(sx + 6, sy + 6, sw - 12, sh - 12, 13); c.stroke(); c.restore();
             // নাম (একটু ছোট) + প্রতিযোগিতা
             const tx0 = sx + bw + 26, tx1 = CX1 - 252, tcx = (tx0 + tx1) / 2;
             ctT(c, org, tcx, sy + 44, 34, 700, 'center', '#3d7d50', tx1 - tx0 - 10);
@@ -6919,14 +7002,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
         function ctBack(a) {
             const [cv, c] = ctBase(), cf = CT.cfg, org = SETTINGS.org_name || '', hh = ctmm(11);
-            ctImg(c, a.clogo, 620 - ctmm(60), CY0 + hh + (CFB - CY0 - hh) / 2 - ctmm(60), ctmm(120), ctmm(120), .07);
             ctImg(c, a.clogo, CX0 + ctmm(3), CY0 + ctmm(1.5), ctmm(8), ctmm(8)); ctImg(c, a.clogo, CX1 - ctmm(11), CY0 + ctmm(1.5), ctmm(8), ctmm(8));
             ctT(c, org + ' — ' + cf.comp, 620, CY0 + 50, 34, 700, 'center', CTG, 900);
             c.strokeStyle = CTG; c.lineWidth = 2; c.beginPath(); c.moveTo(CX0, CY0 + hh); c.lineTo(CX1, CY0 + hh); c.stroke();
             ctT(c, 'সঠিক উত্তরের পাশের বাক্সে টিক (✓) দিন', 620, CY0 + hh + 28, 20, 400, 'center');
             ctGrid(c, cf.questions.slice(18, 40), 18, CY0 + hh + ctmm(6), 11);
             ctCut(c);
-            ctImg(c, a.clogo, 620 - ctmm(24), CCUT + ctmm(5), ctmm(48), ctmm(42), .08);
             const lx = CX0 + ctmm(6), mw = CW - ctmm(46);
             ctT(c, org, lx, CCUT + 46, 42, 700, 'left', CTG, mw);
             ctT(c, cf.comp, lx, CCUT + 82, 30, 700, 'left', CTG, mw);
