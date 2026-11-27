@@ -1210,17 +1210,38 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             #adminDashboard .row.g-0 { flex-direction: row-reverse; }
             #adminDashboard .admin-sidebar { border-radius: 22px 0 0 22px; box-shadow: -6px 0 28px rgba(10,40,25,.14); }
         }
+
+        /* ===== অ্যাডমিন: দুই পাশের (কম্পিউটারের মতো) লেআউট — সব ডিভাইসে =====
+           ডানে সবসময় সব বিষয়ের মেনু, বামে বিষয়ের কাজ। দুই পাশ আলাদা স্ক্রল করে। */
+        #adminDashboard { --admin-top: 74px; padding-top: var(--admin-top) !important; height: 100vh; overflow: hidden; box-sizing: border-box; background: #eef4f0; }
+        #adminDashboard > .container-fluid, #adminDashboard .row.g-0 { height: 100%; }
+        #adminDashboard .row.g-0 { flex-direction: row-reverse !important; flex-wrap: nowrap !important; align-items: stretch; }
+        #adminDashboard .admin-sidebar { flex: 0 0 auto !important; width: 256px !important; max-width: none !important; height: 100% !important; min-height: 0 !important; position: static !important; overflow-y: auto; border-radius: 22px 0 0 22px !important; padding: 12px 0 24px !important; box-shadow: -6px 0 28px rgba(10,40,25,.16); scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.3) transparent; }
+        #adminDashboard .admin-sidebar .brand { padding: 4px 18px 14px; font-size: 1.15rem; }
+        #adminDashboard .admin-sidebar ul.nav { flex-direction: column !important; flex-wrap: nowrap !important; overflow: visible; }
+        #adminDashboard .admin-content { flex: 1 1 0 !important; width: auto !important; max-width: none !important; min-width: 0; height: 100% !important; min-height: 0 !important; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; }
+        body:has(#adminDashboard[style*="block"]) { overflow: hidden; }
+        body:has(#adminDashboard[style*="block"]) footer { display: none !important; }
+        .adm-back { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #cfe2d6; background: #fff; color: #14532d; font-weight: 600; border-radius: 999px; padding: 6px 16px; margin-bottom: 14px; font-size: .9rem; }
+        .adm-back:hover { background: #e8f5ee; }
         @media (max-width: 991.98px) {
-            #adminDashboard { padding-top: 64px; }
-            #adminDashboard .admin-sidebar { position: sticky; top: 64px; z-index: 40; min-height: 0 !important; padding: 8px 4px !important; border-radius: 0 0 18px 18px; box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+            #adminDashboard { --admin-top: 64px; }
+            #adminDashboard .admin-sidebar { width: 84px !important; padding: 8px 0 18px !important; border-radius: 18px 0 0 18px !important; }
             #adminDashboard .admin-sidebar .brand { display: none; }
-            #adminDashboard .admin-sidebar ul.nav { flex-direction: row !important; flex-wrap: nowrap !important; overflow-x: auto; gap: 6px; padding: 2px 8px; scrollbar-width: none; }
-            #adminDashboard .admin-sidebar ul.nav::-webkit-scrollbar { display: none; }
-            #adminDashboard .admin-sidebar .nav-section { display: none; }
-            #adminDashboard .admin-sidebar .nav-item { flex: none; margin: 0 !important; }
-            #adminDashboard .admin-sidebar .nav-link { margin: 0; padding: 7px 14px !important; border-radius: 999px; white-space: nowrap; background: rgba(255,255,255,.09); gap: 6px; }
-            #adminDashboard .admin-sidebar .nav-link i { width: auto; height: auto; background: none; font-size: .9rem; }
-            #adminDashboard .admin-sidebar .nav-link.active { background: #2ea36a; }
+            #adminDashboard .admin-sidebar .nav-section { display: block; height: 1px; margin: 7px 14px; padding: 0; font-size: 0; background: rgba(255,255,255,.2); }
+            #adminDashboard .admin-sidebar .nav-section::after { display: none; }
+            #adminDashboard .admin-sidebar .nav-item { margin: 0 !important; }
+            #adminDashboard .admin-sidebar .nav-link { flex-direction: column; justify-content: center; gap: 3px; margin: 2px 5px !important; padding: 7px 2px !important; border-radius: 13px; font-size: .64rem; line-height: 1.2; text-align: center; white-space: normal; background: none; position: relative; }
+            #adminDashboard .admin-sidebar .nav-link i { width: 36px; height: 36px; font-size: 1rem; background: rgba(255,255,255,.1); }
+            #adminDashboard .admin-sidebar .nav-link.active { background: rgba(255,255,255,.14); box-shadow: none; }
+            #adminDashboard .admin-sidebar .nav-link.active i { background: #2ea36a; }
+            #adminDashboard .admin-sidebar .sb-badge { position: absolute; top: 2px; right: 8px; }
+            #adminDashboard .admin-content { padding: 12px 10px 40px !important; }
+            #adminDashboard .admin-content h4 { font-size: 1.1rem; }
+            #adminDashboard .dash-stats { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+            #adminDashboard .dash-cols { grid-template-columns: 1fr !important; }
+            #adminDashboard .dash-hero { flex-direction: column; align-items: flex-start; padding: 18px; }
+            #adminDashboard .adm-tiles { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
         }
         /* ভয়েস */
         #voiceFab { position: fixed; left: 16px; bottom: 16px; z-index: 1055; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #1b6e2f; color: #fff; font-size: 1.15rem; box-shadow: 0 6px 20px rgba(0,0,0,.3); display: none; align-items: center; justify-content: center; }
@@ -3342,6 +3363,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             });
             setTimeout(loadSiteMedia, 0);
         })();
+
+        $$('.admin-page').forEach(pg => {
+            if (pg.id === 'admin-dashboard' || pg.querySelector(':scope > .adm-back')) return;
+            pg.insertAdjacentHTML('afterbegin', '<button type="button" class="adm-back" onclick="adminGo(\'dashboard\')"><i class="fas fa-arrow-left"></i> ড্যাশবোর্ডে ফিরুন</button>');
+        });
 
         // ---------- অ্যাডমিন: ভয়েস ও মিডিয়া ----------
         async function saveMedia(row) {
@@ -5935,10 +5961,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 $$('.admin-page').forEach(p => p.classList.remove('active'));
                 const target = $(`admin-${page}`);
                 if (target) target.classList.add('active');
+                const _prevAP = currentAdminPage;
                 currentAdminPage = page;
+                if (!window.__adminPop && page !== _prevAP) { try { history.pushState({ page: 'admin', ap: page }, ''); } catch (e) { /* ignore */ } }
                 if (page === 'dashboard') loadAdminDashboard();
                 loadAdminData(page);
-                try { window.scrollTo({ top: 0, behavior: 'smooth' }); this.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (e) { /* ignore */ }
+                try { const ac = document.querySelector('#adminDashboard .admin-content'); if (ac) ac.scrollTo({ top: 0, behavior: 'smooth' }); } catch (e) { /* ignore */ }
             });
         });
 
@@ -6882,6 +6910,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if (openModal) { try { bootstrap.Modal.getInstance(openModal).hide(); } catch (x) { /* ignore */ } try { history.pushState({ page: currentPage }, ''); } catch (x) { /* ignore */ } return; }
             const nc = $('navMenu');
             if (nc && nc.classList.contains('show')) { try { bootstrap.Collapse.getOrCreateInstance(nc).hide(); } catch (x) { nc.classList.remove('show'); } try { history.pushState({ page: currentPage }, ''); } catch (x) { /* ignore */ } return; }
+            if (st && st.page === 'admin') {
+                window.__adminPop = true;
+                if (currentPage !== 'admin') navigateTo('admin', true);
+                setTimeout(() => { try { adminGo(st.ap || 'dashboard'); } catch (x) { /* ignore */ } window.__adminPop = false; }, 0);
+                return;
+            }
             if (st && st.page) { navigateTo(st.page, true); return; }
             if (st && st.guard) { showExitConfirm(); }
         });
