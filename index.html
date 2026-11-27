@@ -1171,6 +1171,65 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         .idc-status i { font-size: 2.2rem; flex: none; }
         .idc-status h5 { margin: 0 0 2px; font-weight: 700; }
         .idc-status p { margin: 0; font-size: .92rem; opacity: .85; }
+        /* ভিডিও */
+        .vid-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid #e3ece6; box-shadow: 0 6px 20px rgba(15,60,35,.07); cursor: pointer; height: 100%; transition: transform .2s, box-shadow .2s; }
+        .vid-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(15,60,35,.14); }
+        .vid-thumb { position: relative; aspect-ratio: 16/9; background: #0f2a1a; overflow: hidden; }
+        .vid-thumb img, .vid-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .vid-ph { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.5); font-size: 2.6rem; background: linear-gradient(135deg,#14532d,#0f2a1a); }
+        .vid-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+        .vid-play i { width: 58px; height: 58px; border-radius: 50%; background: rgba(27,110,47,.92); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; padding-left: 4px; box-shadow: 0 4px 16px rgba(0,0,0,.35); transition: transform .2s; }
+        .vid-card:hover .vid-play i { transform: scale(1.12); }
+        .vid-tag { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,.6); color: #fff; font-size: .72rem; padding: 3px 9px; border-radius: 20px; }
+        .vid-body { padding: 14px 16px 16px; }
+        .vid-body h6 { font-weight: 700; margin: 0 0 4px; color: #14532d; line-height: 1.45; }
+        .vid-body p { margin: 0; font-size: .86rem; color: #6b7280; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .vid-frame { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
+        .vid-frame iframe, .vid-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+        /* ===== নতুন অ্যাডমিন ডিজাইন (মেনু ডানে) ===== */
+        .admin-sidebar .nav-section { display: flex; align-items: center; gap: 8px; margin: 14px 14px 4px; padding: 6px 10px; font-size: .74rem; letter-spacing: .06em; color: #8bc34a; font-weight: 700; }
+        .admin-sidebar .nav-section::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,.14); }
+        .admin-sidebar .nav-link { display: flex; align-items: center; gap: 12px; }
+        .admin-sidebar .nav-link i { width: 34px; height: 34px; margin: 0; border-radius: 10px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; font-size: .92rem; flex: none; transition: .2s; }
+        .admin-sidebar .nav-link.active { background: linear-gradient(135deg, #2ea36a, #1a6b3c); box-shadow: 0 6px 16px rgba(0,0,0,.25); }
+        .admin-sidebar .nav-link.active i { background: rgba(255,255,255,.22); }
+        .adm-groups { display: grid; gap: 22px; margin: 24px 0; }
+        .adm-group h6 { font-weight: 700; color: #14532d; margin: 0 0 10px; display: flex; align-items: center; gap: 8px; }
+        .adm-group h6::after { content: ''; flex: 1; height: 1px; background: #dbe8df; }
+        .adm-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 12px; }
+        .adm-tile { border: 1px solid #e3ece6; background: #fff; border-radius: 16px; padding: 16px 14px; text-align: left; display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: .2s; box-shadow: 0 4px 14px rgba(15,60,35,.05); }
+        .adm-tile:hover { transform: translateY(-3px); box-shadow: 0 12px 26px rgba(15,60,35,.13); border-color: #2ea36a; }
+        .adm-tile .ic { width: 44px; height: 44px; border-radius: 13px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.15rem; }
+        .adm-tile b { color: #14532d; font-size: .97rem; }
+        .adm-tile small { color: #6b7280; line-height: 1.35; }
+        .adm-tile .c1 { background: linear-gradient(135deg,#1a6b3c,#2ea36a); } .adm-tile .c2 { background: linear-gradient(135deg,#1558b0,#3b8cf0); }
+        .adm-tile .c3 { background: linear-gradient(135deg,#d97706,#f5a524); } .adm-tile .c4 { background: linear-gradient(135deg,#7c3aed,#a78bfa); }
+        .adm-tile .c5 { background: linear-gradient(135deg,#e11d48,#fb7185); } .adm-tile .c6 { background: linear-gradient(135deg,#0891b2,#22d3ee); }
+        @media (min-width: 992px) {
+            #adminDashboard .row.g-0 { flex-direction: row-reverse; }
+            #adminDashboard .admin-sidebar { border-radius: 22px 0 0 22px; box-shadow: -6px 0 28px rgba(10,40,25,.14); }
+        }
+        @media (max-width: 991.98px) {
+            #adminDashboard { padding-top: 64px; }
+            #adminDashboard .admin-sidebar { position: sticky; top: 64px; z-index: 40; min-height: 0 !important; padding: 8px 4px !important; border-radius: 0 0 18px 18px; box-shadow: 0 6px 18px rgba(0,0,0,.2); }
+            #adminDashboard .admin-sidebar .brand { display: none; }
+            #adminDashboard .admin-sidebar ul.nav { flex-direction: row !important; flex-wrap: nowrap !important; overflow-x: auto; gap: 6px; padding: 2px 8px; scrollbar-width: none; }
+            #adminDashboard .admin-sidebar ul.nav::-webkit-scrollbar { display: none; }
+            #adminDashboard .admin-sidebar .nav-section { display: none; }
+            #adminDashboard .admin-sidebar .nav-item { flex: none; margin: 0 !important; }
+            #adminDashboard .admin-sidebar .nav-link { margin: 0; padding: 7px 14px !important; border-radius: 999px; white-space: nowrap; background: rgba(255,255,255,.09); gap: 6px; }
+            #adminDashboard .admin-sidebar .nav-link i { width: auto; height: auto; background: none; font-size: .9rem; }
+            #adminDashboard .admin-sidebar .nav-link.active { background: #2ea36a; }
+        }
+        /* ভয়েস */
+        #voiceFab { position: fixed; left: 16px; bottom: 16px; z-index: 1055; width: 48px; height: 48px; border-radius: 50%; border: 0; background: #1b6e2f; color: #fff; font-size: 1.15rem; box-shadow: 0 6px 20px rgba(0,0,0,.3); display: none; align-items: center; justify-content: center; }
+        #voiceFab.on { display: flex; } #voiceFab.off { background: #6b7280; } #voiceFab.playing { animation: vfPulse 1.2s infinite; }
+        @keyframes vfPulse { 0% { box-shadow: 0 0 0 0 rgba(46,163,106,.7); } 70% { box-shadow: 0 0 0 14px rgba(46,163,106,0); } 100% { box-shadow: 0 0 0 0 rgba(46,163,106,0); } }
+        .vfield-ic { font-size: .8em; cursor: pointer; }
+        .vc-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #edf2ee; }
+        .vc-row:last-child { border-bottom: 0; }
+        .vc-row .vc-name { flex: 1 1 200px; font-weight: 600; color: #14532d; }
     </style>
     <script src="config.js"></script>
 </head>
@@ -1190,16 +1249,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navMenu">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
+                <ul class="navbar-nav me-auto align-items-lg-center">
                     <li class="nav-item"><a class="nav-link active" href="#" onclick="navigateTo('home')">হোম</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('about')">আমাদের সম্পর্কে</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('activities')">কার্যক্রম</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('notice')">নোটিশ</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('gallery')">গ্যালারি</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('videos')">ভিডিও</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('downloads')">ডাউনলোড</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('contact')">যোগাযোগ</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" onclick="navigateTo('idcard')"><i class="fas fa-id-card me-1"></i> আবেদন / আইডি কার্ড</a></li>
-                    <li class="nav-item ms-lg-1">
+                    <li class="nav-item ms-lg-auto">
                         <button type="button" class="nav-link nav-tool" id="langBtn" aria-label="Language"><i class="fas fa-language"></i> <span>English</span></button>
                     </li>
                     <li class="nav-item ms-lg-1" id="installMenuItem">
@@ -1255,7 +1315,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                             </div>
                         </div>
                         <div class="col-lg-6 hero-image text-center">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBzbGljZSI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJzIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTcyMzVhIi8+PHN0b3Agb2Zmc2V0PSIwLjU1IiBzdG9wLWNvbG9yPSIjZDk2OTRmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZjdjNTZlIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImdvbGQiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmU1OGEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjNThhMTQiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjcykiLz48Y2lyY2xlIGN4PSIzNDEiIGN5PSI0NiIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iNTkiIGN5PSIyNiIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIzODQiIGN5PSIxNTciIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSIyMjkiIGN5PSIxNyIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNDM4IiBjeT0iMjUiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjxjaXJjbGUgY3g9IjU3NCIgY3k9IjExNiIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjEzNiIgY3k9IjY1IiByPSIxLjgiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSI3MyIgY3k9IjE1NSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjY0IiByPSIxIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iMTQ2IiBjeT0iODIiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iNTYzIiBjeT0iMzgiIHI9IjEuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNTgzIiBjeT0iNTQiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSIyMDIiIGN5PSIxMDMiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSI3NCIgY3k9IjE1MiIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjIyMCIgY3k9IjEzNSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iNDQ3IiBjeT0iODgiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjQ3NCIgY3k9IjEwMCIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIxOTQiIGN5PSI3MCIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjMxNyIgY3k9IjE0MiIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSI0NjkiIGN5PSI4MSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMzkiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iMzYwIiBjeT0iNDYiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNTAiIGN5PSIyNyIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iMzMxIiBjeT0iOTUiIHI9IjEuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+CjxjaXJjbGUgY3g9IjQ3MCIgY3k9IjIzOCIgcj0iNDQiIGZpbGw9IiNmZmQ5OGEiIG9wYWNpdHk9Ii45MiIvPgo8cGF0aCBkPSJNMCAzMTAgUTE1MCAyNjIgMzAwIDI5OCBUNjAwIDI4OCBWNDAwIEgwWiIgZmlsbD0iIzNiMmY0ZCIvPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTAsMzE4KSBzY2FsZSgxLjApIj4KPHJlY3QgeD0iLTgiIHk9Ii0xMjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNlOGRjYzQiLz4KPHJlY3QgeD0iLTEyIiB5PSItNzQuNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIGZpbGw9IiNjZGJmOWYiLz4KPHJlY3QgeD0iLTEwIiB5PSItMTI2IiB3aWR0aD0iMjAiIGhlaWdodD0iOCIgZmlsbD0iI2NkYmY5ZiIvPgo8cGF0aCBkPSJNLTggLTEyNiBMMCAtMTU0IEw4IC0xMjZaIiBmaWxsPSIjN2E4ZjZhIi8+CjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OTUsMzE4KSBzY2FsZSgxLjApIj4KPHJlY3QgeD0iLTgiIHk9Ii0xMTAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMTAiIGZpbGw9IiNlOGRjYzQiLz4KPHJlY3QgeD0iLTEyIiB5PSItNjguMiIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIGZpbGw9IiNjZGJmOWYiLz4KPHJlY3QgeD0iLTEwIiB5PSItMTE2IiB3aWR0aD0iMjAiIGhlaWdodD0iOCIgZmlsbD0iI2NkYmY5ZiIvPgo8cGF0aCBkPSJNLTggLTExNiBMMCAtMTQ0IEw4IC0xMTZaIiBmaWxsPSIjN2E4ZjZhIi8+CjwvZz4KPGVsbGlwc2UgY3g9IjYwIiBjeT0iMjgyLjUiIHJ4PSIxMy4zIiByeT0iNDcuNSIgZmlsbD0iIzFmM2EyYSIvPjxlbGxpcHNlIGN4PSI1NDAiIGN5PSIyNzcuNSIgcng9IjE0LjcwMDAwMDAwMDAwMDAwMSIgcnk9IjUyLjUiIGZpbGw9IiMxZjNhMmEiLz48ZWxsaXBzZSBjeD0iMTcyIiBjeT0iMjk3LjAiIHJ4PSI5LjgiIHJ5PSIzNS4wIiBmaWxsPSIjMWYzYTJhIi8+PGVsbGlwc2UgY3g9IjQzMCIgY3k9IjI5NC41IiByeD0iMTAuNTAwMDAwMDAwMDAwMDAyIiByeT0iMzcuNSIgZmlsbD0iIzFmM2EyYSIvPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDAsMzMwKSBzY2FsZSgxLjE1KSI+CjxyZWN0IHg9Ii05NSIgeT0iLTcwIiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjZDljZmI4Ii8+CjxyZWN0IHg9Ii05NSIgeT0iLTcwIiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjI2IiBmaWxsPSIjMmY3OGEwIi8+CjxyZWN0IHg9Ii05NSIgeT0iLTQ0IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjQiIGZpbGw9IiNmMWU5ZDIiLz4KPHJlY3QgeD0iLTgwIiB5PSItMzQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzMCIgcng9IjciIGZpbGw9IiM2ZDVhNDAiLz48cmVjdCB4PSItNTMiIHk9Ii0zNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMwIiByeD0iNyIgZmlsbD0iIzZkNWE0MCIvPjxyZWN0IHg9Ii0yNiIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+PHJlY3QgeD0iMSIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+PHJlY3QgeD0iMjgiIHk9Ii0zNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMwIiByeD0iNyIgZmlsbD0iIzZkNWE0MCIvPjxyZWN0IHg9IjU1IiB5PSItMzQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzMCIgcng9IjciIGZpbGw9IiM2ZDVhNDAiLz48cmVjdCB4PSI4MiIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+CjxyZWN0IHg9Ii01OCIgeT0iLTExMiIgd2lkdGg9IjExNiIgaGVpZ2h0PSI0NCIgZmlsbD0iIzNkOGFiMCIvPgo8cmVjdCB4PSItNTgiIHk9Ii0xMTIiIHdpZHRoPSIxMTYiIGhlaWdodD0iNSIgZmlsbD0iI2YxZTlkMiIvPgo8cmVjdCB4PSItNDgiIHk9Ii0xMDAiIHdpZHRoPSI5IiBoZWlnaHQ9IjIyIiByeD0iNCIgZmlsbD0iIzFmNWE3YSIvPjxyZWN0IHg9Ii0yOCIgeT0iLTEwMCIgd2lkdGg9IjkiIGhlaWdodD0iMjIiIHJ4PSI0IiBmaWxsPSIjMWY1YTdhIi8+PHJlY3QgeD0iLTgiIHk9Ii0xMDAiIHdpZHRoPSI5IiBoZWlnaHQ9IjIyIiByeD0iNCIgZmlsbD0iIzFmNWE3YSIvPjxyZWN0IHg9IjEyIiB5PSItMTAwIiB3aWR0aD0iOSIgaGVpZ2h0PSIyMiIgcng9IjQiIGZpbGw9IiMxZjVhN2EiLz48cmVjdCB4PSIzMiIgeT0iLTEwMCIgd2lkdGg9IjkiIGhlaWdodD0iMjIiIHJ4PSI0IiBmaWxsPSIjMWY1YTdhIi8+CjxwYXRoIGQ9Ik0tNTYgLTExMiBBNTYgNjIgMCAwIDEgNTYgLTExMiBaIiBmaWxsPSJ1cmwoI2dvbGQpIi8+CjxwYXRoIGQ9Ik0tMzAgLTEyMiBRLTEwIC0xNjggNiAtMTcyIiBzdHJva2U9IiNmZmY2YzgiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iLjUiLz4KPGxpbmUgeDE9IjAiIHkxPSItMTc0IiB4Mj0iMCIgeTI9Ii0xOTIiIHN0cm9rZT0iI2U4YzE0YSIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxwYXRoIGQ9Ik0tNiAtMTk2IEE3IDcgMCAxIDAgNiAtMTk2IEE1IDUgMCAxIDEgLTYgLTE5NloiIGZpbGw9IiNlOGMxNGEiLz4KPC9nPgo8cGF0aCBkPSJNMCAzMzUgUTIwMCAzMTggMzAwIDMzMiBUNjAwIDMzMCBWNDAwIEgwWiIgZmlsbD0iIzI0MWEzMSIvPgo8cmVjdCB5PSIzOTIiIHdpZHRoPSI2MDAiIGhlaWdodD0iMyIgZmlsbD0iIzExMSIvPjxyZWN0IHk9IjM5NSIgd2lkdGg9IjYwMCIgaGVpZ2h0PSIyIiBmaWxsPSIjZmZmIi8+PHJlY3QgeT0iMzk3IiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMiIGZpbGw9IiMwMDdhM2QiLz4KPC9zdmc+" alt="আল আকসা ফাউন্ডেশন" class="img-fluid rounded-4 shadow-lg" />
+                            <img id="heroImg" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/DomeOfTheRock053011.jpg/960px-DomeOfTheRock053011.jpg" data-fb1="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/DomeOfTheRock053011.jpg/640px-DomeOfTheRock053011.jpg" data-fb2="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBzbGljZSI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJzIiB4MT0iMCIgeTE9IjAiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMTcyMzVhIi8+PHN0b3Agb2Zmc2V0PSIwLjU1IiBzdG9wLWNvbG9yPSIjZDk2OTRmIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZjdjNTZlIi8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImdvbGQiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNmZmU1OGEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNjNThhMTQiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9InVybCgjcykiLz48Y2lyY2xlIGN4PSIzNDEiIGN5PSI0NiIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iNTkiIGN5PSIyNiIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIzODQiIGN5PSIxNTciIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSIyMjkiIGN5PSIxNyIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNDM4IiBjeT0iMjUiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjAuNSIvPjxjaXJjbGUgY3g9IjU3NCIgY3k9IjExNiIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjEzNiIgY3k9IjY1IiByPSIxLjgiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSI3MyIgY3k9IjE1NSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjY0IiByPSIxIiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iMTQ2IiBjeT0iODIiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iNTYzIiBjeT0iMzgiIHI9IjEuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNTgzIiBjeT0iNTQiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSIyMDIiIGN5PSIxMDMiIHI9IjEiIGZpbGw9IiNmZmYiIG9wYWNpdHk9IjEiLz48Y2lyY2xlIGN4PSI3NCIgY3k9IjE1MiIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjIyMCIgY3k9IjEzNSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iNDQ3IiBjeT0iODgiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjQ3NCIgY3k9IjEwMCIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIxOTQiIGN5PSI3MCIgcj0iMSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMSIvPjxjaXJjbGUgY3g9IjMxNyIgY3k9IjE0MiIgcj0iMS40IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjgiLz48Y2lyY2xlIGN4PSI0NjkiIGN5PSI4MSIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIwLjUiLz48Y2lyY2xlIGN4PSIxMzAiIGN5PSIxMzkiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC41Ii8+PGNpcmNsZSBjeD0iMzYwIiBjeT0iNDYiIHI9IjEuNCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+PGNpcmNsZSBjeD0iNTAiIGN5PSIyNyIgcj0iMS44IiBmaWxsPSIjZmZmIiBvcGFjaXR5PSIxIi8+PGNpcmNsZSBjeD0iMzMxIiBjeT0iOTUiIHI9IjEuOCIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iMC44Ii8+CjxjaXJjbGUgY3g9IjQ3MCIgY3k9IjIzOCIgcj0iNDQiIGZpbGw9IiNmZmQ5OGEiIG9wYWNpdHk9Ii45MiIvPgo8cGF0aCBkPSJNMCAzMTAgUTE1MCAyNjIgMzAwIDI5OCBUNjAwIDI4OCBWNDAwIEgwWiIgZmlsbD0iIzNiMmY0ZCIvPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTAsMzE4KSBzY2FsZSgxLjApIj4KPHJlY3QgeD0iLTgiIHk9Ii0xMjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMjAiIGZpbGw9IiNlOGRjYzQiLz4KPHJlY3QgeD0iLTEyIiB5PSItNzQuNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIGZpbGw9IiNjZGJmOWYiLz4KPHJlY3QgeD0iLTEwIiB5PSItMTI2IiB3aWR0aD0iMjAiIGhlaWdodD0iOCIgZmlsbD0iI2NkYmY5ZiIvPgo8cGF0aCBkPSJNLTggLTEyNiBMMCAtMTU0IEw4IC0xMjZaIiBmaWxsPSIjN2E4ZjZhIi8+CjwvZz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0OTUsMzE4KSBzY2FsZSgxLjApIj4KPHJlY3QgeD0iLTgiIHk9Ii0xMTAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxMTAiIGZpbGw9IiNlOGRjYzQiLz4KPHJlY3QgeD0iLTEyIiB5PSItNjguMiIgd2lkdGg9IjI0IiBoZWlnaHQ9IjYiIGZpbGw9IiNjZGJmOWYiLz4KPHJlY3QgeD0iLTEwIiB5PSItMTE2IiB3aWR0aD0iMjAiIGhlaWdodD0iOCIgZmlsbD0iI2NkYmY5ZiIvPgo8cGF0aCBkPSJNLTggLTExNiBMMCAtMTQ0IEw4IC0xMTZaIiBmaWxsPSIjN2E4ZjZhIi8+CjwvZz4KPGVsbGlwc2UgY3g9IjYwIiBjeT0iMjgyLjUiIHJ4PSIxMy4zIiByeT0iNDcuNSIgZmlsbD0iIzFmM2EyYSIvPjxlbGxpcHNlIGN4PSI1NDAiIGN5PSIyNzcuNSIgcng9IjE0LjcwMDAwMDAwMDAwMDAwMSIgcnk9IjUyLjUiIGZpbGw9IiMxZjNhMmEiLz48ZWxsaXBzZSBjeD0iMTcyIiBjeT0iMjk3LjAiIHJ4PSI5LjgiIHJ5PSIzNS4wIiBmaWxsPSIjMWYzYTJhIi8+PGVsbGlwc2UgY3g9IjQzMCIgY3k9IjI5NC41IiByeD0iMTAuNTAwMDAwMDAwMDAwMDAyIiByeT0iMzcuNSIgZmlsbD0iIzFmM2EyYSIvPgo8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgzMDAsMzMwKSBzY2FsZSgxLjE1KSI+CjxyZWN0IHg9Ii05NSIgeT0iLTcwIiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjcwIiBmaWxsPSIjZDljZmI4Ii8+CjxyZWN0IHg9Ii05NSIgeT0iLTcwIiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjI2IiBmaWxsPSIjMmY3OGEwIi8+CjxyZWN0IHg9Ii05NSIgeT0iLTQ0IiB3aWR0aD0iMTkwIiBoZWlnaHQ9IjQiIGZpbGw9IiNmMWU5ZDIiLz4KPHJlY3QgeD0iLTgwIiB5PSItMzQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzMCIgcng9IjciIGZpbGw9IiM2ZDVhNDAiLz48cmVjdCB4PSItNTMiIHk9Ii0zNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMwIiByeD0iNyIgZmlsbD0iIzZkNWE0MCIvPjxyZWN0IHg9Ii0yNiIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+PHJlY3QgeD0iMSIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+PHJlY3QgeD0iMjgiIHk9Ii0zNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjMwIiByeD0iNyIgZmlsbD0iIzZkNWE0MCIvPjxyZWN0IHg9IjU1IiB5PSItMzQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIzMCIgcng9IjciIGZpbGw9IiM2ZDVhNDAiLz48cmVjdCB4PSI4MiIgeT0iLTM0IiB3aWR0aD0iMTQiIGhlaWdodD0iMzAiIHJ4PSI3IiBmaWxsPSIjNmQ1YTQwIi8+CjxyZWN0IHg9Ii01OCIgeT0iLTExMiIgd2lkdGg9IjExNiIgaGVpZ2h0PSI0NCIgZmlsbD0iIzNkOGFiMCIvPgo8cmVjdCB4PSItNTgiIHk9Ii0xMTIiIHdpZHRoPSIxMTYiIGhlaWdodD0iNSIgZmlsbD0iI2YxZTlkMiIvPgo8cmVjdCB4PSItNDgiIHk9Ii0xMDAiIHdpZHRoPSI5IiBoZWlnaHQ9IjIyIiByeD0iNCIgZmlsbD0iIzFmNWE3YSIvPjxyZWN0IHg9Ii0yOCIgeT0iLTEwMCIgd2lkdGg9IjkiIGhlaWdodD0iMjIiIHJ4PSI0IiBmaWxsPSIjMWY1YTdhIi8+PHJlY3QgeD0iLTgiIHk9Ii0xMDAiIHdpZHRoPSI5IiBoZWlnaHQ9IjIyIiByeD0iNCIgZmlsbD0iIzFmNWE3YSIvPjxyZWN0IHg9IjEyIiB5PSItMTAwIiB3aWR0aD0iOSIgaGVpZ2h0PSIyMiIgcng9IjQiIGZpbGw9IiMxZjVhN2EiLz48cmVjdCB4PSIzMiIgeT0iLTEwMCIgd2lkdGg9IjkiIGhlaWdodD0iMjIiIHJ4PSI0IiBmaWxsPSIjMWY1YTdhIi8+CjxwYXRoIGQ9Ik0tNTYgLTExMiBBNTYgNjIgMCAwIDEgNTYgLTExMiBaIiBmaWxsPSJ1cmwoI2dvbGQpIi8+CjxwYXRoIGQ9Ik0tMzAgLTEyMiBRLTEwIC0xNjggNiAtMTcyIiBzdHJva2U9IiNmZmY2YzgiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgb3BhY2l0eT0iLjUiLz4KPGxpbmUgeDE9IjAiIHkxPSItMTc0IiB4Mj0iMCIgeTI9Ii0xOTIiIHN0cm9rZT0iI2U4YzE0YSIgc3Ryb2tlLXdpZHRoPSIzIi8+CjxwYXRoIGQ9Ik0tNiAtMTk2IEE3IDcgMCAxIDAgNiAtMTk2IEE1IDUgMCAxIDEgLTYgLTE5NloiIGZpbGw9IiNlOGMxNGEiLz4KPC9nPgo8cGF0aCBkPSJNMCAzMzUgUTIwMCAzMTggMzAwIDMzMiBUNjAwIDMzMCBWNDAwIEgwWiIgZmlsbD0iIzI0MWEzMSIvPgo8cmVjdCB5PSIzOTIiIHdpZHRoPSI2MDAiIGhlaWdodD0iMyIgZmlsbD0iIzExMSIvPjxyZWN0IHk9IjM5NSIgd2lkdGg9IjYwMCIgaGVpZ2h0PSIyIiBmaWxsPSIjZmZmIi8+PHJlY3QgeT0iMzk3IiB3aWR0aD0iNjAwIiBoZWlnaHQ9IjMiIGZpbGw9IiMwMDdhM2QiLz4KPC9zdmc+" alt="আল আকসা ফাউন্ডেশন" class="img-fluid rounded-4 shadow-lg" / style="border-radius:22px;object-fit:cover;max-height:440px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.18);" onerror="(function(i){if(!i.dataset.t1&&i.dataset.fb1){i.dataset.t1=1;i.src=i.dataset.fb1;}else if(!i.dataset.t2&&i.dataset.fb2){i.dataset.t2=1;i.src=i.dataset.fb2;var c=document.getElementById('heroCredit');if(c)c.style.display='none';}})(this)">
+                            <small class="text-muted d-block mt-2" id="heroCredit">পবিত্র আল-আকসা প্রাঙ্গণ, জেরুজালেম, ফিলিস্তিন · ছবি: Wikimedia Commons</small>
                         </div>
                     </div>
                 </div>
@@ -1391,6 +1452,20 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
             </section>
 
+            <!-- সর্বশেষ ভিডিও -->
+            <section class="section-padding" id="homeVideosSection" style="display:none;">
+                <div class="container">
+                    <div class="text-center mb-5">
+                        <h2 class="section-title text-center">সর্বশেষ ভিডিও</h2>
+                        <p class="section-subtitle">আমাদের নতুন ভিডিওগুলো দেখুন</p>
+                    </div>
+                    <div class="row g-4" id="homeVideos"></div>
+                    <div class="text-center mt-4">
+                        <a href="#" onclick="navigateTo('videos')" class="btn btn-outline-custom">সব ভিডিও দেখুন</a>
+                    </div>
+                </div>
+            </section>
+
             <div class="showcase-slot" data-slot="4"></div>
 
             <!-- সদস্য হওয়ার বাটন + যোগাযোগ (আপডেটেড তথ্য) -->
@@ -1485,6 +1560,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 </div>
                 <div id="galleryShowcase" class="slider mb-5" data-per="2,2,1"></div>
                 <div class="row g-3 gallery-grid" id="galleryList"><div class="page-loader"><div class="loader"></div></div></div>
+            </div>
+        </section>
+
+        <!-- VIDEOS PAGE (ভিডিও) -->
+        <section class="page-section section-padding" id="page-videos" style="padding-top:120px;">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="section-title text-center">ভিডিও</h2>
+                    <p class="section-subtitle">আমাদের কার্যক্রম ও বক্তব্যের ভিডিও</p>
+                </div>
+                <div class="row g-4" id="videosList"><div class="page-loader"><div class="loader"></div></div></div>
             </div>
         </section>
 
@@ -1621,6 +1707,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                         <button class="btn btn-sm btn-primary idc-btn" type="button" id="copyMyMemberUrlBtn" title="লিংক কপি করুন"><i class="fas fa-copy me-1"></i> কপি লিংক</button>
                                     </div>
                                 </div>
+                                <div id="profileCardNote" class="alert alert-success" style="display:none;"><i class="fas fa-id-card me-1"></i> আইডি কার্ড অ্যাডমিন প্রস্তুত করে আপনাকে সরাসরি প্রদান করবেন। ওয়েবসাইট থেকে কার্ড ডাউনলোড করা যায় না।</div>
                                 <canvas id="memberCardCanvas" class="card-canvas" width="1060" height="670"></canvas>
                                 <canvas id="memberCardBackCanvas" class="card-canvas mt-3" width="1060" height="670"></canvas>
                                 <div class="row g-2 mt-2" id="profileCardBtns" style="display:none;">
@@ -1905,6 +1992,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="notices"><i class="fas fa-bullhorn"></i> নোটিশ</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="activities"><i class="fas fa-calendar-check"></i> কার্যক্রম</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="gallery"><i class="fas fa-images"></i> গ্যালারি</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="videos"><i class="fas fa-circle-play"></i> ভিডিও</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#" data-admin-page="voices"><i class="fas fa-volume-high"></i> ভয়েস ও মিডিয়া</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="showcase"><i class="fas fa-photo-film"></i> ছবি + বক্তব্য</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#" data-admin-page="files"><i class="fas fa-file-pdf"></i> ডাউনলোড ফাইল</a></li>
                                 <li class="nav-section">অন্যান্য</li>
@@ -1933,6 +2022,31 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                     <div class="dash-stat s2" onclick="adminGo('activities')"><i class="fas fa-calendar-check"></i><div><h3 id="adminStatActivities">০</h3><p>মোট কার্যক্রম</p></div></div>
                                     <div class="dash-stat s3" onclick="adminGo('notices')"><i class="fas fa-bullhorn"></i><div><h3 id="adminStatNotices">০</h3><p>মোট নোটিশ</p></div></div>
                                     <div class="dash-stat s4" onclick="adminGo('contacts')"><i class="fas fa-envelope"></i><div><h3 id="adminStatContacts">০</h3><p>মোট বার্তা</p></div></div>
+                                </div>
+                                <div class="adm-groups">
+                                    <div class="adm-group"><h6><i class="fas fa-users text-success"></i> সদস্য ব্যবস্থাপনা</h6><div class="adm-tiles">
+                                        <button type="button" class="adm-tile" onclick="adminGo('members')"><span class="ic c1"><i class="fas fa-users"></i></span><b>সদস্য</b><small>তালিকা, তথ্য ও কার্ড</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('offlineforms')"><span class="ic c2"><i class="fas fa-file-signature"></i></span><b>আবেদন ফরম</b><small>ফরম তৈরি ও প্রিন্ট</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('photouploads')"><span class="ic c5"><i class="fas fa-camera"></i></span><b>ছবি আপলোড</b><small>অপেক্ষমাণ ছবি যাচাই</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('scanner')"><span class="ic c4"><i class="fas fa-qrcode"></i></span><b>স্ক্যানার</b><small>উপস্থিতি ও কিউআর</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('mycard')"><span class="ic c3"><i class="fas fa-id-card"></i></span><b>আমার কার্ড</b><small>অ্যাডমিনের কার্ড</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('contest')"><span class="ic c6"><i class="fas fa-trophy"></i></span><b>সিরাত প্রতিযোগিতা</b><small>প্রশ্নপত্র ও ফলাফল</small></button>
+                                    </div></div>
+                                    <div class="adm-group"><h6><i class="fas fa-newspaper text-primary"></i> ওয়েবসাইট কনটেন্ট</h6><div class="adm-tiles">
+                                        <button type="button" class="adm-tile" onclick="adminGo('banners')"><span class="ic c1"><i class="fas fa-image"></i></span><b>ব্যানার</b><small>হোমের স্লাইডার</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('notices')"><span class="ic c3"><i class="fas fa-bullhorn"></i></span><b>নোটিশ</b><small>বিজ্ঞপ্তি প্রকাশ</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('activities')"><span class="ic c2"><i class="fas fa-calendar-check"></i></span><b>কার্যক্রম</b><small>কর্মসূচি ও খবর</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('gallery')"><span class="ic c4"><i class="fas fa-images"></i></span><b>গ্যালারি</b><small>ছবির সংগ্রহ</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('videos')"><span class="ic c5"><i class="fas fa-circle-play"></i></span><b>ভিডিও</b><small>YouTube / আপলোড</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('showcase')"><span class="ic c6"><i class="fas fa-photo-film"></i></span><b>ছবি + বক্তব্য</b><small>বিশেষ উপস্থাপনা</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('files')"><span class="ic c1"><i class="fas fa-file-pdf"></i></span><b>ডাউনলোড ফাইল</b><small>PDF ও ফাইল</small></button>
+                                    </div></div>
+                                    <div class="adm-group"><h6><i class="fas fa-sliders text-warning"></i> ভয়েস ও সেটিংস</h6><div class="adm-tiles">
+                                        <button type="button" class="adm-tile" onclick="adminGo('voices')"><span class="ic c5"><i class="fas fa-volume-high"></i></span><b>ভয়েস ও মিডিয়া</b><small>স্বাগত ভয়েস, ফিল্ড ভয়েস</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('contacts')"><span class="ic c2"><i class="fas fa-envelope"></i></span><b>বার্তা</b><small>যোগাযোগের বার্তা</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('templates')"><span class="ic c4"><i class="fas fa-palette"></i></span><b>কার্ড টেমপ্লেট</b><small>কার্ডের ডিজাইন</small></button>
+                                        <button type="button" class="adm-tile" onclick="adminGo('settings')"><span class="ic c3"><i class="fas fa-signature"></i></span><b>সাইন ও সেটিংস</b><small>লোগো, সিল, তথ্য</small></button>
+                                    </div></div>
                                 </div>
                                 <div class="dash-cols">
                                     <div class="admin-card">
@@ -1991,6 +2105,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                                     <button class="btn btn-primary-custom btn-sm" data-bs-toggle="modal" data-bs-target="#galleryModal"><i class="fas fa-plus me-1"></i> নতুন ছবি</button>
                                 </div>
                                 <div class="admin-card"><div id="adminGalleryList"><div class="page-loader"><div class="loader"></div></div></div></div>
+                            </div>
+                            <div class="admin-page" id="admin-videos">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h4 class="fw-bold text-primary-dark"><i class="fas fa-circle-play me-2"></i> ভিডিও ব্যবস্থাপনা</h4>
+                                    <button class="btn btn-primary-custom btn-sm" data-bs-toggle="modal" data-bs-target="#videoModal"><i class="fas fa-plus me-1"></i> নতুন ভিডিও</button>
+                                </div>
+                                <div class="admin-card"><div id="adminVideosList"><div class="page-loader"><div class="loader"></div></div></div></div>
+                            </div>
+                            <div class="admin-page" id="admin-voices">
+                                <h4 class="fw-bold text-primary-dark mb-4"><i class="fas fa-volume-high me-2"></i> ভয়েস ও মিডিয়া</h4>
+                                <div id="adminVoicesBox"><div class="page-loader"><div class="loader"></div></div></div>
                             </div>
                             <div class="admin-page" id="admin-contest"><div id="ctAdminBox"></div></div>
                             <div class="admin-page" id="admin-scanner">
@@ -2269,6 +2394,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                     <h5>অন্যান্য</h5>
                     <ul class="list-unstyled">
                         <li><a href="#" onclick="navigateTo('gallery')">গ্যালারি</a></li>
+                        <li><a href="#" onclick="navigateTo('videos')">ভিডিও</a></li>
                         <li><a href="#" onclick="navigateTo('membership')">সদস্য হোন</a></li>
                         <li><a href="#" onclick="navigateTo('contact')">যোগাযোগ</a></li>
                         <li><a href="https://jobayer2008.github.io/gaza-/" target="_blank" rel="noopener">দান করুন</a></li>
@@ -2346,6 +2472,51 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" id="galleryDownloadable" /><label class="form-check-label" for="galleryDownloadable">সদস্যরা এই ছবি ডাউনলোড করতে পারবে</label></div>
                         <button type="submit" class="btn btn-primary-custom w-100" id="gallerySubmitBtn">আপলোড করুন</button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" id="voiceFab" aria-label="ভয়েস চালু/বন্ধ" title="ভয়েস চালু/বন্ধ"><i class="fas fa-volume-high"></i></button>
+
+    <!-- Video Modal -->
+    <div class="modal fade" id="videoModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold text-primary-dark">নতুন ভিডিও যোগ করুন</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="videoForm">
+                        <div class="mb-3"><label for="videoTitle" class="form-label">শিরোনাম <span class="text-danger">*</span></label><input type="text" class="form-control" id="videoTitle" placeholder="ভিডিওর শিরোনাম" required /></div>
+                        <div class="mb-3"><label for="videoDesc" class="form-label">বিবরণ (ঐচ্ছিক)</label><textarea class="form-control" id="videoDesc" rows="2" placeholder="সংক্ষিপ্ত বিবরণ"></textarea></div>
+                        <div class="mb-3">
+                            <label class="form-label d-block">ভিডিও কীভাবে দিবেন?</label>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="videoMode" id="videoModeLink" value="link" checked /><label class="form-check-label" for="videoModeLink">YouTube / Facebook লিংক</label></div>
+                            <div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="videoMode" id="videoModeFile" value="file" /><label class="form-check-label" for="videoModeFile">ভিডিও ফাইল আপলোড</label></div>
+                        </div>
+                        <div class="mb-3" id="videoLinkBox"><label for="videoLink" class="form-label">ভিডিওর লিংক</label><input type="url" class="form-control" id="videoLink" placeholder="https://www.youtube.com/watch?v=..." /><div class="form-text">YouTube বা Facebook ভিডিওর লিংক পেস্ট করুন।</div></div>
+                        <div class="mb-3" id="videoFileBox" style="display:none;"><label for="videoFile" class="form-label">ভিডিও ফাইল</label><input type="file" class="form-control" id="videoFile" accept="video/mp4,video/webm,video/*" /><div class="form-text">সর্বোচ্চ ৫০ MB। বড় ভিডিও YouTube-এ আপলোড করে লিংক দিন।</div></div>
+                        <div class="mb-3"><label for="videoThumb" class="form-label">থাম্বনেইল ছবি (ঐচ্ছিক)</label><input type="file" class="form-control" id="videoThumb" accept="image/*" /><div class="form-text">YouTube লিংকে নিজে থেকেই থাম্বনেইল আসে।</div><div id="videoThumbPreview" class="mt-2"></div></div>
+                        <button type="submit" class="btn btn-primary-custom w-100" id="videoSubmitBtn">সংরক্ষণ করুন</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Player Modal -->
+    <div class="modal fade" id="videoPlayModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold text-primary-dark" id="videoPlayTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="videoPlayBody"></div>
+                    <p class="text-muted small mt-3 mb-0" id="videoPlayDesc"></p>
                 </div>
             </div>
         </div>
@@ -2772,7 +2943,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
             $$('#navMenu .nav-link').forEach(el => el.classList.remove('active'));
             const navLinks = $$('#navMenu .nav-link');
-            const pageMap = { home: 0, about: 1, activities: 2, notice: 3, gallery: 4, downloads: 5, contact: 6, message: 6, idcard: 7 };
+            const pageMap = { home: 0, about: 1, activities: 2, notice: 3, gallery: 4, videos: 5, downloads: 6, contact: 7, message: 7, idcard: 8 };
             const idx = pageMap[page];
             if (idx !== undefined && navLinks[idx]) navLinks[idx].classList.add('active');
 
@@ -2783,6 +2954,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if (page === 'activities') loadActivities();
             if (page === 'notice') loadNotices();
             if (page === 'gallery') loadGallery();
+            if (page === 'videos') loadVideos();
             if (page === 'downloads') loadDownloads();
 
             const navCollapse = document.querySelector('.navbar-collapse');
@@ -2987,6 +3159,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         }
 
         async function loadHomeData() {
+            loadHomeVideos();
             loadBanners();
             loadShowcase();
 
@@ -3069,6 +3242,255 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 container.innerHTML = `<div class="text-center text-danger">ডেটা লোড করতে সমস্যা হয়েছে।</div>`;
                 console.error(e);
             }
+        }
+
+        // ================================================================
+        //  ভয়েস সিস্টেম (স্বাগত ভয়েস + ফরমের ফিল্ড ভয়েস) ও হিরো ছবি
+        // ================================================================
+        const SITE_MEDIA = {};
+        const JOIN_VOICE_FIELDS = [['joinPhoto', 'ছবি'], ['joinName', 'নাম'], ['joinFather', 'পিতার নাম'], ['joinPhone', 'মোবাইল নাম্বার'], ['joinEmail', 'ইমেইল'], ['joinDob', 'জন্ম তারিখ'], ['joinBlood', 'রক্তের গ্রুপ'], ['joinOcc', 'পেশা'], ['joinAddress', 'ঠিকানা'], ['joinSign', 'স্বাক্ষরের ছবি']];
+        let voiceAudio = null, lastFieldVoice = { k: '', t: 0 };
+        let voiceUserOff = false;
+        try { voiceUserOff = localStorage.getItem('voiceOff') === '1'; } catch (e) { /* ignore */ }
+        function heroImgErr(img) {
+            if (img.dataset.fb1 && img.src !== img.dataset.fb1 && !img.dataset.t1) { img.dataset.t1 = '1'; img.src = img.dataset.fb1; return; }
+            if (img.dataset.fb2 && !img.dataset.t2) { img.dataset.t2 = '1'; img.src = img.dataset.fb2; const c = $('heroCredit'); if (c) c.style.display = 'none'; }
+        }
+        window.heroImgErr = heroImgErr;
+        function voiceOkFor(key) {
+            const mm = SITE_MEDIA.voice_master; if (mm && mm.enabled === false) return false;
+            const r = SITE_MEDIA[key]; return !!(r && r.url && r.enabled !== false);
+        }
+        function updateVoiceFab() {
+            const fab = $('voiceFab'); if (!fab) return;
+            const any = ['welcome_voice'].concat(JOIN_VOICE_FIELDS.map(f => 'voice_field_' + f[0])).some(voiceOkFor);
+            fab.classList.toggle('on', any);
+            fab.classList.toggle('off', voiceUserOff);
+            fab.classList.toggle('playing', !!voiceAudio && !voiceUserOff);
+            fab.innerHTML = `<i class="fas ${voiceUserOff ? 'fa-volume-xmark' : 'fa-volume-high'}"></i>`;
+            fab.title = voiceUserOff ? 'ভয়েস চালু করুন' : 'ভয়েস বন্ধ করুন';
+        }
+        function stopVoice() { if (voiceAudio) { try { voiceAudio.pause(); } catch (e) { /* ignore */ } voiceAudio = null; } updateVoiceFab(); }
+        function playVoice(key, onBlocked) {
+            if (voiceUserOff || !voiceOkFor(key)) return false;
+            stopVoice();
+            const a = new Audio(SITE_MEDIA[key].url);
+            voiceAudio = a;
+            a.onended = () => { if (voiceAudio === a) { voiceAudio = null; updateVoiceFab(); } };
+            const pr = a.play();
+            if (pr && pr.then) pr.then(() => { updateVoiceFab(); if (key === 'welcome_voice') { try { sessionStorage.setItem('welcomePlayed', '1'); } catch (e) { /* ignore */ } } })
+                .catch(() => { if (voiceAudio === a) voiceAudio = null; updateVoiceFab(); if (onBlocked) onBlocked(); });
+            return true;
+        }
+        function startWelcomeVoice() {
+            try { if (sessionStorage.getItem('welcomePlayed') === '1') return; } catch (e) { /* ignore */ }
+            if (!voiceOkFor('welcome_voice') || voiceUserOff) return;
+            const evs = ['pointerdown', 'keydown', 'touchend', 'click'];
+            let armed = false;
+            const arm = () => {
+                if (armed) return; armed = true;
+                const go = () => { evs.forEach(e => document.removeEventListener(e, go, true)); playVoice('welcome_voice'); };
+                evs.forEach(e => document.addEventListener(e, go, true));
+            };
+            playVoice('welcome_voice', arm); // ব্রাউজার অটোপ্লে আটকালে প্রথম ট্যাপ/ক্লিকে চলবে
+        }
+        function bindFieldVoices() {
+            JOIN_VOICE_FIELDS.forEach(([id, label]) => {
+                const key = 'voice_field_' + id;
+                const els = id === 'joinDob' ? ['joinDobD', 'joinDobM', 'joinDobY'].map($) : [$(id)];
+                const lab = document.querySelector(`#joinForm label[for="${id}"]`);
+                const fire = () => {
+                    const now = Date.now();
+                    if (lastFieldVoice.k === key && now - lastFieldVoice.t < 1500) return;
+                    lastFieldVoice = { k: key, t: now };
+                    playVoice(key);
+                };
+                els.concat(lab ? [lab] : []).forEach(el => {
+                    if (!el || el.dataset.voiceBound) return;
+                    el.dataset.voiceBound = '1';
+                    el.addEventListener('focus', fire);
+                    el.addEventListener('click', fire);
+                });
+                if (lab) {
+                    const has = voiceOkFor(key);
+                    let ic = lab.querySelector('.vfield-ic');
+                    if (has && !ic) { lab.insertAdjacentHTML('beforeend', ' <i class="fas fa-volume-high text-success vfield-ic" title="শুনতে ক্লিক করুন"></i>'); }
+                    if (!has && ic) ic.remove();
+                }
+            });
+        }
+        async function loadSiteMedia(opts = {}) {
+            try {
+                const { data, error } = await sb.from('site_media').select('*');
+                if (error) throw error;
+                Object.keys(SITE_MEDIA).forEach(k => delete SITE_MEDIA[k]);
+                (data || []).forEach(r => { SITE_MEDIA[r.key] = r; });
+            } catch (e) { return; /* টেবিল না থাকলে নীরবে বাদ */ }
+            const hero = SITE_MEDIA.hero_image;
+            const hi = $('heroImg');
+            if (hi && hero && hero.url && hero.enabled !== false) { hi.dataset.t1 = '1'; hi.dataset.fb1 = ''; hi.src = hero.url; const c = $('heroCredit'); if (c) c.style.display = 'none'; }
+            bindFieldVoices();
+            updateVoiceFab();
+            if (!opts.noWelcome) startWelcomeVoice();
+        }
+        (function () {
+            const fab = $('voiceFab');
+            if (fab) fab.addEventListener('click', () => {
+                voiceUserOff = !voiceUserOff;
+                try { localStorage.setItem('voiceOff', voiceUserOff ? '1' : '0'); } catch (e) { /* ignore */ }
+                if (voiceUserOff) stopVoice(); else updateVoiceFab();
+            });
+            setTimeout(loadSiteMedia, 0);
+        })();
+
+        // ---------- অ্যাডমিন: ভয়েস ও মিডিয়া ----------
+        async function saveMedia(row) {
+            const { error } = await sb.from('site_media').upsert(Object.assign({ updated_at: new Date().toISOString() }, row), { onConflict: 'key' });
+            if (error) throw error;
+        }
+        async function renderVoicesAdmin() {
+            const box = $('adminVoicesBox');
+            box.innerHTML = `<div class="page-loader"><div class="loader"></div></div>`;
+            try { await loadSiteMedia({ noWelcome: true }); } catch (e) { /* ignore */ }
+            const { error } = await sb.from('site_media').select('key').limit(1);
+            if (error) { box.innerHTML = `<div class="alert alert-warning">ভয়েস সেটআপ বাকি আছে — Supabase SQL Editor-এ <b>supabase_voices.sql</b> একবার চালান।</div>`; return; }
+            const master = !(SITE_MEDIA.voice_master && SITE_MEDIA.voice_master.enabled === false);
+            const row = (key, name, hint) => {
+                const r = SITE_MEDIA[key];
+                return `<div class="vc-row"><div class="vc-name">${escHtml(name)}${hint ? `<br/><small class="text-muted fw-normal">${escHtml(hint)}</small>` : ''}</div>
+                    ${r && r.url ? `<audio controls preload="none" src="${escAttr(r.url)}" style="height:36px;max-width:240px;"></audio>
+                    <div class="form-check form-switch m-0" title="এই ভয়েস চালু/বন্ধ"><input class="form-check-input" type="checkbox" ${r.enabled !== false ? 'checked' : ''} onchange="voiceToggle('${key}', this.checked)" /></div>` : '<span class="text-muted small">কোনো ভয়েস নেই</span>'}
+                    <label class="btn btn-sm btn-outline-success m-0"><i class="fas fa-upload me-1"></i> ${r && r.url ? 'বদলান' : 'ভয়েস ফাইল'}<input type="file" accept="audio/*" hidden onchange="voiceUpload('${key}', '${escAttr(name)}', this)" /></label>
+                    ${r && r.url ? `<button class="btn btn-sm btn-outline-danger" onclick="voiceDelete('${key}')"><i class="fas fa-trash"></i></button>` : ''}</div>`;
+            };
+            const hero = SITE_MEDIA.hero_image;
+            box.innerHTML = `
+                <div class="admin-card">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div><h5 class="fw-bold text-primary-dark mb-1"><i class="fas fa-power-off me-2"></i> সব ভয়েস</h5><small class="text-muted">বন্ধ করলে ওয়েবসাইটে কোনো ভয়েস চলবে না। দর্শকরা নিজেও বাঁ-নিচের বাটন দিয়ে বন্ধ রাখতে পারেন।</small></div>
+                        <div class="form-check form-switch fs-4 m-0"><input class="form-check-input" type="checkbox" ${master ? 'checked' : ''} onchange="voiceMaster(this.checked)" /></div>
+                    </div>
+                </div>
+                <div class="admin-card">
+                    <h5 class="fw-bold text-primary-dark mb-2"><i class="fas fa-door-open me-2"></i> স্বাগত ভয়েস</h5>
+                    ${row('welcome_voice', 'ওয়েবসাইটে ঢুকলে যে ভয়েস শোনা যাবে', 'MP3/WAV/M4A, সর্বোচ্চ ১০ MB। ব্রাউজার নিয়মে কখনো প্রথম ট্যাপ/ক্লিকের পর চলে।')}
+                </div>
+                <div class="admin-card">
+                    <h5 class="fw-bold text-primary-dark mb-2"><i class="fas fa-user-pen me-2"></i> সদস্য আবেদন ফরম — কোথায় কী লিখতে হবে</h5>
+                    <p class="text-muted small">ফরমের যে ঘরে ক্লিক করলে বা কার্সার গেলে সেই ঘরের ভয়েস চলবে। প্রতিটি ঘরের জন্য আলাদা ভয়েস (সর্বোচ্চ ৫ MB)।</p>
+                    ${JOIN_VOICE_FIELDS.map(f => row('voice_field_' + f[0], f[1])).join('')}
+                </div>
+                <div class="admin-card">
+                    <h5 class="fw-bold text-primary-dark mb-2"><i class="fas fa-image me-2"></i> হোমের প্রধান ছবি</h5>
+                    <p class="text-muted small">"সদস্য হোন" বাটনের পাশের ছবি। নিজের কোনো বাস্তব ছবি আপলোড করুন (না দিলে ডিফল্ট ফিলিস্তিনের ছবি থাকবে)।</p>
+                    <div class="d-flex align-items-center flex-wrap gap-3">
+                        ${hero && hero.url ? `<img src="${escAttr(hero.url)}" alt="" style="width:160px;height:90px;object-fit:cover;border-radius:10px;" />` : '<span class="text-muted small">ডিফল্ট ছবি ব্যবহার হচ্ছে</span>'}
+                        <label class="btn btn-sm btn-outline-success m-0"><i class="fas fa-upload me-1"></i> ছবি আপলোড<input type="file" accept="image/*" hidden onchange="heroUpload(this)" /></label>
+                        ${hero && hero.url ? `<button class="btn btn-sm btn-outline-danger" onclick="heroReset()"><i class="fas fa-rotate-left me-1"></i> ডিফল্টে ফিরুন</button>` : ''}
+                    </div>
+                </div>`;
+        }
+        async function voiceMaster(on) {
+            try { await saveMedia({ key: 'voice_master', label: 'সব ভয়েস', url: '', enabled: !!on }); showToast(on ? '✅ ভয়েস চালু' : '✅ ভয়েস বন্ধ'); await loadSiteMedia({ noWelcome: true }); }
+            catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+        }
+        async function voiceToggle(key, on) {
+            try { const r = SITE_MEDIA[key] || {}; await saveMedia({ key, label: r.label || key, url: r.url || '', enabled: !!on }); await loadSiteMedia({ noWelcome: true }); showToast(on ? '✅ চালু' : '✅ বন্ধ'); }
+            catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+        }
+        async function voiceUpload(key, label, input) {
+            const f = input.files && input.files[0]; if (!f) return;
+            try {
+                if (!/^audio\//.test(f.type || '') && !/\.(mp3|wav|m4a|ogg|aac|opus)$/i.test(f.name)) throw new Error('এটি অডিও ফাইল নয়');
+                const max = key === 'welcome_voice' ? 10 : 5;
+                if (f.size > max * 1024 * 1024) throw new Error(`ফাইল ${max} MB এর বেশি হতে পারবে না`);
+                showToast('⏳ আপলোড হচ্ছে...');
+                const ext = ((f.name.split('.').pop() || 'mp3').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'mp3';
+                const path = `voices/${key}_${Date.now()}.${ext}`;
+                const up = await sb.storage.from(BUCKET).upload(path, f, { contentType: f.type || 'audio/mpeg', cacheControl: '3600' });
+                if (up.error) throw new Error('আপলোড ব্যর্থ: ' + up.error.message);
+                const url = sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+                await saveMedia({ key, label, url, enabled: true });
+                try { sessionStorage.removeItem('welcomePlayed'); } catch (e) { /* ignore */ }
+                showToast('✅ ভয়েস সেট হয়েছে!');
+                renderVoicesAdmin();
+            } catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+            input.value = '';
+        }
+        async function voiceDelete(key) {
+            if (!confirm('এই ভয়েসটি মুছে ফেলবেন?')) return;
+            try { const { error } = await sb.from('site_media').delete().eq('key', key); if (error) throw error; showToast('✅ মুছে ফেলা হয়েছে'); renderVoicesAdmin(); }
+            catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+        }
+        async function heroUpload(input) {
+            const f = input.files && input.files[0]; if (!f) return;
+            try { showToast('⏳ আপলোড হচ্ছে...'); const url = await uploadMedia(f, 'hero', { max: 1400 }); await saveMedia({ key: 'hero_image', label: 'হোমের প্রধান ছবি', url, enabled: true }); showToast('✅ ছবি বদলেছে!'); renderVoicesAdmin(); }
+            catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+            input.value = '';
+        }
+        async function heroReset() {
+            try { const { error } = await sb.from('site_media').delete().eq('key', 'hero_image'); if (error) throw error; showToast('✅ ডিফল্ট ছবি ফিরেছে — পেজ রিফ্রেশ করুন'); renderVoicesAdmin(); }
+            catch (e) { showToast('❌ ' + errMsg(e), 'error'); }
+        }
+        Object.assign(window, { voiceMaster, voiceToggle, voiceUpload, voiceDelete, heroUpload, heroReset });
+
+        // ================================================================
+        //  ভিডিও (YouTube / Facebook লিংক + সরাসরি আপলোড)
+        // ================================================================
+        const VIDEO_MAP = {};
+        function ytId(u) { const m = String(u || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/|v\/))([\w-]{11})/); return m ? m[1] : ''; }
+        function videoKind(u) { if (ytId(u)) return 'youtube'; if (/^https?:\/\/([\w-]+\.)?(facebook\.com|fb\.watch|fb\.com)\//i.test(u || '')) return 'facebook'; return ''; }
+        function videoThumb(v) {
+            if (v.thumb_url) return v.thumb_url;
+            if (v.source === 'youtube') { const id = ytId(v.video_url); if (id) return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; }
+            return '';
+        }
+        function videoCard(v) {
+            VIDEO_MAP[v.id] = v;
+            const th = videoThumb(v);
+            const media = th ? `<img src="${escAttr(th)}" alt="" loading="lazy" />`
+                : (v.source === 'upload' ? `<video src="${escAttr(v.video_url)}#t=0.6" preload="metadata" muted playsinline></video>` : `<div class="vid-ph"><i class="fas fa-video"></i></div>`);
+            const tag = v.source === 'youtube' ? 'YouTube' : (v.source === 'facebook' ? 'Facebook' : 'ভিডিও');
+            return `<div class="col-12 col-md-6 col-lg-4"><div class="vid-card" onclick="playVideo('${escAttr(v.id)}')"><div class="vid-thumb">${media}<span class="vid-tag">${tag}</span><span class="vid-play"><i class="fas fa-play"></i></span></div><div class="vid-body"><h6>${escHtml(v.title || '')}</h6>${v.description ? `<p>${escHtml(v.description)}</p>` : ''}</div></div></div>`;
+        }
+        function playVideo(id) {
+            const v = VIDEO_MAP[id]; if (!v) return;
+            let html = '';
+            if (v.source === 'youtube') {
+                html = `<div class="vid-frame"><iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(ytId(v.video_url))}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+            } else if (v.source === 'facebook') {
+                html = `<div class="vid-frame"><iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(v.video_url)}&show_text=false&autoplay=true" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;
+            } else {
+                html = `<div class="vid-frame"><video src="${escAttr(v.video_url)}" controls autoplay playsinline></video></div>`;
+            }
+            if (v.source !== 'upload') html += `<p class="small mt-2 mb-0"><a href="${escAttr(v.video_url)}" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square me-1"></i> ভিডিও না চললে মূল লিংকে দেখুন</a></p>`;
+            $('videoPlayTitle').textContent = v.title || '';
+            $('videoPlayDesc').textContent = v.description || '';
+            $('videoPlayBody').innerHTML = html;
+            bootstrap.Modal.getOrCreateInstance($('videoPlayModal')).show();
+        }
+        window.playVideo = playVideo;
+        $('videoPlayModal').addEventListener('hidden.bs.modal', () => { $('videoPlayBody').innerHTML = ''; });
+        const videoSetupMsg = (e) => /relation .*videos|schema cache|does not exist|PGRST205/i.test((e && e.message) || '')
+            ? 'ভিডিও সেটআপ বাকি আছে — অ্যাডমিন supabase_videos.sql চালান।' : 'ভিডিও লোড করতে সমস্যা হয়েছে।';
+        async function loadVideos() {
+            const box = $('videosList');
+            box.innerHTML = `<div class="page-loader"><div class="loader"></div></div>`;
+            try {
+                const { data, error } = await sb.from('videos').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                box.innerHTML = (data && data.length) ? data.map(videoCard).join('') : `<div class="col-12 text-center text-muted py-5"><i class="fas fa-video fa-2x mb-3 d-block"></i>এখনো কোনো ভিডিও যোগ করা হয়নি।</div>`;
+            } catch (e) { console.error(e); box.innerHTML = `<div class="col-12 text-center text-danger">${escHtml(videoSetupMsg(e))}</div>`; }
+        }
+        async function loadHomeVideos() {
+            try {
+                const { data, error } = await sb.from('videos').select('*').order('created_at', { ascending: false }).limit(3);
+                if (error) throw error;
+                const sec = $('homeVideosSection');
+                if (!data || !data.length) { sec.style.display = 'none'; return; }
+                $('homeVideos').innerHTML = data.map(videoCard).join('');
+                sec.style.display = '';
+            } catch (e) { const sec = $('homeVideosSection'); if (sec) sec.style.display = 'none'; }
         }
 
         async function loadGallery() {
@@ -4958,6 +5380,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 
         async function renderCard() {
             if (!myMember) return;
+            const adm = isAdmin === true;
+            ['memberCardCanvas', 'memberCardBackCanvas'].forEach(id => { const e = $(id); if (e) e.style.display = adm ? '' : 'none'; });
+            const note = $('profileCardNote'); if (note) note.style.display = adm ? 'none' : '';
+            if (!adm) return;
             try { await drawCard($('memberCardCanvas'), myMember, SETTINGS); await drawCardBack($('memberCardBackCanvas'), SETTINGS, myMember); }
             catch (e) { console.error(e); }
         }
@@ -5512,6 +5938,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 currentAdminPage = page;
                 if (page === 'dashboard') loadAdminDashboard();
                 loadAdminData(page);
+                try { window.scrollTo({ top: 0, behavior: 'smooth' }); this.scrollIntoView({ inline: 'center', block: 'nearest' }); } catch (e) { /* ignore */ }
             });
         });
 
@@ -5570,6 +5997,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                         <td>${escHtml(g.title || '')}</td>
                         <td><div class="form-check form-switch"><input class="form-check-input" type="checkbox" ${g.downloadable ? 'checked' : ''} onchange="toggleGalleryDl('${g.id}', this.checked)" /></div></td>
                         <td>${delBtn(g.id, 'gallery')}</td></tr>`).join(''))
+            },
+            videos: {
+                box: 'adminVideosList',
+                query: () => sb.from('videos').select('*').order('created_at', { ascending: false }),
+                render: d => !d.length ? noData('কোনো ভিডিও নেই। "নতুন ভিডিও" চেপে যোগ করুন।') :
+                    tbl(['থাম্বনেইল', 'শিরোনাম', 'ধরন', 'অ্যাকশন'], d.map(v => `<tr>
+                        <td>${videoThumb(v) ? `<img src="${escAttr(videoThumb(v))}" alt="" style="width:110px;height:62px;object-fit:cover;border-radius:6px;" />` : '<i class="fas fa-video fa-lg text-muted"></i>'}</td>
+                        <td><strong>${escHtml(v.title || '')}</strong><br/><small class="text-muted">${escHtml((v.description || '').slice(0, 70))}</small></td>
+                        <td><span class="badge bg-${v.source === 'youtube' ? 'danger' : v.source === 'facebook' ? 'primary' : 'success'}">${v.source === 'upload' ? 'আপলোড' : escHtml(v.source)}</span></td>
+                        <td><a class="btn btn-sm btn-outline-secondary me-1" href="${escAttr(v.video_url)}" target="_blank" rel="noopener"><i class="fas fa-eye"></i></a>${delBtn(v.id, 'videos')}</td></tr>`).join(''))
             },
             files: {
                 box: 'adminFilesList',
@@ -5687,6 +6124,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             if (type === 'templates') { await renderTemplatesAdmin(); return; }
             if (type === 'offlineforms') { initOfflineForms(); return; }
             if (type === 'contest') { contestAdminInit(); return; }
+            if (type === 'voices') { await renderVoicesAdmin(); return; }
             if (type === 'photouploads') { /* ADMIN_CFG দিয়ে লোড হবে */ }
             const cfg = ADMIN_CFG[type];
             if (!cfg) return;
@@ -5737,6 +6175,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             noticeModal: { form: 'noticeForm', id: 'noticeEditId', title: ['noticeModalTitle', 'নতুন নোটিশ'], btn: 'noticeSubmitBtn', preview: 'noticeImagePreview' },
             activityModal: { form: 'activityForm', id: 'activityEditId', title: ['activityModalTitle', 'নতুন কার্যক্রম'], btn: 'activitySubmitBtn', preview: 'activityImagePreview' },
             galleryModal: { form: 'galleryForm', btn: 'gallerySubmitBtn', preview: 'galleryImagePreview' },
+            videoModal: { form: 'videoForm', btn: 'videoSubmitBtn', preview: 'videoThumbPreview' },
             showcaseModal: { form: 'showcaseForm', id: 'showcaseEditId', title: ['showcaseModalTitle', 'নতুন ছবি'], btn: 'showcaseSubmitBtn', preview: 'showcaseImagePreview' },
             bannerModal: { form: 'bannerForm', id: 'bannerEditId', title: ['bannerModalTitle', 'নতুন ব্যানার'], btn: 'bannerSubmitBtn', preview: 'bannerImagePreview' },
             fileModal: { form: 'fileForm', btn: 'fileSubmitBtn' },
@@ -5895,6 +6334,50 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
                 await saveRow('activities', id, payload);
                 showToast(id ? '✅ কার্যক্রম আপডেট হয়েছে!' : '✅ নতুন কার্যক্রম যোগ হয়েছে!');
                 afterSave('activityModal', 'activities');
+            } catch (err) { showToast('❌ ' + errMsg(err), 'error'); }
+            finally { setBusy(btn, false); }
+        });
+
+        // ভিডিও (অ্যাডমিন)
+        function videoModeToggle() {
+            const file = document.querySelector('input[name="videoMode"]:checked').value === 'file';
+            $('videoFileBox').style.display = file ? '' : 'none';
+            $('videoLinkBox').style.display = file ? 'none' : '';
+        }
+        $$('input[name="videoMode"]').forEach(r => r.addEventListener('change', videoModeToggle));
+        $('videoModal').addEventListener('hidden.bs.modal', () => setTimeout(videoModeToggle, 0));
+        bindPreview('videoThumb', 'videoThumbPreview');
+        $('videoForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const btn = $('videoSubmitBtn');
+            setBusy(btn, true, 'সংরক্ষণ হচ্ছে...');
+            try {
+                const title = $('videoTitle').value.trim();
+                if (!title) throw new Error('শিরোনাম দিন');
+                const fileMode = document.querySelector('input[name="videoMode"]:checked').value === 'file';
+                let source, url;
+                if (!fileMode) {
+                    url = $('videoLink').value.trim();
+                    source = videoKind(url);
+                    if (!source) throw new Error('শুধু YouTube বা Facebook ভিডিওর সঠিক লিংক দিন');
+                } else {
+                    const f = $('videoFile').files[0];
+                    if (!f) throw new Error('একটি ভিডিও ফাইল নির্বাচন করুন');
+                    if (!/^video\//.test(f.type || '')) throw new Error('এটি ভিডিও ফাইল নয়');
+                    if (f.size > 50 * 1024 * 1024) throw new Error('ভিডিও ৫০ MB এর বেশি হতে পারবে না — YouTube লিংক ব্যবহার করুন');
+                    setBusy(btn, true, 'আপলোড হচ্ছে... অপেক্ষা করুন');
+                    const ext = ((f.name.split('.').pop() || 'mp4').toLowerCase().replace(/[^a-z0-9]/g, '')) || 'mp4';
+                    const path = `videos/${Date.now()}_${Math.random().toString(36).slice(2, 8)}.${ext}`;
+                    const up = await sb.storage.from(BUCKET).upload(path, f, { contentType: f.type || 'video/mp4', cacheControl: '3600' });
+                    if (up.error) throw new Error('ভিডিও আপলোড ব্যর্থ: ' + up.error.message);
+                    url = sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+                    source = 'upload';
+                }
+                const tf = $('videoThumb').files[0];
+                const thumb = tf ? await uploadMedia(tf, 'video-thumbs', { max: 900 }) : null;
+                await saveRow('videos', null, { title, description: $('videoDesc').value.trim() || null, source, video_url: url, thumb_url: thumb });
+                showToast('✅ ভিডিও যোগ হয়েছে!');
+                afterSave('videoModal', 'videos');
             } catch (err) { showToast('❌ ' + errMsg(err), 'error'); }
             finally { setBusy(btn, false); }
         });
